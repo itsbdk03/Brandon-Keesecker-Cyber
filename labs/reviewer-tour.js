@@ -54,6 +54,13 @@ const prev=document.createElement('button');prev.type='button';prev.textContent=
 const next=document.createElement('button');next.type='button';next.textContent='Next →';next.className='bk-tour-primary';
 footer.append(prev,next);shell.append(header,count,title,desc,progress,footer);
 document.body.append(launcher,shell);
+// On phone-sized layouts the launcher belongs in the document flow instead of
+// a viewport-fixed overlay, keeping it tappable even in wide scrollable workbenches.
+if(matchMedia('(max-width:680px)').matches){
+  const host=isAssurance?document.querySelector('main'):document.querySelector('.workspace');
+  const next=host?.querySelector(isAssurance?'.metricgrid':'.panel');
+  if(host&&next)host.insertBefore(launcher,next);
+}
 let target=null;
 function clear(){if(target){target.classList.remove('bk-reviewer-highlight');target=null}}
 function render(){if(!open)return;clear();const steps=tourSteps();const item=steps[index]||steps[0];count.textContent='STEP '+(index+1)+' OF '+steps.length;title.textContent=item[1];desc.textContent=item[2];fill.style.width=(100*(index+1)/steps.length)+'%';prev.disabled=index===0;next.textContent=index===steps.length-1?'Finish ✓':'Next →';target=document.querySelector(item[0]);if(target){target.classList.add('bk-reviewer-highlight');target.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'center'})}}
