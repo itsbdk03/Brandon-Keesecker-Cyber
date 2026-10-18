@@ -1,5 +1,9 @@
 # Brandon Keesecker — Cybersecurity Portfolio
 
+![Automated verification](https://github.com/itsbdk03/Brandon-Keesecker-Cyber/actions/workflows/verify.yml/badge.svg)
+
+**Seven local-first interactive cybersecurity labs** · 49 automated tests · Synthetic data · No API keys or cloud credentials required.
+
 An animated, responsive, self-contained professional cybersecurity website. It does not require an API key, build system, package installation, account, or paid service.
 
 ![Cybersecurity projects](docs/images/portfolio-projects.webp)
@@ -20,7 +24,7 @@ Open `index.html` in any modern browser. To put it on the public internet, uploa
 - Professional overview covering FedRAMP Low/Moderate/High, DoD IL4/IL5/IL6, security documentation development, CMMC, and cloud security.
 - Interactive HITRUST, HIPAA, SOC 2, and cross-framework GRC explorer. Wording intentionally distinguishes additional GRC experience from deeper federal advisory work.
 - Filterable **Selected Work** cards about professional methods, described without client names or sensitive engagement details.
-- Dedicated **Cyber Projects** tab with SEVEN working, interactive projects: ControlTrace, SignalHunt, CloudGuard, RiskMatrix, ConfigLens, and AttackPath.
+- Dedicated **Cyber Projects** tab with SEVEN working, interactive projects: ControlTrace, SignalHunt, CloudGuard, RiskMatrix, ConfigLens, AttackPath, and AssuranceFlow.
 - Dedicated **LinkedIn** tab and large social section, now connected directly to Brandon’s LinkedIn profile.
 - Experience and education timeline, including your WVU master's degree and a **planned** (not earned) doctorate in cybersecurity.
 - Certifications including CCSK, CompTIA A+, Google and Microsoft certifications.
@@ -47,8 +51,10 @@ The `labs/` folder now contains **six integrated workbenches plus a standalone A
 | RiskMatrix | `yourdomain/labs/index.html#risk` | Add risks, adjust mitigation maturity, filter a 5×5 heat map, export CSV |
 | ConfigLens | `yourdomain/labs/index.html#config` | Inspect fictional AWS JSON, compare configurations, remediate findings, export SARIF |
 | AttackPath | `yourdomain/labs/index.html#path` | Test simulated attack routes, compare safeguards and download analysis |
+| AssuranceFlow | `yourdomain/labs/assuranceflow.html` | Inspect security narratives and evidence quality, triage documentation gaps, export reviewer workpapers |
 
-- `labs/index.html` — all six workbenches, with responsive interactive UI
+- `labs/index.html` — six integrated workbenches, with responsive interactive UI
+- `labs/assuranceflow.html` — seventh standalone, browser-based control documentation workbench
 - `labs/labs.css` — lab styling and mobile layouts
 - `labs/labs.js` — documented code for the four original modules
 - `labs/enhancements.js` and `labs/enhancements.css` — additional analytics, investigations and downloadable briefs
@@ -64,18 +70,28 @@ The `SITE_CONFIG.projects` array inside your portfolio homepage already points t
 
 For further GitHub project links, add cards to `SITE_CONFIG.projects` with `title`, `category`, `icon`, `summary`, `url`, and `type` fields. Do not publish confidential client information, CUI, production artifacts, or credentials.
 
+## Interview-ready guided walkthroughs
+
+See **[Project demonstration guide](docs/DEMO-GUIDE.md)** for practical, 1–3 minute reviewer exercises for each lab. Each walkthrough identifies what to click, what output to expect, what the result does **not** prove, and which engineering choices the reviewer can verify in the source code.
+
+### Recent improvements to the existing labs
+
+- **ConfigLens:** an evidence-first scope review surfaces unassessed fields and omitted configuration categories separately from passed rules. Capture a baseline and compare modified snapshots; missing evidence is **not** labeled remediated. Export a standalone remediation brief.
+- **SignalHunt:** the correlation engine now requires a single identity and source IP for the failure-to-success authentication chain, reducing cross-source false positives. Later process/network activity is clearly labeled contextual, not causal.
+- **Verification:** new regression tests cover uncertain data, remediation comparisons, invalid ports, temporal windows and cross-IP log sequences. CI also checks embedded JavaScript syntax, project routes and source files.
+
 ## Recommended before publishing
 
 - Your public LinkedIn URL is already configured and can be tested after deployment.
 - Review the email address currently in the contact section and update it if necessary. It also appears in the copy-email handler and terminal.
 - Review the listed credentials and educational degree wording, especially the planned doctorate. This site intentionally does **not** claim you hold a doctorate.
-- Test all six included live project links on your deployed domain. You can add GitHub repositories later if you wish.
+- Test all seven included live project links on your deployed domain. You can add GitHub repositories later if you wish.
 - Optionally add a downloadable résumé or headshot with your own approved images.
 - Review any professional information for permission to share before publication.
 
 ## Technical notes
 
-The main portfolio is implemented using HTML, CSS, and vanilla JavaScript inside `index.html`; the six interactive labs use static files in `labs/`. Text content is inserted safely (without accepting raw markup from project descriptions); project URLs are accepted only when they are valid HTTP or HTTPS URLs. All existing animations and interactions are local to the browser. No visitors' data is collected or sent to a server by the site itself.
+The main portfolio is implemented using HTML, CSS, and vanilla JavaScript inside `index.html`; the seven interactive labs use static files in `labs/`. Text content is inserted safely (without accepting raw markup from project descriptions); project URLs are accepted only when they are valid HTTP or HTTPS URLs. All existing animations and interactions are local to the browser. No visitors' data is collected or sent to a server by the site itself.
 
 
 ## Version 7: AttackPath defensive threat modeling
