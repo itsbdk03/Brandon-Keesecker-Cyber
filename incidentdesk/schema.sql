@@ -242,47 +242,22 @@ create policy incidentdesk_object_upload on storage.objects for insert to authen
  and private.incident_workspace(private.safe_path_uuid(name,2))=private.safe_path_uuid(name,1)
  and (select auth.uid()) is not null);
 
--- Only the authenticated tenant's authorized row changes may reach the Realtime client.
-do $
+-- Only authenticated members may receive tenant-scoped Realtime row changes.
+do $realtime$
 begin
  if exists(select 1 from pg_publication where pubname='supabase_realtime') then
-  if not exists(select 1 from pg_publication_tables where pubname='supabase_realtime'
-     and schemaname='public' and tablename='incidents') then
-    alter publication supabase_realtime add table public.incidents;
+  if not exists(select 1 from pg_publication_tables where pubname='supabase_realtime' and schemaname='public' and tablename='incidents') then
+   alter publication supabase_realtime add table public.incidents;
   end if;
-  if not exists(select 1 from pg_publication_tables where pubname='supabase_realtime'
-     and schemaname='public' and tablename='incident_events') then
-    alter publication supabase_realtime add table public.incident_events;
+  if not exists(select 1 from pg_publication_tables where pubname='supabase_realtime' and schemaname='public' and tablename='incident_events') then
+   alter publication supabase_realtime add table public.incident_events;
   end if;
  end if;
-end $;
--- Trigger procedures have no reason to be invoked directly by API roles.
+end
+$realtime$;
+
+-- Trigger functions are never intended as callable API entry points.
 revoke all on function private.workspace_bootstrap(),private.audit_incident(),
  private.audit_comment(),private.audit_evidence(),private.touch_incident() from public,anon,authenticated;
 
--- Defense-in-depth assertions (automated SQL catalog checks are in tests).
--- Caution: integration testing with 2 users and different organizations is required before production.
-
- then split_part(object_name,'/',segment_no)::uuid else null::uuid end
-$;
-revoke all on function private.safe_path_uuid(text,integer) from public;
-grant execute on function private.safe_path_uuid(text,integer) to authenticated;
-
--- Private object bucket: max 5 MB. No public link, no HTML, no executables.
-insert into storage.buckets(id,name,public,file_size_limit,allowed_mime_types)
-values ('incidentdesk-evidence','incidentdesk-evidence',false,5242880,
- array['text/plain','application/json','text/csv','image/png','image/jpeg','application/pdf'])
-on conflict(id) do nothing;
-
-create policy incidentdesk_object_read on storage.objects for select to authenticated
- using (bucket_id='incidentdesk-evidence'
- and (select private.member_of(private.safe_path_uuid(name,1)))
- and private.incident_workspace(private.safe_path_uuid(name,2))=private.safe_path_uuid(name,1));
-create policy incidentdesk_object_upload on storage.objects for insert to authenticated
- with check (bucket_id='incidentdesk-evidence'
- and (select private.can_edit(private.safe_path_uuid(name,1)))
- and private.incident_workspace(private.safe_path_uuid(name,2))=private.safe_path_uuid(name,1)
- and (select auth.uid()) is not null);
-
--- Defense-in-depth assertions (automated SQL catalog checks are in tests).
--- Caution: integration testing with 2 users and different organizations is required before production.
+-- The application is a fictional showcase; verify access isolation with two actual users before production use.
