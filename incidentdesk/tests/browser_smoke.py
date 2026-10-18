@@ -48,6 +48,11 @@ def exercise(browser,url,width,height):
     expect(page.locator("#caseNotes")).to_contain_text("Fictional first responder note")
     page.locator(".detail-tab[data-detail=history]").click()
     expect(page.locator("#caseHistory")).to_contain_text("COMMENTED")
+    # A privileged analyst action changes severity and writes a separate event.
+    page.locator("#escalateIncident").click()
+    expect(page.locator("#detailMeta .pill.critical")).to_have_count(1)
+    page.locator(".detail-tab[data-detail=history]").click()
+    expect(page.locator("#caseHistory")).to_contain_text("UPDATED")
     page.screenshot(path=str(ARTIFACTS/("case-"+str(width)+".png")),full_page=True,animations="disabled")
     with page.expect_download() as download:
         page.locator("#exportIncident").click()
@@ -58,6 +63,8 @@ def exercise(browser,url,width,height):
     page.locator('[data-close=detailDialog]').click()
     if width < 900: page.locator("#mobileMenu").click()
     page.locator(".nav-item[data-view=team]").click()
+    expect(page.locator("#workspaceSelect")).to_be_disabled()
+    expect(page.locator("#memberForm [name=email]")).to_have_count(1)
     expect(page.locator("#memberList .member-row")).to_have_count(3)
     if width < 900: page.locator("#mobileMenu").click()
     page.locator(".nav-item[data-view=activity]").click()
