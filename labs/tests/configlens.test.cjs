@@ -57,3 +57,57 @@ test('every finding links to a documented remediation and severity',()=>{
     assert(f.doc.startsWith('https://docs.aws.amazon.com/'));
   }
 });
+
+test('incomplete fields are explicitly unassessed, not passing',()=>{
+  const r=scan({account:{},cloudTrail:{},s3Buckets:[{name:'evidence-gap'}]});
+  assert.equal(r.evaluations,0);
+  assert.equal(r.results.length,0);
+  assert.equal(r.unknown.length,7);
+  assert.equal(r.unassessed,7);
+  assert.equal(r.scopedSections,3);
+  assert(r.missingSections.includes('iamPolicies'));
+});
+test('all seven sections are distinguished from omitted sections',()=>{
+  const r=scan({account:{rootMfa:true},s3Buckets:[],iamPolicies:[],securityGroups:[],cloudTrail:{enabled:true,multiRegion:true,logFileValidation:true},rdsInstances:[],ebsVolumes:[]});
+  assert.equal(r.scopedSections,7);
+  assert.deepEqual(r.missingSections,[]);
+  assert.equal(r.unknown.length,0);
+});
+test('before and after comparison identifies verified remediation',()=>{
+  const a=require('../configlens-engine.js');
+  const d=a.compare(sample('configlens-exposed.json'),sample('configlens-hardened.json'));
+  assert(d.before.results.length>=8);
+  assert.equal(d.after.results.length,0);
+  assert.equal(d.resolved.length,d.before.results.length);
+  assert.equal(d.unverified.length,0);
+  assert.equal(d.introduced.length,0);
+});
+test('removing a failing field does not count as remediation',()=>{
+  const a=require('../configlens-engine.js');
+  const d=a.compare({account:{rootMfa:false}},{account:{}});
+  assert.equal(d.resolved.length,0);
+  assert.equal(d.unverified.length,1);
+  assert.equal(d.after.unassessed,1);
+});
+test('omitting an entire resource category does not count as remediation',()=>{
+  const a=require('../configlens-engine.js');
+  const d=a.compare({account:{rootMfa:false}},{});
+  assert.equal(d.resolved.length,0);
+  assert.equal(d.unverified.length,1);
+  assert(d.after.missingSections.includes('account'));
+});
+test('same unresolved misconfiguration is persistent',()=>{
+  const a=require('../configlens-engine.js'),d=a.compare({account:{rootMfa:false}},{account:{rootMfa:false}});
+  assert.equal(d.persistent.length,1);
+  assert.equal(d.resolved.length,0);
+});
+test('introduced findings are surfaced separately',()=>{
+  const a=require('../configlens-engine.js'),d=a.compare({account:{rootMfa:true}},{account:{rootMfa:false}});
+  assert.equal(d.introduced.length,1);
+  assert.equal(d.resolved.length,0);
+});
+test('incomplete security-group port values do not create false passes',()=>{
+  const r=scan({securityGroups:[{id:'demo',ingress:[{cidr:'0.0.0.0/0',fromPort:null,toPort:22},{cidr:'0.0.0.0/0',fromPort:'22',toPort:'22'}]}]});
+  assert.equal(r.evaluations,0);
+  assert.equal(r.unassessed,2);
+});
