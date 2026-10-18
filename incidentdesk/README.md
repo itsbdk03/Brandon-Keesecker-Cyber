@@ -2,13 +2,13 @@
 
 **Portfolio project 08 — Brandon Keesecker**
 
-Current status: Interactive fictional demonstration is implemented and tested. Supabase project provisioning and live database activation are pending. Live claims require actual authentication and cross-tenant tests.
+Current status: Synthetic demonstration complete; Supabase project **ACTIVE_HEALTHY**, with all six database tables, RLS policies, private evidence bucket and Realtime publication created. The frontend is configured with a publishable key. Email redirect allowlisting, real user sign-in, and two-user cross-tenant access tests still need to be completed. Do not claim production readiness.
 
 ## Demo mode and live mode
 
 IncidentDesk runs as a polished browser-only fictional SOC workspace without requiring any API key. In demo mode, seven synthetic cases, status and severity KPIs, priority queue, detailed incident timelines, notes, case edits, fictional evidence metadata, filtered register, access overview and downloadable case reports all work within one browser session. The demonstration never uploads files.
 
-The live-mode adapter is implemented but inactive until Supabase is provisioned and configured. It supports Supabase email magic-link authentication, tenant-specific PostgreSQL records, notes, private evidence uploads/downloads, case updates, membership roles and tenant-filtered Realtime event refreshes. Only authenticated admins and analysts may write incident records; viewers are read-only at the database layer.
+The live-mode adapter is connected to the provisioned Supabase project. It switches from local demo data into tenant-scoped records only after a successful user sign-in. It supports Supabase email magic-link authentication, tenant-specific PostgreSQL records, notes, private evidence uploads/downloads, case updates, membership roles and tenant-filtered Realtime event refreshes. Only authenticated admins and analysts may write incident records; viewers are read-only at the database layer.
 
 ## Security-first architecture
 
@@ -26,13 +26,15 @@ Realtime: database changes for incidents and events are limited to workspace-fil
 
 ## Connect a new Supabase project
 
-1. Review and accept the Supabase project creation cost in your organization. A connected project is not yet provisioned.
-2. Create a NEW project in us-east-1. Carefully review incidentdesk/schema.sql, then apply it in the Supabase SQL Editor or through a deployment migration.
-3. Verify table RLS, security/performance advisors, policies, trigger privileges and the private Storage bucket. Do not assume that a syntactically valid schema proves isolation.
+1. **Completed:** Supabase project created in us-east-1 at the approved project cost of $0/month. Project reference: oacafwldgglatzayqtro.
+2. **Completed:** SQL schema and the separate incidentdesk/performance-indexes.sql migration have been applied to the new project. They should not be reapplied blindly.
+3. **Verified:** Six public tables with RLS, 14 policies, a private Storage bucket and two Realtime publication tables. Supabase security advisors returned no findings. Unused-index performance notices are expected until records and query activity exist. Run manual two-account authorization tests before handling anything other than fictional data.
 4. In Supabase Auth URL settings allowlist the hosted /incidentdesk/index.html callback URL and your intended local development URL.
-5. Populate incidentdesk/config.js with the new project URL and publishable key. Never insert a service_role or secret key.
-6. Open the deployed IncidentDesk page over HTTPS, select Connect account, sign in via email magic link, and create your workspace.
-7. Test with at least two genuinely independent authenticated users in different workspaces: cross-workspace reads, writes, downloads and user-assignment attempts must be blocked. Check that admin/analyst/viewer policies behave as intended.
+5. **Completed:** incidentdesk/config.js contains only the public project URL and a public publishable key. Never insert a service_role or secret key.
+6. **Remaining:** Publish the site to an HTTPS origin, allowlist its exact /incidentdesk/index.html address under Supabase Authentication → URL Configuration, then sign in through **Connect account** and create a fictional workspace.
+7. **Remaining:** Test two independent authenticated identities in different workspaces: verify cross-workspace reads, writes, downloads, and assignment attempts are rejected. Exercise admin, analyst, and viewer roles with actual sessions.
+
+Supabase project: https://supabase.com/dashboard/project/oacafwldgglatzayqtro
 
 ## Development and verification
 
