@@ -20,7 +20,7 @@ Open `index.html` in any modern browser. To put it on the public internet, uploa
 - Professional overview covering FedRAMP Low/Moderate/High, DoD IL4/IL5/IL6, security documentation development, CMMC, and cloud security.
 - Interactive HITRUST, HIPAA, SOC 2, and cross-framework GRC explorer. Wording intentionally distinguishes additional GRC experience from deeper federal advisory work.
 - Filterable **Selected Work** cards about professional methods, described without client names or sensitive engagement details.
-- Dedicated **Cyber Projects** tab with SIX working, interactive projects: ControlTrace, SignalHunt, CloudGuard, RiskMatrix, ConfigLens, and AttackPath.
+- Dedicated **Cyber Projects** tab with SEVEN working, interactive projects: ControlTrace, SignalHunt, CloudGuard, RiskMatrix, ConfigLens, and AttackPath.
 - Dedicated **LinkedIn** tab and large social section, now connected directly to Brandon’s LinkedIn profile.
 - Experience and education timeline, including your WVU master's degree and a **planned** (not earned) doctorate in cybersecurity.
 - Certifications including CCSK, CompTIA A+, Google and Microsoft certifications.
@@ -37,7 +37,7 @@ No further LinkedIn setup is needed. If you ever change your LinkedIn profile ad
 
 ## Interactive cybersecurity engineering labs
 
-The `labs/` folder now contains **six working applications**, with full source code and documentation. Every project has its own live, direct-linkable URL path within the site:
+The `labs/` folder now contains **six integrated workbenches plus a standalone AssuranceFlow documentation studio**, with full source code and documentation. Every project has its own live, direct-linkable URL path within the site:
 
 | Project | URL after publishing | What visitors can do |
 |---|---|---|
@@ -105,3 +105,7 @@ npm run verify
 ## Public sharing note
 
 The examples are synthetic and educational, not live client work or production certification tooling. Review all professional and contact information before public sharing. Screenshots are optimized for repository viewing.
+
+## AssuranceFlow — documentation engineering studio (lab 07)
+
+Visit [`labs/assuranceflow.html`](labs/assuranceflow.html) for a local-first demo of control documentation quality reviews. It supports synthetic NIST-style control implementation narratives, evidence traceability, prioritized gap lists, a narrowly scoped OSCAL SSP implementation-description importer, local JSON workpapers, and a partial OSCAL-oriented implementation export. It **does not** validate an OSCAL schema, baseline coverage, compliance, or authorization. The engine is in `labs/assuranceflow-engine.js` and is covered by 12 portable Node.js tests. Official reference: https://pages.nist.gov/OSCAL-Reference/models/v1.2.3/system-security-plan/json-reference/ .
