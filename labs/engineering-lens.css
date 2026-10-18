@@ -1,0 +1,38 @@
+/* Engineering Lens architecture and evidence presentation for the seven existing labs. */
+.bk-engineering-lens{margin:8px 0 23px;border:1px solid #356174;border-radius:13px;background:linear-gradient(125deg,#102b3b,#0c202e);color:#eaf9fa;box-shadow:0 10px 35px #05111b20;min-width:0}
+.bk-engineering-lens summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:13px;padding:17px 20px;min-height:66px}
+.bk-engineering-lens summary::-webkit-details-marker{display:none}
+.bk-engineering-lens summary:focus-visible,.bk-eng-actions a:focus-visible,.bk-eng-download:focus-visible,.bk-eng-method:focus-visible{outline:3px solid #6ff0da;outline-offset:3px}
+.bk-engineering-lens[open]{border-color:#4cbdaf}
+.bk-eng-symbol{display:grid;place-items:center;border-radius:10px;height:38px;width:38px;flex-shrink:0;background:#174b56;color:#78ead6}
+.bk-eng-summary-text{flex:1;min-width:0}.bk-eng-eyebrow{font:750 9px/1.7 ui-monospace,monospace;letter-spacing:.12em;color:#75ddcf;display:block}
+.bk-eng-summary-text strong{display:block;font:750 14px/1.5 system-ui,sans-serif;letter-spacing:-.015em}
+.bk-eng-chevron{font-size:26px;line-height:1;transition:transform .18s;color:#70decf}
+.bk-engineering-lens[open] .bk-eng-chevron{transform:rotate(180deg)}
+.bk-engineering-content{padding:22px;border-top:1px solid #315368;min-width:0}
+.bk-eng-chip{font:800 10px/1.6 ui-monospace,monospace;color:#75eed8;letter-spacing:.11em}
+.bk-eng-lead h3{font-size:clamp(17px,2vw,23px);letter-spacing:-.035em;line-height:1.3;margin:8px 0 13px;color:#efffff}
+.bk-eng-note{padding:12px 15px;background:#0a2635;border-left:3px solid #74dcca;color:#b7d6df;font:12px/1.6 system-ui,sans-serif;margin:0 0 16px}
+.bk-eng-input{font:12px/1.65 system-ui,sans-serif;color:#b3cada;margin:0 0 18px}.bk-eng-input b{font-size:10px;color:#7aead6;letter-spacing:.11em}
+.bk-eng-flow{display:flex;align-items:stretch;gap:8px;margin:12px 0 20px;min-width:0}
+.bk-eng-stage{border:1px solid #356176;background:#102e3d;border-top:3px solid #60cfbe;border-radius:10px;padding:16px 14px;flex:1;min-width:0;overflow-wrap:anywhere}
+.bk-eng-stage-n{color:#80dfd5;letter-spacing:.1em;font:800 9px/1.7 ui-monospace,monospace}
+.bk-eng-stage h4{font-size:13px;letter-spacing:-.018em;color:#fff;margin:8px 0}
+.bk-eng-stage p{font:11px/1.6 system-ui,sans-serif;color:#acc8d4;margin:0}
+.bk-eng-link{color:#75e4d4;font:800 20px/1.5 system-ui,sans-serif;align-self:center}
+.bk-eng-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.bk-eng-card{background:#0b2533;border:1px solid #2c5367;padding:17px;border-radius:10px}
+.bk-eng-card.decisions{border-top:2px solid #59d5bb}.bk-eng-card.limits{border-top:2px solid #e4b86a}
+.bk-eng-card h4{font-size:13px;color:#fff;margin:0 0 10px}.bk-eng-card ul{margin:0;padding-left:17px;color:#b9d0df}
+.bk-eng-card li{font:11px/1.75 system-ui,sans-serif;margin:5px 0}
+.bk-eng-verification{border-top:1px solid #365362;margin-top:19px;padding-top:16px}
+.bk-eng-verification strong{font-size:12px;color:#9eebd9}
+.bk-eng-verification p{font-size:11px;color:#bbd4dd;line-height:1.7;margin:6px 0}
+.bk-eng-actions{display:flex;flex-wrap:wrap;gap:9px;margin:19px 0 10px;align-items:center}
+.bk-eng-download,.bk-eng-source{display:inline-flex;align-items:center;justify-content:center;border:1px solid #4b8c8c;padding:9px 12px;border-radius:8px;font:750 11px/1.4 system-ui,sans-serif;min-height:39px;cursor:pointer;text-decoration:none}
+.bk-eng-download{background:#72ead3;color:#092936;border-color:#72ead3}
+.bk-eng-source{background:#1b3b4b;color:#c3f3f2;overflow-wrap:anywhere}
+.bk-eng-method{font:700 11px/1.5 system-ui,sans-serif;color:#83e5d8;display:inline-block;margin:9px 0 2px}
+@media(max-width:990px){.bk-eng-flow{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.bk-eng-link{display:none}}
+@media(max-width:620px){.bk-engineering-lens{margin:12px 0 20px}.bk-engineering-lens summary{padding:13px;gap:10px}.bk-eng-summary-text strong{font-size:12px}.bk-eng-eyebrow{font-size:8px}.bk-engineering-content{padding:14px}.bk-eng-flow,.bk-eng-grid{grid-template-columns:1fr}.bk-eng-stage{padding:12px}.bk-eng-actions{display:grid;grid-template-columns:1fr}.bk-eng-download,.bk-eng-source{width:100%;min-width:0}}
+@media(prefers-reduced-motion:reduce){.bk-eng-chevron{transition:none}}
