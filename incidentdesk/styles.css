@@ -19,3 +19,5 @@
 @media(min-width:1201px){.kpi-grid{grid-template-columns:repeat(5,minmax(0,1fr))}}
 .button.danger{color:#ffd8ca;border:1px solid #ab604a;background:#4a2b2e}
 .button.danger:hover{background:#65403e}
+
+.member-role-select{max-width:140px;border:1px solid #427080;border-radius:7px;background:#0e2c3b;color:#e0f7f5;min-height:42px;padding:8px}.member-row .button.danger{margin-left:auto}@media(max-width:620px){.member-row{flex-wrap:wrap}.member-role-select{margin-left:45px}}
