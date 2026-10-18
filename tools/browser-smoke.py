@@ -22,6 +22,14 @@ def check(browser,base,width,height,mobile):
     for name in ["controls","hunt","cloud","risk","config","path"]:
         page.locator('.lab-nav[data-panel="'+name+'"]').click()
         expect(page.locator("#panel-"+name)).to_be_visible()
+        report=page.locator("#panel-"+name+" .bk-print-report")
+        expect(report).to_be_visible()
+        with page.expect_download() as export:
+            report.click()
+        downloaded=export.value
+        assert downloaded.suggested_filename.endswith("-print-ready-report.html")
+        document=pathlib.Path(downloaded.path()).read_text(encoding="utf-8")
+        assert "Demonstration boundary" in document and "<h2>Executive overview</h2>" in document
     page.locator('.lab-nav[data-panel="config"]').click()
     expect(page.locator("#configFindings")).not_to_have_text("0")
     page.locator("#configPreset").select_option("hardened")
@@ -39,6 +47,12 @@ def check(browser,base,width,height,mobile):
     assert download.value.suggested_filename.endswith(".md")
     page.goto(base+"/labs/assuranceflow.html",wait_until="load")
     expect(page.locator("#rows button")).to_have_count(8)
+    report=page.locator(".bk-print-report")
+    expect(report).to_be_visible()
+    with page.expect_download() as export:
+        report.click()
+    html=pathlib.Path(export.value.path()).read_text(encoding="utf-8")
+    assert "AssuranceFlow" in html and "Demonstration boundary" in html
     page.locator(".bk-reviewer-launch").click()
     expect(page.locator(".bk-tour-count")).to_have_text("STEP 1 OF 4")
     page.locator(".bk-tour-close").click()
