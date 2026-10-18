@@ -2,9 +2,9 @@
  * Never embed service_role keys. Every live query is additionally restricted by PostgreSQL RLS.
  */
 (()=>{'use strict';
-const M=window.IncidentDeskModel,C=window.INCIDENTDESK_CONFIG||{},q=s=>document.querySelector(s);
-if(!M)return;
-const s={mode:'demo',client:null,user:null,workspace:null,role:'demo',selected:null,view:'overview',channel:null,editing:null,loading:false,store:null};
+const M=window.IncidentDeskModel,O=window.IncidentDeskOps,C=window.INCIDENTDESK_CONFIG||{},q=s=>document.querySelector(s);
+if(!M||!O)return;
+const s={mode:'demo',client:null,user:null,workspace:null,role:'demo',selected:null,view:'overview',channel:null,editing:null,loading:false,store:null,workspaces:[],invites:[],pageIndex:0,pageTotal:0,metrics:null,realtimeStatus:'DISCONNECTED'};
 const clone=x=>JSON.parse(JSON.stringify(x));
 try{s.store=JSON.parse(sessionStorage.getItem('incidentdesk_demo_v1')||'null')}catch(e){}
 if(!s.store||!Array.isArray(s.store.incidents))s.store=M.sample();
@@ -27,7 +27,7 @@ function caseItem(item){
  row.append(badge(item.severity),title,badge(item.status),open);return row
 }
 function renderOverview(){
- const overview=M.overview(rows('incidents'));
+ const overview=s.mode==='live'&&s.metrics?s.metrics:M.overview(rows('incidents'));
  const metrics=[['TOTAL CASES',overview.total,'Cases in visible workspace'],['ACTIVE INVESTIGATIONS',overview.open,'Not yet resolved'],['OPEN CRITICAL',overview.critical,'High-priority response'],['CASES RESOLVED',overview.resolved,'Closed after investigation']];
  const host=q('#kpiGrid');clear(host);for(const [label,count,note] of metrics){const card=el('div','kpi');card.append(el('span','kpi-label',label),el('strong','',String(count)),el('small','',note));host.append(card)}
  graph(q('#severityGraph'),overview.bySeverity,{critical:'#fc8096',high:'#f4ad82',medium:'#eacb8c',low:'#89c3ec'});
@@ -36,7 +36,7 @@ function renderOverview(){
 }
 function renderCases(){
  const params={query:q('#search').value,status:q('#statusFilter').value,severity:q('#severityFilter').value};
- const list=M.filter(rows('incidents'),params),tbody=q('#caseRows');clear(tbody);q('#caseEmpty').hidden=list.length>0;
+ const list=s.mode==='live'?rows('incidents'):M.filter(rows('incidents'),params),tbody=q('#caseRows');clear(tbody);q('#caseEmpty').hidden=list.length>0;const pagination=q('#casePagination');pagination.hidden=s.mode!=='live';if(s.mode==='live'){q('#pageCount').textContent='Page '+(s.pageIndex+1)+' of '+Math.max(1,Math.ceil(s.pageTotal/O.PAGE_SIZE))+' · '+s.pageTotal+' cases';q('#pagePrev').disabled=s.pageIndex===0;q('#pageNext').disabled=(s.pageIndex+1)*O.PAGE_SIZE>=s.pageTotal;}
  for(const item of list){const tr=document.createElement('tr');const a=document.createElement('td');a.append(el('strong','',item.title),el('small','',key(item)));const open=el('button','','Open →');open.type='button';open.setAttribute('aria-label','Open case '+key(item));open.addEventListener('click',()=>showDetail(item.id));const last=document.createElement('td');last.append(open);const owner=item.assigned_to?'Assigned':'Unassigned';const cells=[a,document.createElement('td'),document.createElement('td'),el('td','',owner),el('td','',formatDate(item.updated_at)),last];cells[1].append(badge(item.severity));cells[2].append(badge(item.status));tr.append(...cells);tbody.append(tr)}
 }
 function activityView(host,events,empty='No activity yet.'){
@@ -60,7 +60,7 @@ function render(){
 function mode(){
  const live=s.mode==='live';
  q('#modeName').textContent=live?'Authenticated workspace':'Fictional demo environment';
- q('#syncState').textContent=live?'● RLS-backed':'● Demo local';
+ q('#syncState').textContent=live?'● '+(s.realtimeStatus==='SUBSCRIBED'?'Realtime connected':'RLS · '+s.realtimeStatus):'● Demo local';
  q('#authButton').textContent=live?'Account settings':'Connect account';
  q('#userBadge').textContent=live?(s.user?.email||'U').slice(0,2).toUpperCase():'BD';
  q('#bannerMessage').textContent=live?'Authenticated Supabase environment. Do not enter real incidents or customer evidence into this portfolio demonstration.':'Interactive synthetic SOC dataset. Actions in demo mode stay in this browser session; no production system is modified.';
@@ -78,7 +78,7 @@ function openForm(item=null){
 function showDetail(id){
  const item=rows('incidents').find(x=>x.id===id);if(!item)return;
  s.selected=id;q('#detailTitle').textContent=item.title;q('#detailId').textContent=key(item);
- const badges=q('#detailMeta');clear(badges);badges.append(badge(item.severity),badge(item.status),el('span','mono','Created '+formatDate(item.created_at)));
+ const badges=q('#detailMeta');clear(badges);badges.append(badge(item.severity),badge(item.status),el('span','mono','Created '+formatDate(item.created_at)));const deadline=O.deadline(item);q('#deadlineInfo').textContent=deadline.visible?'Response deadline: '+new Date(deadline.due_at).toLocaleString()+(deadline.overdue?' · OVERDUE':''):'Response deadline not recorded in this fictional case.';q('#deadlineInfo').classList.toggle('overdue',deadline.overdue);
  q('#detailDescription').textContent=item.description||'No description supplied.';
  q('#editIncident').disabled=!canEdit();q('#noteForm').hidden=!canEdit();q('#evidenceForm').hidden=!canEdit();
  for(const b of document.querySelectorAll('.detail-tab')){b.classList.toggle('active',b.dataset.detail==='notes');b.setAttribute('aria-selected',b.dataset.detail==='notes'?'true':'false')}
@@ -87,7 +87,7 @@ function showDetail(id){
  const notes=q('#caseNotes');clear(notes);for(const note of comments){const row=el('div','activity-row'),body=el('div','activity-body');body.append(el('strong','', 'Analyst observation'),el('p','',note.body),el('small','',formatDate(note.created_at)));row.append(el('span','activity-symbol','◉'),body);notes.append(row)}
  if(!comments.length)notes.append(el('p','muted-small','No analyst notes yet.'));
  const files=q('#caseEvidence');clear(files);
- for(const evidence of rows('evidence').filter(e=>e.incident_id===id)){const row=el('div','evidence-row'),body=el('div','activity-body');body.append(el('strong','',evidence.original_name),el('small','',evidence.size_bytes+' bytes · '+formatDate(evidence.created_at)));row.append(el('span','activity-symbol','▣'),body);if(s.mode==='live'){const link=el('button','button subtle','Download');link.type='button';link.addEventListener('click',()=>downloadEvidence(evidence));row.append(link)}files.append(row)}
+ for(const evidence of rows('evidence').filter(e=>e.incident_id===id)){const row=el('div','evidence-row'),body=el('div','activity-body');body.append(el('strong','',evidence.original_name),el('small','',evidence.size_bytes+' bytes · '+formatDate(evidence.created_at)+' · v'+(evidence.version||1)+(evidence.sha256?' · SHA-256 '+evidence.sha256.slice(0,16)+'…':'')));row.append(el('span','activity-symbol','▣'),body);if(s.mode==='live'){const link=el('button','button subtle','Download');link.type='button';link.addEventListener('click',()=>downloadEvidence(evidence));row.append(link)}files.append(row)}
  if(!files.children.length)files.append(el('p','muted-small','No evidence metadata. Use fictional files only.'));
  activityView(q('#caseHistory'),rows('events').filter(e=>e.incident_id===id).slice().sort((a,b)=>Date.parse(b.created_at)-Date.parse(a.created_at)));
  if(!q('#detailDialog').open)q('#detailDialog').showModal()
@@ -101,6 +101,7 @@ async function saveIncident(evt){
  evt.preventDefault();const form=evt.currentTarget;
  const input=Object.fromEntries(new FormData(form));
  const next=M.validate(input);
+ if(s.editing&&s.mode==='live'){const prior=rows('incidents').find(x=>x.id===s.editing);if(prior&&!O.canTransition(prior.status,next.status)){toast('Invalid transition: '+prior.status+' → '+next.status);return}}
  try{
   if(s.mode==='demo'){if(s.editing)M.update(s.store,s.editing,next);else M.create(s.store,next);persist()}
   else {
@@ -127,19 +128,20 @@ async function upload(evt){
   if(s.mode==='demo'){M.attach(s.store,s.selected,file);persist();toast('Demo metadata attached; file not uploaded')}
   else{
    requireAuth();if(!canEdit())throw Error('Read-only account');
+   const sha256=await O.hash(file);const previous=rows('evidence').filter(e=>e.incident_id===s.selected&&e.original_name===file.name).sort((a,b)=>(b.version||1)-(a.version||1))[0];const version=previous?(previous.version||1)+1:1;
    const path=s.workspace.id+'/'+s.selected+'/'+crypto.randomUUID()+'/'+file.name.replace(/[^a-zA-Z0-9_.-]/g,'_');
    const storage=s.client.storage.from(C.evidenceBucket||'incidentdesk-evidence');
    const uploaded=await storage.upload(path,file,{contentType:file.type,upsert:false});
    if(uploaded.error)throw uploaded.error;
-   try{await promiseResult(await s.client.from('incident_evidence').insert({incident_id:s.selected,workspace_id:s.workspace.id,uploaded_by:s.user.id,original_name:file.name,size_bytes:file.size,storage_path:path}))}
-   catch(e){await storage.remove([path]);throw e}
+   try{await promiseResult(await s.client.from('incident_evidence').insert({incident_id:s.selected,workspace_id:s.workspace.id,uploaded_by:s.user.id,original_name:file.name,size_bytes:file.size,storage_path:path,sha256,content_type:file.type,version}))}
+   catch(e){throw new Error(e.message+'; administrator review may be needed for an unlinked private object')}
    await refreshLive();toast('Private evidence stored successfully');
   }
   q('#evidenceForm').reset();showDetail(s.selected);
  }catch(err){toast('Evidence failed: '+err.message)}
 }
 async function downloadEvidence(item){
- try{requireAuth();const res=await s.client.storage.from(C.evidenceBucket).download(item.storage_path);const blob=await promiseResult(res),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=item.original_name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1400)}catch(err){toast('Download blocked: '+err.message)}
+ try{requireAuth();const res=await s.client.storage.from(C.evidenceBucket).download(item.storage_path);const blob=await promiseResult(res);if(item.sha256&&!await O.verify(blob,item.sha256))throw Error('SHA-256 mismatch: evidence differs from recorded digest');if(item.sha256)toast('Evidence SHA-256 verified');const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=item.original_name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1400)}catch(err){toast('Download blocked: '+err.message)}
 }
 async function refreshLive(){
  if(!s.user||!s.client)return;
