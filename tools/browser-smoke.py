@@ -13,6 +13,9 @@ def check(browser,base,width,height,mobile):
     page.goto(base+"/labs/index.html",wait_until="load")
     expect(page.locator(".bk-reviewer-launch")).to_be_visible()
     assert page.locator(".lab-nav[data-panel]").count()==6
+    if mobile:
+        diag=page.evaluate("""() => {const e=document.querySelector('.bk-reviewer-launch');const r=e.getBoundingClientRect();const st=getComputedStyle(e);return {rect:{x:r.x,y:r.y,w:r.width,h:r.height},position:st.position,zIndex:st.zIndex,viewport:{w:innerWidth,h:innerHeight,vw:visualViewport.width,vh:visualViewport.height},hits:[0.3,0.5,0.7].map(p=>({p,hit:document.elementFromPoint(r.x+r.width*p,r.y+r.height/2)?.className}))}}""")
+        print("MOBILE TOUR DIAGNOSTIC",diag,flush=True)
     page.locator(".bk-reviewer-launch").click()
     expect(page.locator(".bk-tour-count")).to_have_text("STEP 1 OF 4")
     page.locator(".bk-tour-primary").click()
