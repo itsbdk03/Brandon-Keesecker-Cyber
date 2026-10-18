@@ -7,3 +7,8 @@
   .pane-heading>.buttonbar{min-width:0;width:100%;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
   .pane-heading .buttonbar .btn{max-width:100%;white-space:normal;overflow-wrap:anywhere;min-height:42px}
 }
+
+/* Keep disabled export controls and validation boundaries legible in Chromium accessibility audits. */
+#configSarif:disabled{opacity:1;background:#91b8b8;border-color:#91b8b8;color:#09232b;cursor:not-allowed}
+#panel-config .callout{color:#d5e9ef}
+#panel-config .callout strong{color:#fff}
