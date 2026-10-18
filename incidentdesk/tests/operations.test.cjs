@@ -34,7 +34,13 @@ test('Realtime status messages are constrained to expected states',()=>{
 test('digest hex encoding is 64 lowercase characters for SHA-256',()=>{
  assert.equal(O.hex(new Uint8Array([0,255,16])),'00ff10');
 });
-test('hash and verification fail closed when browser crypto is unavailable',async()=>{
- await assert.rejects(()=>O.hash({arrayBuffer:async()=>new ArrayBuffer(1)}),/Secure browser/);
- assert.equal(await O.verify({arrayBuffer:async()=>new ArrayBuffer(1)},'invalid'),false);
+test('SHA-256 either verifies actual bytes or fails closed when crypto is unavailable',async()=>{
+ const data={arrayBuffer:async()=>new Uint8Array([0,1,2]).buffer};
+ if(globalThis.crypto?.subtle){
+  const digest=await O.hash(data);
+  assert.match(digest,/^[a-f0-9]{64}$/);
+  assert.equal(await O.verify(data,digest),true);
+  assert.equal(await O.verify({arrayBuffer:async()=>new Uint8Array([9]).buffer},digest),false);
+ }else await assert.rejects(()=>O.hash(data),/Secure browser/);
+ assert.equal(await O.verify(data,'invalid'),false);
 });
