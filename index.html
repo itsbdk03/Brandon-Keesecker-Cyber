@@ -389,14 +389,15 @@
         {title:'CloudGuard — Architecture Simulator',category:'grc',icon:'CLD',summary:'Toggle six cloud-security safeguards and watch the architecture diagram, simulated risk posture, and mitigation recommendations update in real time.',url:'labs/index.html#cloud',type:'Live · Cloud security'},
         {title:'RiskMatrix — Risk Register',category:'grc',icon:'RISK',summary:'Create and score risks, track mitigation maturity, explore an interactive 5×5 heatmap, and export a synthetic governance risk register.',url:'labs/index.html#risk',type:'Live · GRC analytics'},
         {title:'ConfigLens — AWS Configuration Scanner',category:'grc',icon:'AWS',summary:'Scan fictional AWS JSON configurations for S3, IAM, network, logging, and database exposures. Review explainable findings, compare hardened examples, and export SARIF.',url:'labs/index.html#config',type:'Live · Cloud security engineering'},
-        {title:'AttackPath — Defensive Threat Modeling',category:'forensics',icon:'GRAPH',summary:'Explore a simulated attack graph, find reachable target assets, apply defensive safeguards, compare interrupted routes, and export a detailed tabletop analysis.',url:'labs/index.html#path',type:'Live · Threat modeling & architecture'}
+        {title:'AttackPath — Defensive Threat Modeling',category:'forensics',icon:'GRAPH',summary:'Explore a simulated attack graph, find reachable target assets, apply defensive safeguards, compare interrupted routes, and export a detailed tabletop analysis.',url:'labs/index.html#path',type:'Live · Threat modeling & architecture'},
+        {title:'AssuranceFlow — Security Documentation Automation',category:'grc',icon:'SSP',summary:'Evaluate fictional control implementation narratives and evidence completeness, triage documentation gaps, import a narrow OSCAL SSP subset, and export reviewer workpapers.',url:'labs/assuranceflow.html',type:'Live · GRC engineering'}
       ]
     };
     const safePublicURL=value=>{try{const u=new URL(value);return ['https:','http:'].includes(u.protocol)?u.href:null}catch(e){return null}};
     const linkedInUrl=safePublicURL(SITE_CONFIG.linkedinUrl);
     if(linkedInUrl){$('#linkedinProfileLink').href=linkedInUrl;$('#linkedinProfileLink').firstChild.textContent='View my LinkedIn profile ';$('#linkedinLinkNote').textContent='PUBLIC PROFILE · OPENS LINKEDIN';$$('[data-linkedin-nav]').forEach(link=>{link.href=linkedInUrl;link.target='_blank';link.rel='noopener noreferrer'});}
 
-    const safeProjectURL=value=>/^labs\/index\.html#(controls|hunt|cloud|risk|config|path)$/.test(value)?value:safePublicURL(value);
+    const safeProjectURL=value=>/^labs\/(?:index\.html#(?:controls|hunt|cloud|risk|config|path)|assuranceflow\.html)$/.test(value)?value:safePublicURL(value);
     const labGrid=$('#labProjectGrid');
     function renderLabs(filter='all'){
       labGrid.replaceChildren();
@@ -558,7 +559,7 @@
       grc:'Additional experience and exposure: HITRUST, HIPAA, SOC 2, gap assessments, control mapping, evidence review, risk tracking, and remediation planning.',
       experience:'2025–present: Public Sector Advisory Consultant, Coalfire. 2024–2025: Cybersecurity Advisory Intern, Coalfire.',
       credentials:'CCSK (Cloud Security Alliance) | CompTIA A+ | Google Advanced Data Analytics | Google Data Analytics | Google IT Support | MOS Master | WVU Master\'s in Cybersecurity Business Management',
-      projects:'Six live demos: ControlTrace evidence, SignalHunt detections, CloudGuard architecture, RiskMatrix risk register, ConfigLens AWS configuration scanning, and AttackPath defensive graph modeling. Open Cyber Projects to launch.',
+      projects:'Seven live demos: AssuranceFlow documentation automation, ControlTrace evidence, SignalHunt detections, CloudGuard architecture, RiskMatrix risk register, ConfigLens AWS configuration scanning, and AttackPath defensive graph modeling. Open Cyber Projects to launch.',
       doctorate:'Future goal: pursue doctoral study in cybersecurity in the near future. Not enrolled and no doctorate earned yet.',
       linkedin:'Connect with Brandon on LinkedIn: https://www.linkedin.com/in/brandon-keesecker-i-ccsk-aws-ccp-24463b242/',
       github:'GitHub profile: https://github.com/itsbdk03 — independent public-safe cybersecurity labs will be shared here.',
