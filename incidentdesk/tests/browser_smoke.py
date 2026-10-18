@@ -64,7 +64,7 @@ def exercise(browser,url,width,height):
     expect(page.locator("#activityList")).to_contain_text("COMMENTED")
     page.locator("#authButton").click()
     expect(page.locator("#authDialog")).to_be_visible()
-    expect(page.locator("#authHint")).to_contain_text("not yet configured")
+    expect(page.locator("#authHint")).to_contain_text("magic link")
     page.locator('[data-close=authDialog]').click()
     assert not errors,"Uncaught page errors: "+" | ".join(errors)
     context.close()
