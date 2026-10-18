@@ -110,3 +110,7 @@ Open [`assuranceflow.html`](assuranceflow.html) for a fully client-side control 
 The ConfigLens UI explicitly distinguishes **evaluated passes**, **findings**, **unassessed fields**, and **JSON sections omitted entirely**. For example, a missing MFA property is reported as *unassessed*, never as passing. A missing section indicates that it is out of scope for that snapshot; it does **not** imply that the AWS account has no such resources.
 
 The **Remediation comparison** defaults to the fictional exposed sample. Visitors can capture any successfully reviewed snapshot as their baseline, apply changes to their JSON, rerun the checks, and inspect findings categorized as resolved, persistent, introduced, or **not reverified**. A finding that disappears only because a resource or field is omitted is **not** counted as remediated. Downloadable change briefs explain the before/after results. This remains a narrow educational JSON summary scanner, not live AWS validation.
+
+### SignalHunt correlation reliability
+
+A testable correlation engine (`signalhunt-correlation.js`) requires both matching identity and source IP across a three-failure authentication burst and subsequent success within 10 minutes. Later script or network activity is linked by identity and time only, not a proven host or causal relationship. Nine portable regression tests cover cross-source false positives, time windows, invalid timestamps, later successes and contextual multi-signal results.
