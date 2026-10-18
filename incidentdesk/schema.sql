@@ -218,9 +218,15 @@ create policy evidence_insert on public.incident_evidence for insert to authenti
 -- Safe path parsing prevents malformed unrelated Storage keys from causing UUID cast errors.
 create or replace function private.safe_path_uuid(object_name text,segment_no integer) returns uuid
 language sql immutable set search_path=''
-as $
+as $safepath$
  select case when split_part(object_name,'/',segment_no) ~*
-  '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}
+  '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
+ then split_part(object_name,'/',segment_no)::uuid else null::uuid end
+$safepath$;
+revoke all on function private.safe_path_uuid(text,integer) from public;
+grant execute on function private.safe_path_uuid(text,integer) to authenticated;
+
+-- Private object bucket: max 5 MB. No public link, no HTML, no executables.
 insert into storage.buckets(id,name,public,file_size_limit,allowed_mime_types)
 values ('incidentdesk-evidence','incidentdesk-evidence',false,5242880,
  array['text/plain','application/json','text/csv','image/png','image/jpeg','application/pdf'])
