@@ -50,7 +50,7 @@ function renderTeam(){
  const select=q('#workspaceSelect');select.replaceChildren();for(const w of (s.mode==='demo'?rows('workspaces'):s.workspaces)){const option=el('option','',w.name);option.value=w.id;select.append(option)}if(s.workspace)select.value=s.workspace.id;select.disabled=s.mode==='demo'||s.workspaces.length<2;
  const invites=q('#pendingInvitations');clear(invites);
  for(const invite of s.invites){const row=el('div','member-row'),body=el('div','activity-body');body.append(el('strong','',invite.workspace_name||invite.email||'Invitation'),el('small','',invite.role+' · expires '+formatDate(invite.expires_at)));row.append(el('span','activity-symbol','✉'),body);if(invite.accept){const accept=el('button','button subtle','Accept');accept.type='button';accept.addEventListener('click',()=>acceptInvitation(invite.id));row.append(accept)}invites.append(row)}
- q('#setupWorkspace').hidden=s.mode==='demo'||!!s.workspace;
+ q('#setupWorkspace').hidden=s.mode==='demo';q('#setupWorkspace').textContent=s.workspace?'Create another workspace':'Create my workspace';
  q('#memberForm').querySelector('button[type=submit]').disabled=!isAdmin()||!s.workspace;
 }
 function render(){
@@ -167,7 +167,7 @@ async function refreshLive(){
  const results=client.from('incidents').select('*',{count:'exact'}).eq('workspace_id',wid);
  if(filters.status)results.eq('status',filters.status);
  if(filters.severity)results.eq('severity',filters.severity);
- if(filters.query)results.ilike('title','%'+O.escapeLike(filters.query)+'%');
+ if(filters.query)results.textSearch('search_vector',filters.query.slice(0,100),{type:'websearch',config:'english'});
  const [members,summary]=await Promise.all([
   promiseResult(await client.from('workspace_members').select('user_id,role,workspace_id').eq('workspace_id',wid)),
   promiseResult(await client.rpc('workspace_incident_metrics',{wid}))
@@ -255,7 +255,7 @@ function bind(){
  q('#authButton').addEventListener('click',()=>{q('#authHint').textContent=s.client?'Use a magic link to sign in. Redirect must be allowlisted in Supabase.':'Backend not yet configured. You can explore the complete fictional demo; live authentication will work after Supabase is connected.';q('#authDialog').showModal()});
  q('#authForm').addEventListener('submit',async e=>{e.preventDefault();if(!s.client){q('#authHint').textContent='Live backend not provisioned yet. The demo remains available.';return}const email=new FormData(e.currentTarget).get('email');const redirectTo=location.origin+location.pathname;const {error}=await s.client.auth.signInWithOtp({email,options:{emailRedirectTo:redirectTo}});q('#authHint').textContent=error?'Sign-in failed: '+error.message:'Magic link sent. Check your inbox and return to this page.'});
  q('#signOut').addEventListener('click',async()=>{if(s.client){await s.client.auth.signOut();q('#authDialog').close();toast('Signed out; returned to fictional demo')}});
- q('#setupWorkspace').addEventListener('click',async()=>{if(!s.client||!s.user)return;const name=window.prompt('Workspace name (fictional data only):','My Security Response Team');if(!name)return;try{await promiseResult(await s.client.from('workspaces').insert({name:name.trim(),created_by:s.user.id}));s.workspace=null;await refreshLive();subscribe();toast('Workspace created')}catch(e){toast('Workspace creation failed: '+e.message)}});
+ q('#setupWorkspace').addEventListener('click',async()=>{if(!s.client||!s.user)return;const name=window.prompt('Workspace name (fictional data only):','My Security Response Team');if(!name)return;try{const created=await promiseResult(await s.client.from('workspaces').insert({name:name.trim(),created_by:s.user.id}).select('id,name,created_by').single());s.workspace=created;s.pageIndex=0;await refreshLive();subscribe();toast('Workspace created')}catch(e){toast('Workspace creation failed: '+e.message)}});
  q('#memberForm').addEventListener('submit',async e=>{
   e.preventDefault();if(s.mode!=='live'||!isAdmin()||!s.workspace){toast('Admin workspace required');return}
   const data=Object.fromEntries(new FormData(e.currentTarget));
