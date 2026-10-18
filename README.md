@@ -125,3 +125,9 @@ The examples are synthetic and educational, not live client work or production c
 ## AssuranceFlow — documentation engineering studio (lab 07)
 
 Visit [`labs/assuranceflow.html`](labs/assuranceflow.html) for a local-first demo of control documentation quality reviews. It supports synthetic NIST-style control implementation narratives, evidence traceability, prioritized gap lists, a narrowly scoped OSCAL SSP implementation-description importer, local JSON workpapers, and a partial OSCAL-oriented implementation export. It **does not** validate an OSCAL schema, baseline coverage, compliance, or authorization. The engine is in `labs/assuranceflow-engine.js` and is covered by 12 portable Node.js tests. Official reference: https://pages.nist.gov/OSCAL-Reference/models/v1.2.3/system-security-plan/json-reference/ .
+
+## Guided reviewer mode (all seven existing labs)
+
+A non-blocking, keyboard-accessible **Guided walkthrough** control is available inside both the six-tab lab hub and AssuranceFlow. Four curated steps per lab highlight the specific controls to inspect, the outcome to validate, and the scenario limitations. The tour supports Previous, Next, Finish, Escape to close, focus indicators, responsive layouts, and reduced-motion preferences. No browser data or client evidence is transmitted.
+
+The separate script and stylesheet are `labs/reviewer-tour.js` and `labs/reviewer-tour.css`. The site verifier checks their integration.
