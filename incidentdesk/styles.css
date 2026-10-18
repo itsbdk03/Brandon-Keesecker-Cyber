@@ -21,3 +21,17 @@
 .button.danger:hover{background:#65403e}
 
 .member-role-select{max-width:140px;border:1px solid #427080;border-radius:7px;background:#0e2c3b;color:#e0f7f5;min-height:42px;padding:8px}.member-row .button.danger{margin-left:auto}@media(max-width:620px){.member-row{flex-wrap:wrap}.member-role-select{margin-left:45px}}
+
+/* Operational workflows: keyboard-accessible checklists and investigative evidence. */
+.playbook-step{display:flex;gap:13px;align-items:flex-start;border-bottom:1px solid #234353;padding:14px 8px;font-size:12px;color:var(--text)}
+.playbook-step:last-child{border-bottom:0}
+.playbook-step input{margin-top:5px;width:19px;height:19px;accent-color:#6de7c6;flex:none}
+.playbook-step span{display:grid;gap:3px}.playbook-step strong{font-size:12px;color:#e8fafc}.playbook-step small{font-size:10px;color:#96c2c7}
+#socAnalytics{grid-template-columns:repeat(3,minmax(0,1fr))}
+#notificationCount{background:#143b3f;border:1px solid #4f8e87;border-radius:9px;padding:2px 5px;font:700 10px var(--mono);margin-left:5px}
+#notificationButton{display:flex;align-items:center}
+#playbookChecklist .muted-small{margin:10px 0}
+#custodyList{margin:12px 0 18px}
+#exportEvidenceManifest{margin-top:12px}
+@media(max-width:900px){#socAnalytics{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:500px){#socAnalytics{grid-template-columns:1fr 1fr}.header-right #notificationButton{font-size:10px;padding:8px}.playbook-step{padding:12px 3px}}
