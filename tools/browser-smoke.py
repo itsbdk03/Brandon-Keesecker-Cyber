@@ -75,12 +75,32 @@ def check(browser,base,width,height,mobile):
     page.locator('.lab-nav[data-panel="path"]').click()
     path_proof=page.locator("#panel-path .bk-proof")
     path_proof.locator("summary").click()
+    # A selected asset shows actual topology edge states without inventing a scan.
+    page.locator("#pathAssetSelect").select_option("database")
+    expect(page.locator("#pathAssetInspector .path-inspector-head strong")).to_have_text("Data Store")
+    assert page.locator("#pathAssetInspector .path-inspector-list li").count()>0
+    node=page.locator('#pathDiagram [data-asset="backup"]')
+    node.focus()
+    node.press("Enter")
+    expect(page.locator("#pathAssetInspector .path-inspector-head strong")).to_have_text("Backup Vault")
+    expect(page.locator("#pathAssetSelect")).to_have_value("backup")
+    page.locator("#pathFit").check()
+    assert "path-fit" in (page.locator("#pathDiagram").get_attribute("class") or "")
     page.locator("#pathHarden").click()
     path_proof.locator(".bk-proof-verify").click()
     expect(path_proof.locator(".bk-proof-feedback strong")).to_have_text("Modeled outcome verified ✓")
     path_proof.locator("summary").click()
     page.locator('.lab-nav[data-panel="hunt"]').click()
     assert page.locator(".v6-timeline-card").count()>=1
+    timeline=page.locator(".v6-timeline-card").first
+    steps=timeline.locator("button.v6-timeline-step")
+    assert steps.count()>=2
+    steps.nth(1).click()
+    expect(timeline.locator(".v6-timeline-inspector h4")).to_have_text("Successful authentication")
+    expect(steps.nth(1)).to_have_attribute("aria-pressed","true")
+    steps.first.focus()
+    steps.first.press("ArrowRight")
+    expect(steps.nth(1)).to_have_attribute("aria-pressed","true")
     with page.expect_download() as download: page.locator("#huntBrief").click()
     assert download.value.suggested_filename.endswith(".md")
     page.goto(base+"/labs/assuranceflow.html",wait_until="load")
