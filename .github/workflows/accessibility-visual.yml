@@ -1,0 +1,52 @@
+name: Accessibility and visual evidence
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'labs/**'
+      - 'tools/visual-accessibility.py'
+      - '.github/workflows/accessibility-visual.yml'
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'labs/**'
+      - 'tools/visual-accessibility.py'
+      - '.github/workflows/accessibility-visual.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: accessibility-visual-\${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 16
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install deterministic browser inspection tools
+        run: |
+          npm install --no-save --ignore-scripts --no-audit --no-fund axe-core@4.10.3
+          python -m pip install playwright==1.56.0
+          python -m playwright install --with-deps chromium
+      - name: Audit WCAG issues and capture desktop/mobile screenshot evidence
+        run: python tools/visual-accessibility.py
+      - name: Preserve screenshots and audit details even if checks fail
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-and-accessibility-evidence
+          path: artifacts/visual-review/
+          retention-days: 30
+          if-no-files-found: warn
