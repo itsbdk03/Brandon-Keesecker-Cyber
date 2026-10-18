@@ -1,0 +1,13 @@
+'use strict';const test=require('node:test'),assert=require('node:assert/strict');const a=require('../assuranceflow-engine.js');const seed=()=>JSON.parse(JSON.stringify(a.SEED));
+test('seed contains eight unique example controls',()=>{const s=a.validate(seed());assert.equal(s.length,8);assert.equal(new Set(s.map(x=>x.id)).size,8)});
+test('no incoming data is mutated by analysis',()=>{const input=seed(),copy=JSON.stringify(input);a.analyze(input);assert.equal(JSON.stringify(input),copy)});
+test('documentation gaps are explainable',()=>{const row=a.analyze(seed()).items.find(x=>x.id==='RA-5');assert(row.problems.some(x=>/narrative/.test(x)))});
+test('all reviewed evidence yields 100 quality score',()=>{const x=seed().map(r=>({...r,status:'implemented',narrative:'Sufficiently detailed implementation description for this fictional security control.',owner:'Security',evidence:['EV-1'],gap:''}));assert.equal(a.analyze(x).summary.score,100)});
+test('duplicates rejected',()=>assert.throws(()=>a.validate([seed()[0],seed()[0]]),/Duplicate/));
+test('invalid control identifiers rejected',()=>assert.throws(()=>a.validate([{id:'<script>'}]),/Invalid/));
+test('large payload lists rejected',()=>assert.throws(()=>a.validate(Array(251).fill(seed()[0])),/250/));
+test('imports native local review model',()=>assert.equal(a.importControls({controls:seed()}).length,8));
+test('imports OSCAL implemented requirements as partial documentation',()=>{const s=a.importControls({'system-security-plan':{'control-implementation':{'implemented-requirements':[{'control-id':'AC-2',description:'Example implementation narrative'}]}}});assert.equal(s[0].id,'AC-2');assert.equal(s[0].owner,'')});
+test('rejects unrelated JSON formats',()=>assert.throws(()=>a.importControls({foo:1}),/Expected/));
+test('partial implementation export has control IDs, no claims of full SSP',()=>{const result=a.fragment(seed());assert.equal(result['control-implementation']['implemented-requirements'][0]['control-id'],'AC-2');assert.equal(result['system-security-plan'],undefined)});
+test('markdown report warns against official use',()=>assert.match(a.report(seed()),/NOT a FedRAMP\/DoD assessment/));
