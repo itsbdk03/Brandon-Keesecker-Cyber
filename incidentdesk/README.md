@@ -77,3 +77,16 @@ The live backend is provisioned. An actual email magic-link sign-in, the deploye
 ### Additional RPC hardening
 
 The membership and invitation operations are exposed through restricted `SECURITY INVOKER` public wrappers; the privileged implementations reside in the unexposed `private` database schema. The change was applied and the Supabase security advisor rechecked with zero findings. The public function signatures are unchanged, so browser RPC calls do not need new names. Authorization still depends on the internal authenticated identity and workspace permissions; this is not an unrestricted API.
+
+## Operational additions — staging and migrations v5–v9
+
+- Staging: A second independent Supabase project was created at the quoted $0/month project cost. Project: https://supabase.com/dashboard/project/okarjtdmthfhfwvnjblr. Original schema through v9 has been applied; rolled-back staging and live SQL authorization tests passed.
+- In-app alerts: PostgreSQL Cron checks response deadlines every 15 minutes, assignment events create notices and the RLS-protected inbox refreshes through Realtime. Outbound SLA emails are not yet enabled.
+- Playbooks: Four response checklists are available inside each case, with RLS-protected completion and ownership.
+- Evidence verification: An authenticated Supabase Edge Function independently downloads private evidence, hashes the bytes, and records a custody event. Explicit server-side mismatches block download. Browser verification is labeled separately.
+- Analytics: Accurate acknowledgment/resolution milestone timestamps, workspace-scoped measures and N/A for insufficient sample sizes.
+- Invitation email: JWT-protected Edge Function, admin checks, sender restriction and one-hour cooldown; needs a configured Resend provider. Invitations remain available for manual sharing when provider credentials are absent.
+- Performance: Missing foreign-key index findings have been addressed. Unused-index notices on empty data are not evidence of a problem.
+- Release gate: A manual GitHub Actions staging authorization gate and controlled Pages release are committed. Protected staging database secret and GitHub Pages configuration are still needed for activation.
+
+See RELEASE-ACCEPTANCE.md for the remaining email-provider, two-real-user, HTTPS redirect and Storage API checks. No production-security certification is claimed.
