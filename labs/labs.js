@@ -12,8 +12,8 @@ const toCsv=(headers,rows)=>[headers.map(csvSafe).join(','),...rows.map(r=>r.map
 const badge=state=>state==='ready'?'<span class="pill green">Ready</span>':state==='gap'?'<span class="pill red">Gap</span>':'<span class="pill amber">In progress</span>';
 setText('#year',new Date().getFullYear());
 const validPanels=['controls','hunt','cloud','risk','config','path'];
-function selectPanel(p,scroll=false){if(!validPanels.includes(p))p='controls';$('.lab-nav[data-panel]').forEach(b=>{let yes=b.dataset.panel===p;b.classList.toggle('active',yes);b.setAttribute('aria-pressed',String(yes))});$$('.panel').forEach(el=>el.hidden=el.id!=='panel-'+p);if(location.hash.slice(1)!==p)history.replaceState(null,'','#'+p);if(scroll)window.scrollTo({top:0,behavior:'smooth'});}
-$('.lab-nav[data-panel]').forEach(b=>b.addEventListener('click',()=>selectPanel(b.dataset.panel,true)));
+function selectPanel(p,scroll=false){if(!validPanels.includes(p))p='controls';$$('.lab-nav[data-panel]').forEach(b=>{let yes=b.dataset.panel===p;b.classList.toggle('active',yes);b.setAttribute('aria-pressed',String(yes))});$$('.panel').forEach(el=>el.hidden=el.id!=='panel-'+p);if(location.hash.slice(1)!==p)history.replaceState(null,'','#'+p);if(scroll)window.scrollTo({top:0,behavior:'smooth'});}
+$$('.lab-nav[data-panel]').forEach(b=>b.addEventListener('click',()=>selectPanel(b.dataset.panel,true)));
 window.addEventListener('hashchange',()=>selectPanel(location.hash.slice(1)));
 selectPanel(location.hash.slice(1));
 
