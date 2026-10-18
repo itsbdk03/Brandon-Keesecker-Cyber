@@ -3,7 +3,7 @@
 ![Automated verification](https://github.com/itsbdk03/Brandon-Keesecker-Cyber/actions/workflows/verify.yml/badge.svg)
 ![Browser lab checks](https://github.com/itsbdk03/Brandon-Keesecker-Cyber/actions/workflows/browser-smoke.yml/badge.svg)
 
-**Seven local-first interactive cybersecurity labs** · 57 automated tests · Synthetic data · No API keys or cloud credentials required.
+**Seven local-first interactive cybersecurity labs** · 66 automated tests · Synthetic data · No API keys or cloud credentials required.
 
 An animated, responsive, self-contained professional cybersecurity website. It does not require an API key, build system, package installation, account, or paid service.
 
@@ -25,7 +25,7 @@ Open `index.html` in any modern browser. To put it on the public internet, uploa
 - Professional overview covering FedRAMP Low/Moderate/High, DoD IL4/IL5/IL6, security documentation development, CMMC, and cloud security.
 - Interactive HITRUST, HIPAA, SOC 2, and cross-framework GRC explorer. Wording intentionally distinguishes additional GRC experience from deeper federal advisory work.
 - Filterable **Selected Work** cards about professional methods, described without client names or sensitive engagement details.
-- Dedicated **Cyber Projects** tab with SEVEN working, interactive projects: ControlTrace, SignalHunt, CloudGuard, RiskMatrix, ConfigLens, AttackPath, and AssuranceFlow.
+- Dedicated **Cyber Projects** tab with seven working, interactive projects: ControlTrace, SignalHunt, CloudGuard, RiskMatrix, ConfigLens, AttackPath, and AssuranceFlow.
 - Dedicated **LinkedIn** tab and large social section, now connected directly to Brandon’s LinkedIn profile.
 - Experience and education timeline, including your WVU master's degree and a **planned** (not earned) doctorate in cybersecurity.
 - Certifications including CCSK, CompTIA A+, Google and Microsoft certifications.
@@ -126,6 +126,14 @@ The examples are synthetic and educational, not live client work or production c
 ## AssuranceFlow — documentation engineering studio (lab 07)
 
 Visit [`labs/assuranceflow.html`](labs/assuranceflow.html) for a local-first demo of control documentation quality reviews. It supports synthetic NIST-style control implementation narratives, evidence traceability, prioritized gap lists, a narrowly scoped OSCAL SSP implementation-description importer, local JSON workpapers, and a partial OSCAL-oriented implementation export. It **does not** validate an OSCAL schema, baseline coverage, compliance, or authorization. The engine is in `labs/assuranceflow-engine.js` and is covered by 12 portable Node.js tests. Official reference: https://pages.nist.gov/OSCAL-Reference/models/v1.2.3/system-security-plan/json-reference/ .
+
+## Seven source-linked architecture case studies
+
+Every one of the **existing seven labs** now has an expandable **Engineering Lens** embedded directly in its workbench. It presents a four-stage input → analysis → interpretation → export pipeline, the specific design choices behind the model, known limitations, links to implementation files and tests, and a downloadable Markdown technical case study.
+
+The [Engineering Notes page](labs/methodology.html) has been refreshed from five to **all seven existing projects** and renders the same source-backed architecture pipelines and verification evidence. This is intentionally **not** a new eighth project—it's an improved explanation of existing code and security decisions.
+
+The shared [architecture dossier model](labs/engineering-model.js) and [visual renderer](labs/engineering-lens.js) have their own regression checks. The automated browser workflow opens each dossier, verifies its four steps, downloads its technical brief, and opens the complete Engineering Notes page in desktop and narrow touch layouts. All preloaded examples remain synthetic and all claims are scoped to the actual implementation.
 
 ## Guided reviewer mode (all seven existing labs)
 
