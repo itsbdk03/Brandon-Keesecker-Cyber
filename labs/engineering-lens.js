@@ -59,7 +59,7 @@ function build(key){
  const anchor=isAssurance?host.querySelector('.fineprint'):host.querySelector('.pane-heading');
  if(anchor)anchor.insertAdjacentElement('afterend',details);else host.prepend(details);
 }
-for(const key of model.keys)build(key);
+for(const key of (isAssurance?['assurance']:model.keys))build(key);
 if(!isAssurance){
  // Preserve individual panel open/closed state as users compare labs.
  document.querySelectorAll('.lab-nav[data-panel]').forEach(btn=>btn.addEventListener('click',()=>{
