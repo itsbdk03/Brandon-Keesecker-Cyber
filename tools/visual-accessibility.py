@@ -48,11 +48,12 @@ def audit(browser, base, label, dims):
         has_touch=(label == "touch"),
         is_mobile=False,
     )
-    page = context.new_page()
-    errors = []
-    page.on("pageerror", lambda error: errors.append(str(error)))
     results = []
     for name, uri, visible in VIEWS:
+        # Fresh document/focus state for every hash-routed workbench.
+        page = context.new_page()
+        errors = []
+        page.on("pageerror", lambda error: errors.append(str(error)))
         page.goto(base + uri, wait_until="load")
         if errors:
             print(f"JS exception while loading {name}: {errors[:3]}", flush=True)
@@ -114,7 +115,7 @@ def audit(browser, base, label, dims):
             f'{len(errors)} page exceptions',
             flush=True,
         )
-        errors.clear()
+        page.close()
     context.close()
     return results
 
