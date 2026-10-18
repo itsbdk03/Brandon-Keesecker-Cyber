@@ -1,0 +1,14 @@
+{
+  "name": "brandon-cybersecurity-portfolio",
+  "private": true,
+  "version": "8.0.0",
+  "description": "Public-safe interactive security engineering demonstrations with synthetic data",
+  "scripts": {
+    "test": "node --test labs/tests/*.test.cjs",
+    "verify": "node tools/verify-site.cjs && node --test labs/tests/*.test.cjs",
+    "check:js": "node tools/check-javascript.cjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

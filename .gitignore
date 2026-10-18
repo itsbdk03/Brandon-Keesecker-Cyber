@@ -1,0 +1,18 @@
+# Machine-local files and unintentional secrets
+.DS_Store
+Thumbs.db
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.tfstate
+*.tfstate.*
+terraform.tfvars
+*.auto.tfvars
+node_modules/
+coverage/
+.playwright/
+__pycache__/

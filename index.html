@@ -1,0 +1,590 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="dark light" />
+  <meta name="theme-color" content="#070b13" />
+  <meta name="description" content="Brandon Keesecker — public-sector cybersecurity consultant with experience across FedRAMP Low, Moderate and High, DoD IL4/IL5/IL6, documentation development, HITRUST, HIPAA, SOC 2, and GRC." />
+  <meta property="og:title" content="Brandon Keesecker | Cybersecurity & Public Sector Advisory" />
+  <meta property="og:description" content="Explore Brandon's work across FedRAMP Low, Moderate and High; DoD IL4, IL5 and IL6; security documentation development; GRC exposure in HITRUST, HIPAA, and SOC 2; and cyber projects." />
+  <meta property="og:type" content="website" />
+  <title>Brandon Keesecker — Cybersecurity & Public Sector Advisory</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23070b13'/%3E%3Cpath d='M32 9 50 17v14c0 12-8 21-18 25C22 52 14 43 14 31V17Z' fill='none' stroke='%235cefd7' stroke-width='3'/%3E%3Ctext x='32' y='38' font-size='17' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3EBK%3C/text%3E%3C/svg%3E" />
+  <style>
+    :root{color-scheme:dark;--bg:#070b13;--bg-2:#0b121e;--card:rgba(17,26,42,.76);--card-solid:#101a29;--fg:#f3f7ff;--muted:#9aaabc;--muted-2:#6d8397;--line:rgba(159,191,224,.13);--line-bright:rgba(159,191,224,.27);--accent:#66f1d8;--accent-2:#82aaff;--accent-3:#c5a1ff;--accent-rgb:102,241,216;--shadow:0 30px 90px rgba(0,0,0,.24);--nav:rgba(7,11,19,.75);--grid:rgba(123,161,185,.06);--radius:22px}
+    html[data-theme="light"]{color-scheme:light;--bg:#f4f8fc;--bg-2:#ebf1f8;--card:rgba(255,255,255,.8);--card-solid:#fff;--fg:#142338;--muted:#4d657c;--muted-2:#668098;--line:rgba(34,80,118,.14);--line-bright:rgba(34,80,118,.25);--accent:#007f76;--accent-2:#315cce;--accent-3:#7142af;--accent-rgb:0,127,118;--shadow:0 20px 80px rgba(26,61,100,.11);--nav:rgba(244,248,252,.85);--grid:rgba(37,92,145,.06)}
+    *,*::before,*::after{box-sizing:border-box}
+    html{scroll-behavior:smooth;scroll-padding-top:100px}
+    body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden;transition:background .35s,color .35s}
+    body.modal-open{overflow:hidden}
+    ::selection{background:rgba(var(--accent-rgb),.3);color:var(--fg)}
+    button,input{font:inherit}
+    button,a{-webkit-tap-highlight-color:transparent}
+    button{cursor:pointer}
+    a{color:inherit;text-decoration:none}
+    a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:4px}
+    svg{display:block}
+    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace}
+    .site-shell{position:relative;isolation:isolate;min-height:100vh}
+    .site-shell::before{content:"";position:absolute;inset:0;pointer-events:none;z-index:-2;background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:64px 64px;mask-image:linear-gradient(to bottom,#000 0%,transparent 28%,transparent 72%,#000 100%)}
+    .noise{position:fixed;inset:0;pointer-events:none;z-index:30;opacity:.13;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' opacity='.25' filter='url(%23n)'/%3E%3C/svg%3E")}
+    .progress{position:fixed;top:0;left:0;width:0;height:3px;background:linear-gradient(90deg,var(--accent-2),var(--accent),var(--accent-3));z-index:110;box-shadow:0 0 22px rgba(var(--accent-rgb),.6)}
+    .cursor-glow{position:fixed;left:0;top:0;width:600px;height:600px;z-index:-1;pointer-events:none;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(var(--accent-rgb),.07),transparent 65%);opacity:.8;transition:opacity .3s}
+    .container{width:min(1160px,calc(100% - 64px));margin:0 auto}
+    .skip{position:fixed;top:-100px;left:20px;z-index:200;background:var(--accent);padding:12px 18px;color:var(--bg);font-weight:700;border-radius:8px}.skip:focus{top:20px}
+    .nav-wrap{position:sticky;top:0;z-index:100;background:var(--nav);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid var(--line)}
+    .navbar{min-height:82px;display:flex;align-items:center;gap:38px}
+    .brand{display:inline-flex;align-items:center;gap:12px;font-size:15px;font-weight:850;letter-spacing:-.4px;white-space:nowrap}
+    .brand-mark{width:35px;height:38px;display:grid;place-items:center;background:linear-gradient(140deg,rgba(var(--accent-rgb),.16),rgba(130,170,255,.12));border:1px solid rgba(var(--accent-rgb),.45);clip-path:polygon(50% 0%,95% 22%,95% 73%,50% 100%,5% 73%,5% 22%);font-size:12px;font-weight:850;letter-spacing:-.7px;color:var(--accent)}
+    .brand .dot{color:var(--accent)}
+    .desktop-nav{display:flex;align-items:center;gap:28px;margin-left:auto}
+    .desktop-nav>a{font-size:12px;font-weight:720;color:var(--muted);transition:color .25s;letter-spacing:.035em}
+    .desktop-nav>a:hover,.desktop-nav>a.active{color:var(--accent)}
+    .nav-actions{display:flex;align-items:center;gap:10px}
+    .icon-btn{width:39px;height:39px;display:grid;place-items:center;background:transparent;border:1px solid var(--line-bright);border-radius:10px;color:var(--fg);transition:background .2s,transform .2s,border .2s}
+    .icon-btn:hover{background:rgba(var(--accent-rgb),.09);transform:translateY(-2px);border-color:rgba(var(--accent-rgb),.48)}
+    .kbd{font-size:10px;color:var(--muted);padding:3px 6px;border:1px solid var(--line-bright);border-radius:5px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:14px 20px;min-height:48px;border-radius:11px;border:1px solid var(--line-bright);font-size:12px;font-weight:800;letter-spacing:.015em;transition:transform .25s,box-shadow .25s,background .25s,border-color .25s;position:relative;overflow:hidden}
+    .btn:hover{transform:translateY(-3px)}
+    .btn-primary{color:#061016;background:linear-gradient(120deg,#8ff9e1,#61dfd4);border-color:transparent;box-shadow:0 14px 40px rgba(77,225,200,.15)}
+    .btn-primary:hover{box-shadow:0 18px 50px rgba(77,225,200,.3)}
+    .btn-secondary{background:rgba(132,177,215,.045);color:var(--fg)}.btn-secondary:hover{border-color:var(--accent);background:rgba(var(--accent-rgb),.06)}
+    .nav-contact{padding:10px 14px;min-height:39px;border-radius:8px;font-size:11px}
+    .mobile-only{display:none}
+    .mobile-menu{display:none}
+    .hero{position:relative;padding:123px 0 105px;min-height:745px;display:flex;align-items:center;overflow:hidden}
+    #network{position:absolute;inset:0;width:100%;height:100%;z-index:-1;opacity:.55;pointer-events:none}
+    .hero::after{content:"";position:absolute;top:-160px;right:-220px;width:840px;height:820px;z-index:-2;background:radial-gradient(ellipse,rgba(52,111,179,.13),transparent 63%);pointer-events:none}
+    .hero-grid{display:grid;grid-template-columns:1.12fr .88fr;align-items:center;gap:46px}
+    .eyebrow{display:inline-flex;align-items:center;gap:11px;color:var(--accent);font-size:10px;font-weight:800;letter-spacing:.19em;text-transform:uppercase}
+    .eyebrow .line{height:1px;width:31px;background:var(--accent);opacity:.6}
+    .status-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 5px rgba(var(--accent-rgb),.11),0 0 15px rgba(var(--accent-rgb),.6);animation:status 3s infinite}
+    .hero h1{font-size:clamp(60px,6.5vw,93px);line-height:1.02;letter-spacing:-.083em;margin:27px 0 23px;font-weight:820}
+    .hero h1 .name{display:block;background:linear-gradient(110deg,var(--fg) 15%,var(--fg) 53%,var(--accent) 100%);background-clip:text;-webkit-background-clip:text;color:transparent}
+    .hero h1 .role{display:block;font-size:clamp(29px,3.6vw,50px);letter-spacing:-.065em;line-height:1.22;margin-top:11px;color:var(--muted);font-weight:660}
+    .accent-word{color:var(--accent)}
+    .hero-description{font-size:16px;max-width:535px;color:var(--muted);line-height:1.85}
+    .hero-buttons{display:flex;gap:12px;flex-wrap:wrap;margin-top:31px}
+    .hero-availability{margin-top:34px;display:flex;align-items:center;gap:12px;font-size:11px;color:var(--muted);letter-spacing:.025em}
+    .hero-availability .avatar-mini{display:grid;place-items:center;width:32px;height:32px;border-radius:50%;border:1px solid rgba(var(--accent-rgb),.35);background:rgba(var(--accent-rgb),.08);color:var(--accent);font-size:10px;font-weight:900}
+    .hero-visual{position:relative;height:505px;min-width:0;perspective:1000px}
+    .visual-stage{position:absolute;inset:40px 3px 30px;display:grid;place-items:center;transform-style:preserve-3d;animation:float 8s ease-in-out infinite}
+    .orbit-backdrop{position:absolute;width:420px;height:420px;max-width:100%;border-radius:50%;background:radial-gradient(circle,rgba(var(--accent-rgb),.08) 0%,rgba(73,104,195,.08) 42%,transparent 66%);filter:blur(5px)}
+    .orbit{position:absolute;width:345px;height:345px;border:1px solid rgba(var(--accent-rgb),.21);border-radius:50%;transform:rotate(-24deg) scaleY(.7);box-shadow:0 0 60px rgba(40,176,183,.045) inset}
+    .orbit.o2{width:450px;height:450px;max-width:100%;border-style:dashed;border-color:rgba(129,169,255,.16);animation:spin 36s linear infinite;transform:rotate(22deg) scaleY(.82)}
+    .orbit.o3{width:265px;height:265px;border-color:rgba(151,121,255,.22);transform:rotate(75deg) scaleX(.81);animation:spin 17s linear infinite reverse}
+    .orbit.o1{animation:orbit-one 21s linear infinite}
+    .orbit-tick{position:absolute;width:8px;height:8px;border-radius:50%;background:var(--accent);top:10%;left:15%;box-shadow:0 0 14px var(--accent)}
+    .core{height:192px;width:192px;display:flex;align-items:center;justify-content:center;flex-direction:column;z-index:2;position:relative;border:1px solid rgba(var(--accent-rgb),.4);border-radius:34px;background:linear-gradient(145deg,rgba(21,48,62,.95),rgba(9,18,32,.98));box-shadow:0 0 0 10px rgba(var(--accent-rgb),.024),0 0 0 24px rgba(var(--accent-rgb),.018),0 20px 90px rgba(36,226,196,.09),inset 0 1px 0 rgba(255,255,255,.15);transform:rotate(-6deg)}
+    .core::before,.core::after{content:"";position:absolute;height:16px;width:16px;border:2px solid var(--accent)}
+    .core::before{left:16px;top:16px;border-right:0;border-bottom:0}.core::after{right:16px;bottom:16px;border-top:0;border-left:0}
+    .core .core-shield{color:var(--accent);margin-bottom:12px;filter:drop-shadow(0 0 16px rgba(102,241,216,.32))}
+    .core .core-label{font-size:9px;font-weight:800;letter-spacing:.21em;color:#b3dbdb}
+    .core .core-big{font-size:30px;font-weight:900;color:white;letter-spacing:-.12em;line-height:1.15}
+    .float-label{position:absolute;z-index:4;padding:12px 14px;border:1px solid rgba(148,193,226,.22);border-radius:12px;background:rgba(13,25,39,.94);box-shadow:0 20px 40px rgba(0,0,0,.18);backdrop-filter:blur(16px);font-size:10px;color:#e4edf5;font-weight:850;letter-spacing:.1em;animation:float 5s ease-in-out infinite}
+    .float-label::before{content:"";display:inline-block;width:7px;height:7px;margin-right:10px;border-radius:50%;background:#65edcf;box-shadow:0 0 12px #65edcf}
+    .float-label.one{top:60px;left:2px}.float-label.two{right:-3px;top:122px;animation-delay:-2s}.float-label.three{bottom:97px;left:-8px;animation-delay:-1s}.float-label.four{right:0;bottom:68px;animation-delay:-3s}
+    .telemetry{position:absolute;right:7%;bottom:0;z-index:5;width:240px;padding:14px 17px;border:1px solid rgba(138,188,219,.2);border-radius:12px;background:rgba(7,17,29,.89);box-shadow:var(--shadow);transform:rotate(3deg)}
+    .telemetry-head{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(150,184,220,.13);padding-bottom:9px;margin-bottom:10px;font-size:9px;letter-spacing:.1em;color:#93aebd}
+    .telemetry-dots{display:flex;gap:5px}.telemetry-dots i{height:5px;width:5px;border-radius:50%;background:#6a7e90}.telemetry-dots i:first-child{background:#69e6cc}
+    .telemetry p{margin:0;font-size:10px;line-height:2;color:#bbd0dc}.telemetry p span{color:#72eed5}
+    .hero-bottom{position:absolute;bottom:23px;left:0;right:0}
+    .hero-bottom-inner{display:flex;align-items:center;justify-content:space-between;font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted-2)}
+    .scroll-cue{display:flex;gap:13px;align-items:center}
+    .scroll-cue::before{content:"";width:20px;height:30px;border:1px solid var(--line-bright);border-radius:20px;background:linear-gradient(var(--accent),var(--accent)) center 7px/2px 6px no-repeat;animation:scrollcue 2s infinite}
+    .trust-strip{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:24px 0;overflow:hidden;background:rgba(108,155,192,.02)}
+    .trust-inner{display:flex;align-items:center;gap:45px}.trust-label{flex-shrink:0;font-size:10px;font-weight:800;letter-spacing:.15em;color:var(--muted-2);text-transform:uppercase}
+    .marquee{overflow:hidden;mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);width:100%}
+    .marquee-track{width:max-content;display:flex;align-items:center;gap:55px;animation:marquee 36s linear infinite}
+    .marquee-track>span{color:var(--muted);font-weight:850;white-space:nowrap;letter-spacing:.13em;font-size:14px}.marquee-track .star{color:var(--accent);font-size:13px}
+    section.section{padding:115px 0}
+    .section-heading{display:flex;align-items:end;justify-content:space-between;gap:30px;margin-bottom:45px}
+    .section-index{font-size:10px;color:var(--accent);font-weight:850;letter-spacing:.22em;text-transform:uppercase;margin-bottom:12px;display:block}
+    h2{font-size:clamp(36px,4.5vw,58px);line-height:1.12;letter-spacing:-.06em;font-weight:820;margin:0}
+    h2 .muted-heading{color:var(--muted-2)}
+    .section-intro{max-width:360px;color:var(--muted);font-size:13px;line-height:1.8;margin:0}
+    .expertise-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}
+    .glass-card{position:relative;isolation:isolate;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:0 10px 38px rgba(0,0,0,.035);transition:border-color .3s,transform .35s,box-shadow .35s}
+    .glass-card:hover{border-color:rgba(var(--accent-rgb),.3);transform:translateY(-5px);box-shadow:var(--shadow)}
+    .glass-card::after{content:"";position:absolute;inset:0;background:radial-gradient(300px circle at var(--mouse-x,50%) var(--mouse-y,50%),rgba(var(--accent-rgb),.1),transparent 60%);z-index:-1;opacity:0;transition:opacity .3s;pointer-events:none}.glass-card:hover::after{opacity:1}
+    .expertise-card{grid-column:span 6;padding:31px;min-height:265px;display:flex;flex-direction:column;align-items:flex-start}
+    .expertise-card:nth-child(1){grid-column:span 7;background:linear-gradient(130deg,rgba(var(--accent-rgb),.075),transparent 60%),var(--card)}
+    .expertise-card:nth-child(2){grid-column:span 5}
+    .expertise-card:nth-child(3){grid-column:span 5}
+    .expertise-card:nth-child(4){grid-column:span 7;background:linear-gradient(120deg,rgba(126,145,255,.09),transparent 65%),var(--card)}
+    .expertise-card:nth-child(5){grid-column:span 6;background:linear-gradient(140deg,rgba(var(--accent-rgb),.035),transparent 65%),var(--card)}
+    .expertise-card:nth-child(6){grid-column:span 6;background:linear-gradient(140deg,rgba(126,145,255,.06),transparent 65%),var(--card)}
+    .card-top{display:flex;align-items:center;justify-content:space-between;width:100%}
+    .service-icon{display:grid;place-items:center;width:52px;height:52px;border-radius:14px;border:1px solid rgba(var(--accent-rgb),.22);background:rgba(var(--accent-rgb),.07);color:var(--accent)}
+    .card-code{color:var(--muted-2);font-size:10px;letter-spacing:.1em}
+    .expertise-card h3{font-size:23px;letter-spacing:-.042em;line-height:1.23;margin:24px 0 10px}
+    .expertise-card p{color:var(--muted);font-size:13px;line-height:1.8;margin:0;max-width:450px}
+    .tags{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:auto;padding-top:24px}
+    .tag{font-size:9px;line-height:1.4;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);padding:7px 10px;border:1px solid var(--line-bright);border-radius:5px}
+    .metrics-section{padding:35px 0 55px}
+    .metric-grid{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+    .metric{padding:31px 22px;border-right:1px solid var(--line)}.metric:first-child{padding-left:0}.metric:last-child{border-right:0}
+    .metric-value{font-size:clamp(34px,4vw,48px);font-weight:840;letter-spacing:-.07em;line-height:1.25;color:var(--fg)}.metric-value .plus{color:var(--accent);font-size:25px}
+    .metric-label{font-size:10px;letter-spacing:.075em;line-height:1.7;color:var(--muted);margin-top:5px}
+    .work-section{padding-top:80px!important}
+    .work-top{display:flex;align-items:center;justify-content:space-between;gap:25px;margin-bottom:26px;flex-wrap:wrap}
+    .filters{display:flex;gap:7px;flex-wrap:wrap}.filter-btn{border:1px solid var(--line);border-radius:8px;background:transparent;color:var(--muted);padding:8px 13px;font-size:11px;font-weight:760;transition:all .2s}.filter-btn:hover,.filter-btn[aria-pressed="true"]{color:#061016;background:var(--accent);border-color:var(--accent)}
+    .work-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+    .work-card{display:flex;flex-direction:column;min-height:365px;position:relative;overflow:hidden;border:1px solid var(--line);border-radius:var(--radius);background:var(--card);padding:26px;transition:transform .3s,border-color .3s;isolation:isolate}
+    .work-card::before{content:"";position:absolute;inset:0 0 auto 0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent-2));transform:scaleX(0);transform-origin:left;transition:transform .3s}.work-card:hover{transform:translateY(-5px);border-color:rgba(var(--accent-rgb),.3)}.work-card:hover::before{transform:scaleX(1)}
+    .work-card[hidden]{display:none}
+    .work-header{display:flex;align-items:center;justify-content:space-between;gap:15px}.work-number{color:var(--muted-2);font-size:11px}.work-type{color:var(--accent);font-size:9px;font-weight:850;letter-spacing:.1em;text-transform:uppercase;border:1px solid rgba(var(--accent-rgb),.24);border-radius:20px;padding:6px 10px}
+    .project-visual{width:100%;height:128px;margin:15px 0 18px;position:relative;display:grid;place-items:center;overflow:hidden}
+    .viz-control{position:absolute;border:1px solid rgba(var(--accent-rgb),.27);border-radius:10px;background:rgba(var(--accent-rgb),.025);transform:rotate(-8deg)}
+    .viz-control:nth-child(1){width:52%;height:86%;left:19%;top:7%}.viz-control:nth-child(2){width:50%;height:70%;left:27%;top:15%;transform:rotate(9deg);border-color:rgba(144,172,254,.28)}
+    .viz-control:nth-child(3){width:44%;height:53%;left:28%;top:22%;transform:rotate(0);border-style:dashed}
+    .viz-mid{z-index:1;font-size:13px;color:var(--accent);font-weight:850;letter-spacing:.12em;text-shadow:0 0 20px rgba(var(--accent-rgb),.15)}
+    .project-visual[data-pattern="nodes"] .viz-control{border-radius:50%;transform:rotate(0)}
+    .project-visual[data-pattern="nodes"] .viz-control:nth-child(1){width:190px;height:110px;left:calc(50% - 95px)}.project-visual[data-pattern="nodes"] .viz-control:nth-child(2){width:140px;height:140px;left:calc(50% - 70px);top:-7px}.project-visual[data-pattern="nodes"] .viz-control:nth-child(3){width:85px;height:85px;left:calc(50% - 42px);top:16px}
+    .project-visual[data-pattern="bars"]{gap:6px;display:flex;align-items:flex-end;justify-content:center}.project-visual[data-pattern="bars"] .viz-control{position:static;border-radius:4px 4px 0 0;width:11%;height:35%;transform:none;background:rgba(var(--accent-rgb),.13)}.project-visual[data-pattern="bars"] .viz-control:nth-child(2){height:75%;background:rgba(130,170,255,.15)}.project-visual[data-pattern="bars"] .viz-control:nth-child(3){height:56%;background:rgba(197,161,255,.12)}.project-visual[data-pattern="bars"] .viz-mid{align-self:center;margin-left:15px}
+    .project-visual[data-pattern="terminal"] .viz-control{border-radius:7px;transform:none}.project-visual[data-pattern="terminal"] .viz-control:nth-child(1){width:75%;height:93%;left:12%;top:4%;background:rgba(7,17,29,.13)}.project-visual[data-pattern="terminal"] .viz-control:nth-child(2){width:62%;height:65%;left:19%;top:21%;border-style:dashed}.project-visual[data-pattern="terminal"] .viz-control:nth-child(3){display:none}
+    .work-card h3{font-size:21px;line-height:1.25;letter-spacing:-.045em;margin:0 0 10px}.work-card p{margin:0;color:var(--muted);font-size:12px;line-height:1.8}
+    .work-footer{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-top:auto;padding-top:25px}
+    .work-tags{color:var(--muted-2);font-size:9px;letter-spacing:.045em}.work-open{display:inline-flex;align-items:center;gap:9px;background:transparent;border:0;color:var(--accent);font-size:11px;font-weight:800;padding:8px 0;white-space:nowrap}.work-open span{transition:transform .2s}.work-open:hover span{transform:translateX(5px)}
+    .work-disclaimer{font-size:11px;color:var(--muted-2);margin-top:17px;line-height:1.7}
+    .experience-section{background:linear-gradient(180deg,transparent,rgba(93,143,175,.035) 45%,transparent)}
+    .experience-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:75px}
+    .experience-left .section-intro{margin-top:23px}.experience-left .mini-note{margin-top:33px;display:inline-flex;align-items:center;gap:10px;padding:11px 15px;border:1px solid var(--line);border-radius:9px;font-size:10px;color:var(--muted)}
+    .timeline{position:relative;padding-left:35px;border-left:1px solid var(--line-bright);margin-top:12px}
+    .timeline-item{position:relative;padding:0 0 45px}.timeline-item:last-child{padding-bottom:0}
+    .timeline-item::before{content:"";position:absolute;left:-42px;top:5px;width:13px;height:13px;border:3px solid var(--bg);background:var(--accent);border-radius:50%;box-shadow:0 0 0 1px rgba(var(--accent-rgb),.5),0 0 14px rgba(var(--accent-rgb),.45)}
+    .timeline-item:not(:first-child)::before{background:var(--muted-2);box-shadow:0 0 0 1px var(--line-bright)}
+    .timeline-period{font-size:10px;color:var(--accent);font-weight:850;letter-spacing:.16em;text-transform:uppercase}
+    .timeline-item h3{font-size:21px;line-height:1.25;letter-spacing:-.04em;margin:8px 0 5px}.timeline-item .company{font-size:12px;font-weight:780;color:var(--muted)}
+    .timeline-item p{margin:13px 0 0;color:var(--muted);font-size:13px;line-height:1.85}
+    .credentials-layout{display:grid;grid-template-columns:1fr 1fr;gap:17px}
+    .credential-panel{padding:31px;border:1px solid var(--line);border-radius:var(--radius);background:var(--card)}
+    .credential-heading{display:flex;align-items:center;justify-content:space-between;padding-bottom:22px;border-bottom:1px solid var(--line)}
+    .credential-heading h3{margin:0;font-size:17px;letter-spacing:-.03em}.credential-heading span{font-size:10px;color:var(--accent)}
+    .credential-item{display:flex;align-items:center;gap:14px;padding:19px 0;border-bottom:1px solid var(--line)}.credential-item:last-child{border-bottom:0;padding-bottom:0}
+    .credential-emblem{display:grid;place-items:center;height:43px;width:43px;flex:0 0 43px;border:1px solid var(--line-bright);border-radius:11px;color:var(--accent);background:rgba(var(--accent-rgb),.05);font-size:11px;font-weight:900}
+    .credential-item strong{display:block;font-size:12px;font-weight:800;line-height:1.45}.credential-item small{display:block;font-size:10px;color:var(--muted);margin-top:4px}
+    .learning-panel{margin-top:18px;display:flex;align-items:center;gap:14px;padding:20px 24px;border:1px solid var(--line);border-radius:12px;background:linear-gradient(110deg,rgba(var(--accent-rgb),.065),rgba(126,145,255,.03))}
+    .learning-panel .sparkle{font-size:24px;color:var(--accent)}.learning-panel strong{display:block;font-size:12px}.learning-panel p{font-size:11px;color:var(--muted);margin:3px 0 0}
+    .terminal-section{padding:50px 0 115px}.terminal-grid{display:grid;grid-template-columns:.83fr 1.17fr;gap:45px;align-items:center}
+    .terminal-copy p{font-size:13px;line-height:1.85;color:var(--muted);max-width:400px}.terminal-chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:24px}.terminal-chips button{font-size:10px;background:transparent;color:var(--muted);border:1px solid var(--line-bright);border-radius:6px;padding:7px 10px;transition:color .2s,border .2s}.terminal-chips button:hover{color:var(--accent);border-color:var(--accent)}
+    .terminal{border:1px solid rgba(var(--accent-rgb),.23);background:#09121e;border-radius:15px;overflow:hidden;min-height:300px;box-shadow:0 40px 90px rgba(0,0,0,.16);color:#e3eef6}
+    .terminal-bar{height:43px;background:#111c2a;border-bottom:1px solid rgba(127,173,198,.14);display:flex;align-items:center;justify-content:space-between;padding:0 16px}
+    .traffic{display:flex;gap:7px}.traffic i{height:9px;width:9px;border-radius:50%;background:#ff6d6d}.traffic i:nth-child(2){background:#f9c56d}.traffic i:nth-child(3){background:#68dbc2}
+    .terminal-title{font-size:10px;color:#95a6b6;letter-spacing:.08em}.terminal-status{font-size:9px;color:#68dbc2}
+    .terminal-body{height:251px;overflow-y:auto;padding:18px 20px 8px;font-size:11px;line-height:1.85;scrollbar-width:thin;scrollbar-color:#3e5869 transparent}
+    .terminal-line{white-space:pre-wrap;overflow-wrap:anywhere}.terminal-line .prompt{color:#65e8d0}.terminal-line .terminal-muted{color:#90aaba}.terminal-line .terminal-good{color:#72ebc4}
+    .terminal-input-row{display:flex;gap:8px;align-items:center;padding:0 20px 15px;color:#65e8d0;font-size:11px}.terminal-input-row label{white-space:nowrap}.terminal-input{background:transparent;border:0;outline:none!important;color:#e3eef6;min-width:0;width:100%;caret-color:#65e8d0;font-size:11px}.terminal-input::placeholder{color:#668195}
+    .contact-section{padding:100px 0!important;border-top:1px solid var(--line);position:relative;overflow:hidden}
+    .contact-section::before{content:"";position:absolute;left:50%;bottom:-400px;width:1000px;height:900px;transform:translateX(-50%);background:radial-gradient(ellipse,rgba(var(--accent-rgb),.09),transparent 65%);pointer-events:none}
+    .contact-inner{position:relative;text-align:center;display:flex;flex-direction:column;align-items:center}
+    .contact-inner h2{font-size:clamp(48px,6.5vw,84px);margin:14px 0 20px}.contact-inner h2 span{color:var(--accent)}
+    .contact-inner p{max-width:560px;font-size:14px;line-height:1.85;color:var(--muted);margin:0 auto 30px}
+    .contact-buttons{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+    .email-display{color:var(--muted);font-size:11px;margin-top:24px;letter-spacing:.035em;overflow-wrap:anywhere}
+    footer{border-top:1px solid var(--line);padding:28px 0}
+    .footer-inner{display:flex;align-items:center;justify-content:space-between;gap:20px;font-size:10px;color:var(--muted-2)}.footer-inner>div{display:flex;align-items:center;gap:18px}.footer-inner .brand{font-size:12px;color:var(--fg)}.footer-inner .brand-mark{height:27px;width:25px;font-size:9px}.footer-inner a:hover{color:var(--accent)}
+    .back-top{border:0;color:var(--muted);background:transparent;font-size:10px;font-weight:800;letter-spacing:.06em}.back-top:hover{color:var(--accent)}
+    .modal-backdrop,.palette-backdrop{position:fixed;inset:0;z-index:210;background:rgba(1,5,10,.76);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);display:none;align-items:center;justify-content:center;padding:20px}
+    .modal-backdrop.open,.palette-backdrop.open{display:flex}
+    .modal{position:relative;width:min(620px,100%);max-height:min(80vh,700px);overflow:auto;background:var(--card-solid);border:1px solid var(--line-bright);border-radius:20px;box-shadow:var(--shadow);padding:38px}
+    .modal-close{position:absolute;top:20px;right:20px}.modal-label{color:var(--accent);letter-spacing:.14em;font-size:10px;font-weight:800}.modal h3{font-size:32px;letter-spacing:-.05em;line-height:1.2;margin:13px 40px 17px 0}.modal p{font-size:13px;color:var(--muted);line-height:1.9}.modal h4{font-size:13px;margin:25px 0 10px}.modal ul{padding-left:18px;color:var(--muted);font-size:13px;line-height:2}.modal .tag{display:inline-flex;margin-top:12px}
+    .palette{width:min(520px,100%);background:var(--card-solid);border-radius:14px;box-shadow:var(--shadow);border:1px solid var(--line-bright);overflow:hidden;align-self:flex-start;margin-top:min(16vh,160px)}
+    .palette-input{width:100%;background:transparent;color:var(--fg);padding:20px;border:0;border-bottom:1px solid var(--line);font-size:15px;outline:none!important}.palette-list{padding:8px;max-height:350px;overflow:auto}.palette-option{display:flex;width:100%;justify-content:space-between;align-items:center;padding:14px;border:0;background:transparent;color:var(--fg);font-size:13px;border-radius:8px;text-align:left}.palette-option:hover,.palette-option:focus{background:rgba(var(--accent-rgb),.08)}.palette-option small{color:var(--muted-2)}.palette-help{padding:12px 20px;border-top:1px solid var(--line);font-size:10px;color:var(--muted)}
+    .reveal{opacity:0;transform:translateY(30px);transition:opacity .75s cubic-bezier(.18,.68,.2,1),transform .75s cubic-bezier(.18,.68,.2,1)}.reveal.in-view{opacity:1;transform:translateY(0)}
+    .hero-copy>*{animation:fade-rise .7s both}.hero-copy>*:nth-child(2){animation-delay:.12s}.hero-copy>*:nth-child(3){animation-delay:.23s}.hero-copy>*:nth-child(4){animation-delay:.33s}.hero-copy>*:nth-child(5){animation-delay:.43s}
+    @keyframes fade-rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+    @keyframes status{0%,100%{box-shadow:0 0 0 5px rgba(var(--accent-rgb),.11),0 0 15px rgba(var(--accent-rgb),.6)}50%{box-shadow:0 0 0 9px rgba(var(--accent-rgb),.015),0 0 24px rgba(var(--accent-rgb),.65)}}
+    @keyframes orbit-one{from{transform:rotate(-24deg) scaleY(.7)}to{transform:rotate(336deg) scaleY(.7)}}
+    @keyframes spin{from{rotate:0deg}to{rotate:360deg}}
+    @keyframes marquee{to{transform:translateX(-50%)}}
+    @keyframes scrollcue{0%,100%{background-position:center 7px}50%{background-position:center 15px}}
+    @media(max-width:1020px){.desktop-nav{gap:17px}.navbar{gap:20px}.hero-grid{gap:10px}.hero-visual{transform:scale(.9);transform-origin:center}.hero h1{font-size:clamp(58px,7.8vw,80px)}.float-label.one{left:0}.float-label.two{right:0}}
+    @media(max-width:800px){.container{width:min(650px,calc(100% - 42px))}.navbar{min-height:70px}.desktop-nav,.nav-contact,.desktop-only{display:none!important}.mobile-only{display:grid}.nav-actions{margin-left:auto}.mobile-menu{display:none;position:absolute;top:100%;left:0;right:0;padding:18px 22px 26px;background:var(--bg-2);border-bottom:1px solid var(--line);box-shadow:0 28px 50px rgba(0,0,0,.16)}.mobile-menu.open{display:flex;flex-direction:column;gap:6px}.mobile-menu a{padding:14px 6px;font-size:14px;color:var(--fg);border-bottom:1px solid var(--line)}.hero{padding:75px 0 90px;min-height:auto}.hero-grid{grid-template-columns:1fr;gap:30px}.hero h1{font-size:clamp(58px,10.5vw,87px)}.hero h1 .role{font-size:clamp(29px,5.6vw,44px)}.hero-visual{height:430px;transform:none;margin:0 auto;width:min(500px,100%)}.float-label.one{left:5%}.float-label.two{right:3%}.float-label.three{left:1%}.float-label.four{right:0}.orbit.o2{width:380px;height:380px}.orbit.o1{width:310px;height:310px}.telemetry{bottom:0;right:5%}.trust-inner{gap:20px}.trust-label{font-size:9px;max-width:100px}.section-heading{display:block}.section-intro{margin-top:16px}.expertise-card,.expertise-card:nth-child(1),.expertise-card:nth-child(2),.expertise-card:nth-child(3),.expertise-card:nth-child(4),.expertise-card:nth-child(5),.expertise-card:nth-child(6){grid-column:span 12}.experience-grid,.terminal-grid{grid-template-columns:1fr;gap:40px}.terminal-section{padding-top:20px}.experience-left .section-intro{max-width:600px}.metric{padding:20px 14px}.metric-value{font-size:34px}}
+    @media(max-width:560px){.container{width:calc(100% - 38px)}.navbar{min-height:66px}.brand{font-size:14px}.hero{padding:60px 0 76px}.hero h1{font-size:clamp(51px,12.4vw,67px);letter-spacing:-.085em}.hero h1 .role{font-size:clamp(27px,7vw,36px)}.hero-description{font-size:14px}.hero-buttons .btn{flex:1;min-width:130px;padding:13px 10px;font-size:11px}.hero-availability{font-size:10px}.hero-visual{height:370px;margin-top:3px}.visual-stage{inset:20px 0 28px}.orbit.o1{width:270px;height:270px}.orbit.o2{width:320px;height:320px}.orbit.o3{width:220px;height:220px}.core{height:152px;width:152px;border-radius:26px}.core .core-shield{width:34px;height:34px;margin-bottom:6px}.core .core-big{font-size:25px}.float-label{padding:8px 9px;font-size:8px}.float-label.one{top:42px;left:0}.float-label.two{top:75px;right:0}.float-label.three{bottom:63px;left:0}.float-label.four{bottom:50px;right:0}.telemetry{width:202px;padding:11px 13px;bottom:-11px;right:8%}.telemetry p{font-size:9px}.hero-bottom{bottom:18px}.hero-bottom-inner{font-size:9px}.hero-bottom-inner>.mono{display:none}.trust-strip{padding:20px 0}.trust-label{display:none}section.section{padding:82px 0}.section-heading{margin-bottom:27px}h2{font-size:38px}.expertise-card{padding:24px;min-height:235px}.expertise-card h3{font-size:21px}.metric-grid{grid-template-columns:repeat(2,1fr)}.metric:nth-child(2){border-right:0}.metric:nth-child(-n+2){border-bottom:1px solid var(--line)}.metric:nth-child(3){padding-left:0}.metric-value{font-size:38px}.work-section{padding-top:55px!important}.work-grid{grid-template-columns:1fr}.work-card{min-height:330px}.work-top{align-items:stretch}.filters{gap:6px}.filter-btn{padding:8px 10px;font-size:10px}.credentials-layout{grid-template-columns:1fr}.credential-panel{padding:24px}.terminal-section{padding:35px 0 85px}.terminal-copy h2{font-size:42px}.contact-section{padding:80px 0!important}.contact-inner h2{font-size:54px}.footer-inner{align-items:flex-start;flex-direction:column;gap:16px}.footer-inner>div{flex-wrap:wrap}.modal{padding:24px}.modal h3{font-size:27px}.cursor-glow{display:none}}
+
+    /* GRC explorer and project hub */
+    .grc-deck{margin-top:23px;padding:30px;border:1px solid var(--line-bright);border-radius:22px;background:linear-gradient(120deg,rgba(var(--accent-rgb),.06),rgba(132,170,255,.025) 52%),var(--card);position:relative;overflow:hidden}
+    .grc-deck-heading{display:flex;gap:30px;justify-content:space-between;align-items:flex-start}.grc-deck-heading h3{font-size:29px;letter-spacing:-.055em;line-height:1.2;margin:11px 0}.grc-deck-heading p{font-size:12px;color:var(--muted);max-width:670px;line-height:1.9;margin:0}.grc-deck-decor{color:var(--muted-2);font-size:9px;white-space:nowrap;letter-spacing:.1em}
+    .grc-switcher{display:flex;gap:8px;flex-wrap:wrap;padding-top:26px;margin-top:23px;border-top:1px solid var(--line)}
+    .grc-tab{display:flex;gap:23px;align-items:center;justify-content:space-between;border:1px solid var(--line-bright);background:transparent;color:var(--muted);border-radius:9px;padding:11px 14px;min-width:135px;font-size:11px;font-weight:800;transition:all .25s}.grc-tab span{font-size:9px;color:var(--muted-2)}.grc-tab[aria-selected="true"],.grc-tab:hover{background:rgba(var(--accent-rgb),.10);border-color:rgba(var(--accent-rgb),.55);color:var(--accent)}
+    .grc-body{min-height:195px;margin-top:18px;padding:28px;display:flex;align-items:center;justify-content:space-between;gap:25px;border:1px solid var(--line);border-radius:13px;background:rgba(6,16,30,.09)}.grc-body h4{font-size:32px;letter-spacing:-.06em;margin:4px 0}.grc-body p{font-size:13px;line-height:1.85;color:var(--muted);max-width:690px;margin:0}.grc-type{color:var(--accent);font-size:9px;letter-spacing:.13em}.grc-signal{display:flex;align-items:center;flex-direction:column;gap:10px;white-space:nowrap;font-size:8px;color:var(--muted-2)}.grc-signal-ring{height:95px;width:95px;display:grid;place-items:center;border:1px dashed rgba(var(--accent-rgb),.5);border-radius:50%;box-shadow:inset 0 0 0 12px rgba(var(--accent-rgb),.045),0 0 36px rgba(var(--accent-rgb),.07);font-size:40px;color:var(--accent);font-weight:850;animation:float 7s ease-in-out infinite}
+    .cyber-projects-section{background:linear-gradient(180deg,transparent,rgba(100,157,205,.035) 35%,transparent)}
+    .project-toolbox{border:1px solid var(--line-bright);border-radius:20px;background:var(--card);overflow:hidden;box-shadow:0 30px 60px rgba(0,0,0,.08)}
+    .project-toolbox-top,.project-toolbox-bottom{display:flex;justify-content:space-between;align-items:center;gap:15px;padding:19px 24px;background:rgba(var(--accent-rgb),.025)}.project-toolbox-top{border-bottom:1px solid var(--line)}.project-toolbox-bottom{border-top:1px solid var(--line);color:var(--muted-2);font-size:9px;letter-spacing:.05em}.project-label{color:var(--accent);font-size:11px;font-weight:850;letter-spacing:.17em}.project-pulse{display:flex;align-items:center;gap:10px;color:var(--muted-2);font-size:9px}.project-pulse .status-dot{width:6px;height:6px}
+    .project-tabs{display:flex;flex-wrap:wrap;gap:9px;padding:24px 24px 0}.lab-filter{border:1px solid var(--line-bright);border-radius:8px;color:var(--muted);background:transparent;padding:9px 14px;font-size:11px;font-weight:800}.lab-filter:hover,.lab-filter[aria-pressed="true"]{border-color:var(--accent);color:#08141c;background:var(--accent)}
+    .lab-project-grid{padding:24px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:stretch}.lab-project-card{min-height:309px;display:flex;flex-direction:column;padding:24px;background:linear-gradient(155deg,rgba(var(--accent-rgb),.045),transparent 52%),var(--bg-2);border:1px solid var(--line);border-radius:14px;position:relative;overflow:hidden;transition:transform .25s,border-color .25s}.lab-project-card:hover{border-color:rgba(var(--accent-rgb),.5);transform:translateY(-4px)}.lab-project-card::after{content:"";position:absolute;width:90px;height:90px;border:1px solid rgba(var(--accent-rgb),.12);border-radius:50%;top:-31px;right:-20px;pointer-events:none}
+    .lab-project-meta{display:flex;align-items:center;justify-content:space-between;gap:8px}.lab-project-index{color:var(--accent);font-size:10px}.lab-project-status{font-size:9px;text-transform:uppercase;letter-spacing:.06em;border:1px solid var(--line-bright);border-radius:50px;padding:5px 8px;color:var(--muted)}.lab-project-status.published{color:var(--accent);border-color:rgba(var(--accent-rgb),.4)}.lab-project-icon{display:grid;place-items:center;width:50px;height:50px;border:1px solid rgba(var(--accent-rgb),.3);border-radius:13px;margin:27px 0 20px;color:var(--accent);font-weight:800;font-size:16px;background:rgba(var(--accent-rgb),.06)}.lab-project-card h3{font-size:19px;letter-spacing:-.035em;margin:0 0 9px}.lab-project-card p{font-size:12px;line-height:1.8;color:var(--muted);margin:0}.lab-project-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:auto;padding-top:25px}.lab-project-category{color:var(--muted-2);font-size:9px;text-transform:uppercase}.lab-project-footer a{font-size:11px;font-weight:850;color:var(--accent);border-bottom:1px solid rgba(var(--accent-rgb),.4);padding:3px 0}.lab-project-footer .project-pending{font-size:10px;color:var(--muted-2);text-align:right}
+    .demo-banner{margin-top:17px;padding:24px 28px;display:flex;align-items:center;gap:22px;border:1px solid var(--line);border-radius:16px;background:var(--card)}.demo-symbol{width:52px;height:52px;flex:0 0 52px;display:grid;place-items:center;color:var(--accent);border-radius:12px;border:1px solid rgba(var(--accent-rgb),.3);background:rgba(var(--accent-rgb),.07);font-size:18px}.demo-banner>div:nth-child(2){flex:1}.demo-banner h3{font-size:18px;margin:3px 0;letter-spacing:-.03em}.demo-banner p{color:var(--muted);font-size:11px;line-height:1.75;margin:0;max-width:690px}.demo-kicker{font-size:9px;color:var(--accent);letter-spacing:.07em}.demo-banner .btn{white-space:nowrap}
+    .linkedin-section{padding:55px 0 90px!important}.linkedin-panel{position:relative;overflow:hidden;padding:55px;display:flex;align-items:center;gap:50px;border:1px solid var(--line-bright);border-radius:23px;background:linear-gradient(120deg,rgba(57,121,226,.10),rgba(var(--accent-rgb),.03) 50%),var(--card)}.linkedin-glow{position:absolute;width:420px;height:420px;right:-120px;top:-190px;pointer-events:none;border:1px dashed rgba(104,162,255,.17);border-radius:50%;box-shadow:0 0 0 65px rgba(104,162,255,.018),0 0 0 126px rgba(104,162,255,.017)}.linkedin-icon{width:120px;height:120px;flex:0 0 120px;display:grid;place-items:center;background:linear-gradient(145deg,#2176d1,#135ca6);border-radius:25px;color:#fff;font-size:66px;line-height:1;font-weight:850;letter-spacing:-.11em;padding-right:8px;box-shadow:0 23px 60px rgba(19,92,166,.25)}.linkedin-content{position:relative;flex:1}.linkedin-content h2{font-size:clamp(37px,4.6vw,54px);letter-spacing:-.065em;margin:14px 0 13px;line-height:1.12}.linkedin-content p{font-size:13px;max-width:650px;line-height:1.9;color:var(--muted);margin:0}.linkedin-actions{display:flex;align-items:center;gap:17px;flex-wrap:wrap;margin-top:23px}.linkedin-link-note{max-width:190px;font-size:8px;color:var(--muted-2);line-height:1.5;letter-spacing:.06em}
+    @media(max-width:1100px) and (min-width:801px){.desktop-nav{gap:13px}.desktop-nav>a{font-size:10px}.navbar{gap:12px}}
+    @media(max-width:850px){.lab-project-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.linkedin-panel{padding:38px;gap:28px}.linkedin-icon{height:95px;width:95px;flex-basis:95px;font-size:55px}}
+    @media(max-width:560px){.grc-deck{padding:21px}.grc-deck-heading{display:block}.grc-deck-decor{display:block;margin-top:15px}.grc-deck-heading h3{font-size:25px}.grc-tab{flex:1;min-width:125px}.grc-body{padding:22px;min-height:225px}.grc-body h4{font-size:27px}.grc-signal{display:none}.lab-project-grid{grid-template-columns:1fr;padding:15px}.project-tabs{padding:17px 15px 0}.project-toolbox-top,.project-toolbox-bottom{padding:16px}.project-pulse{font-size:8px}.lab-project-card{min-height:286px}.demo-banner{flex-wrap:wrap;gap:14px;padding:19px}.demo-banner .btn{width:100%}.linkedin-section{padding:20px 0 70px!important}.linkedin-panel{padding:25px;display:block}.linkedin-icon{width:68px;height:68px;border-radius:14px;font-size:42px;padding-right:5px;margin-bottom:22px}.linkedin-content h2{font-size:40px}.linkedin-actions .btn{width:100%}.linkedin-link-note{max-width:none}}
+    @media(min-width:801px) and (max-width:1050px){.desktop-nav,.nav-contact,.desktop-only{display:none!important}.mobile-only{display:grid}.nav-actions{margin-left:auto}.mobile-menu{display:none;position:absolute;top:100%;left:0;right:0;padding:18px 22px 26px;background:var(--bg-2);border-bottom:1px solid var(--line);box-shadow:0 28px 50px rgba(0,0,0,.16)}.mobile-menu.open{display:flex;flex-direction:column;gap:6px}.mobile-menu a{padding:14px 6px;font-size:14px;color:var(--fg);border-bottom:1px solid var(--line)}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}.reveal{opacity:1;transform:none}.cursor-glow,#network{display:none}}
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="progress" id="progress" aria-hidden="true"></div>
+  <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="site-shell">
+    <header class="nav-wrap">
+      <nav class="navbar container" aria-label="Primary navigation">
+        <a class="brand" href="#home" aria-label="Brandon Keesecker home"><span class="brand-mark">BK</span><span>BRANDON<span class="dot">.</span></span></a>
+        <div class="desktop-nav" id="desktopNav"><a href="#expertise">Expertise</a><a href="#work">Selected Work</a><a href="#cyber-projects">Cyber Projects</a><a href="#experience">Experience</a><a href="#credentials">Credentials</a><a href="#linkedin" data-linkedin-nav>LinkedIn ↗</a><a href="https://github.com/itsbdk03" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div>
+        <div class="nav-actions">
+          <button type="button" id="paletteToggle" class="icon-btn desktop-only" title="Command palette (Ctrl/⌘ + K)" aria-label="Open command palette"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m8 10 3 2-3 2m6 0h3"/></svg></button>
+          <button type="button" id="themeToggle" class="icon-btn" title="Toggle light and dark theme" aria-label="Toggle light and dark theme"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+          <a class="btn btn-primary nav-contact" href="#contact">Get in touch <span aria-hidden="true">↗</span></a>
+          <button type="button" id="menuToggle" class="icon-btn mobile-only" aria-expanded="false" aria-controls="mobileMenu" aria-label="Open navigation menu"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+        </div>
+      </nav>
+      <div class="mobile-menu" id="mobileMenu"><a href="#expertise">Expertise</a><a href="#work">Selected Work</a><a href="#cyber-projects">Cyber Projects</a><a href="#experience">Experience</a><a href="#credentials">Credentials</a><a href="#linkedin" data-linkedin-nav>LinkedIn ↗</a><a href="https://github.com/itsbdk03" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a href="#contact">Contact</a><button type="button" id="mobilePalette" class="btn btn-secondary" style="margin-top:8px">⌘&nbsp; Open command palette</button></div>
+    </header>
+
+    <main id="main">
+      <section class="hero" id="home" aria-labelledby="hero-title">
+        <canvas id="network" aria-hidden="true"></canvas>
+        <div class="container hero-grid">
+          <div class="hero-copy">
+            <div class="eyebrow"><span class="status-dot"></span> PUBLIC SECTOR CYBERSECURITY <span class="line"></span> WV, USA</div>
+            <h1 id="hero-title"><span class="name">Brandon<br/>Keesecker<span class="accent-word">.</span></span><span class="role">Making security<br/><span class="accent-word" id="rotatingWord">actionable.</span></span></h1>
+            <p class="hero-description">I'm a cybersecurity consultant working across <strong style="color:var(--fg);font-weight:700">FedRAMP Low, Moderate &amp; High</strong> and <strong style="color:var(--fg);font-weight:700">DoD IL4, IL5 &amp; IL6</strong>. My work connects security control implementation, assessment readiness, documentation development, and broader GRC to real-world decisions.</p>
+            <div class="hero-buttons"><a class="btn btn-primary" href="#cyber-projects">Explore cyber projects <span aria-hidden="true">↗</span></a><a class="btn btn-secondary" href="#work">Professional work <span aria-hidden="true">↓</span></a></div>
+            <div class="hero-availability"><span class="avatar-mini">BK</span><span><strong style="color:var(--fg)">Public Sector Advisory Consultant</strong> <span aria-hidden="true">·</span> Coalfire</span></div>
+          </div>
+          <div class="hero-visual" aria-label="Animated cybersecurity visualization with FedRAMP, DoD impact levels, NIST and risk domains">
+            <div class="visual-stage" id="heroStage">
+              <div class="orbit-backdrop"></div><div class="orbit o2"></div><div class="orbit o1"><span class="orbit-tick"></span></div><div class="orbit o3"></div>
+              <div class="core">
+                <svg class="core-shield" width="42" height="42" viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M20 3 34 9v10c0 9.5-6.6 15-14 18C12.6 34 6 28.5 6 19V9L20 3Z"/><path d="m13 20 5 5 10-11"/></svg>
+                <span class="core-label mono">SECURITY // FIRST</span><span class="core-big mono">BK_</span>
+              </div>
+            </div>
+            <div class="float-label one mono">FEDRAMP L / M / H</div><div class="float-label two mono">DoD IL4 / IL5 / IL6</div><div class="float-label three mono">CCSK · CLOUD SECURITY</div><div class="float-label four mono">SECURITY DOC DEV</div>
+            <div class="telemetry mono" aria-hidden="true"><div class="telemetry-head"><span>SECURITY.POSTURE</span><div class="telemetry-dots"><i></i><i></i><i></i></div></div><p><span>●</span> Frameworks mapped</p><p><span>●</span> Controls in focus</p><p><span>●</span> Building secure systems<span id="blinkCaret">_</span></p></div>
+          </div>
+        </div>
+        <div class="hero-bottom"><div class="container hero-bottom-inner"><span class="scroll-cue">SCROLL TO EXPLORE</span><span class="mono">CTRL / ⌘ + K &nbsp; FOR COMMAND MODE</span></div></div>
+      </section>
+
+      <div class="trust-strip" aria-label="Areas of focus"><div class="container trust-inner"><span class="trust-label">FRAMEWORKS<br/>IN FOCUS</span><div class="marquee"><div class="marquee-track" aria-hidden="true"><span>FedRAMP Low / Moderate / High</span><span class="star">✳</span><span>DoD IL4 / IL5 / IL6</span><span class="star">✳</span><span>Documentation Development</span><span class="star">✳</span><span>CCSK</span><span class="star">✳</span><span>HITRUST · HIPAA · SOC 2</span><span class="star">✳</span><span>CMMC</span><span class="star">✳</span><span>NIST 800-53</span><span class="star">✳</span><span>FedRAMP Low / Moderate / High</span><span class="star">✳</span><span>DoD IL4 / IL5 / IL6</span><span class="star">✳</span><span>Documentation Development</span><span class="star">✳</span><span>CCSK</span><span class="star">✳</span><span>HITRUST · HIPAA · SOC 2</span><span class="star">✳</span><span>CMMC</span><span class="star">✳</span><span>NIST 800-53</span><span class="star">✳</span></div></div></div></div>
+
+      <section class="section" id="expertise" aria-labelledby="expertise-title">
+        <div class="container"><div class="section-heading reveal"><div><span class="section-index mono">01 / WHAT I DO</span><h2 id="expertise-title">Complex standards.<br/><span class="muted-heading">Clear direction.</span></h2></div><p class="section-intro">I connect the technical details of security frameworks with the practical decisions organizations need to make.</p></div>
+          <div class="expertise-grid">
+            <article class="glass-card expertise-card reveal" data-spotlight><div class="card-top"><div class="service-icon"><svg width="25" height="25" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.6"><path d="M12 2 20 6v6c0 5-3 8-8 10-5-2-8-5-8-10V6l8-4Z"/><path d="m8 12 3 3 5-6"/></svg></div><span class="card-code mono">CAPABILITY_01</span></div><h3>FedRAMP Low, Moderate &amp; High</h3><p>Advisory experience spanning all three FedRAMP baselines—interpreting security controls, aligning implementation details, and supporting documentation and assessment readiness.</p><div class="tags"><span class="tag">FedRAMP Low</span><span class="tag">FedRAMP Moderate</span><span class="tag">FedRAMP High</span></div></article>
+            <article class="glass-card expertise-card reveal" data-spotlight><div class="card-top"><div class="service-icon"><svg width="25" height="25" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.6"><rect x="5" y="4" width="14" height="16" rx="2"/><path d="M9 4V2m6 2V2M8 10h8m-8 4h5"/></svg></div><span class="card-code mono">CAPABILITY_02</span></div><h3>CMMC Readiness</h3><p>Working through CUI scope, NIST 800-171 requirements, evidence expectations, control gaps, and remediation planning.</p><div class="tags"><span class="tag">CMMC Level 2</span><span class="tag">CUI Scoping</span><span class="tag">SSP &amp; POA&amp;M</span></div></article>
+            <article class="glass-card expertise-card reveal" data-spotlight><div class="card-top"><div class="service-icon"><svg width="25" height="25" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.6"><path d="M3 12 8 7l5 5 8-8"/><path d="M16 4h5v5M3 20h18"/></svg></div><span class="card-code mono">CAPABILITY_03</span></div><h3>Governance, Risk &amp; Compliance</h3><p>Risk-based advisory across gap assessments, control mapping, evidence review, and documentation. Additional hands-on exposure to HITRUST, HIPAA, SOC 2, and other GRC frameworks.</p><div class="tags"><span class="tag">Risk &amp; Controls</span><span class="tag">HITRUST / HIPAA</span><span class="tag">SOC 2 Exposure</span></div></article>
+            <article class="glass-card expertise-card reveal" data-spotlight><div class="card-top"><div class="service-icon"><svg width="25" height="25" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.6"><path d="M7 17a5 5 0 1 1 1-10 6 6 0 0 1 11 2 4 4 0 0 1-1 8H7Z"/><path d="M12 13v7m-3-3 3 3 3-3"/></svg></div><span class="card-code mono">CAPABILITY_04</span></div><h3>Cloud Security &amp; Architecture</h3><p>Applying cloud security knowledge to architecture conversations, shared-responsibility boundaries, and technical control expectations across regulated environments.</p><div class="tags"><span class="tag">Cloud Security</span><span class="tag">CCSK</span><span class="tag">Shared Responsibility</span></div></article>
+            <article class="glass-card expertise-card reveal" data-spotlight><div class="card-top"><div class="service-icon"><svg width="25" height="25" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.6"><path d="M4 5h16v14H4zM8 9h8m-8 4h8m-8 4h4"/></svg></div><span class="card-code mono">CAPABILITY_05</span></div><h3>DoD Cloud Impact Levels</h3><p>Experience with DoD IL4, IL5, and IL6 security expectations, navigating impact-level requirements and mapping control responsibilities for sensitive cloud environments.</p><div class="tags"><span class="tag">DoD IL4</span><span class="tag">DoD IL5</span><span class="tag">DoD IL6</span></div></article>
+            <article class="glass-card expertise-card reveal" data-spotlight><div class="card-top"><div class="service-icon"><svg width="25" height="25" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.6"><path d="M6 3h9l4 4v14H6zM15 3v5h4M9 12h7M9 16h7"/></svg></div><span class="card-code mono">CAPABILITY_06</span></div><h3>Security Documentation Development</h3><p>Developing and refining security documentation, control implementation narratives, and supporting assessment materials that connect requirements to evidence.</p><div class="tags"><span class="tag">SSP Development</span><span class="tag">Control Narratives</span><span class="tag">Evidence Alignment</span></div></article>
+          </div>
+          <div class="grc-deck reveal" aria-label="Broader governance risk and compliance experience">
+            <div class="grc-deck-heading"><div><span class="eyebrow mono">BEYOND FEDERAL CLOUD</span><h3>Broader GRC experience<span class="accent-word">.</span></h3><p>Additional experience and exposure across healthcare, privacy, and trust assurance frameworks—complementing my core federal cloud and documentation work.</p></div><span class="grc-deck-decor mono">FRAMEWORK // EXPLORER</span></div>
+            <div class="grc-switcher" role="tablist" aria-label="Explore additional GRC frameworks">
+              <button class="grc-tab" id="tab-hitrust" type="button" role="tab" aria-controls="grcPanel" aria-selected="true" data-grc="hitrust">HITRUST <span>01</span></button>
+              <button class="grc-tab" id="tab-hipaa" type="button" role="tab" aria-controls="grcPanel" aria-selected="false" data-grc="hipaa" tabindex="-1">HIPAA <span>02</span></button>
+              <button class="grc-tab" id="tab-soc2" type="button" role="tab" aria-controls="grcPanel" aria-selected="false" data-grc="soc2" tabindex="-1">SOC 2 <span>03</span></button>
+              <button class="grc-tab" id="tab-grc" type="button" role="tab" aria-controls="grcPanel" aria-selected="false" data-grc="grc" tabindex="-1">Other GRC <span>04</span></button>
+            </div>
+            <div id="grcPanel" class="grc-body" role="tabpanel" aria-labelledby="tab-hitrust" tabindex="0"><div><span class="mono grc-type" id="grcType">ASSURANCE / RISK</span><h4 id="grcTitle">HITRUST</h4><p id="grcDescription">Experience with HITRUST-related security and compliance concepts, including reviewing requirements, control evidence, and risk considerations.</p></div><div class="grc-signal" aria-hidden="true"><div class="grc-signal-ring">H</div><span class="mono">FRAMEWORK_FOCUS // ACTIVE</span></div></div>
+          </div>
+        </div>
+      </section>
+
+      <div class="container metrics-section"><div class="metric-grid reveal" aria-label="Professional highlights"><div class="metric"><div class="metric-value"><span data-count="2024">2024</span></div><div class="metric-label">STARTED MY CYBERSECURITY<br/>CONSULTING JOURNEY</div></div><div class="metric"><div class="metric-value"><span data-count="6">6</span></div><div class="metric-label">FEDRAMP &amp; DOD<br/>LEVELS WORKED ACROSS</div></div><div class="metric"><div class="metric-value"><span data-count="6">6</span></div><div class="metric-label">TECH &amp; CLOUD SECURITY<br/>CERTIFICATIONS</div></div><div class="metric"><div class="metric-value"><span data-count="1">1</span></div><div class="metric-label">WVU MASTER'S DEGREE<br/>IN CYBERSECURITY</div></div></div></div>
+
+      <section class="section work-section" id="work" aria-labelledby="work-title"><div class="container"><div class="section-heading reveal"><div><span class="section-index mono">02 / HOW I THINK</span><h2 id="work-title">From requirement<br/><span class="muted-heading">to reality.</span></h2></div><p class="section-intro">Selected examples of my work across federal cloud security, DoD cloud requirements, documentation development, and technical investigation.</p></div>
+        <div class="work-top reveal"><span class="eyebrow mono">SELECTED SECURITY WORKFLOWS</span><div class="filters" role="group" aria-label="Filter selected work"><button class="filter-btn" aria-pressed="true" data-filter="all">All work</button><button class="filter-btn" aria-pressed="false" data-filter="federal">Federal</button><button class="filter-btn" aria-pressed="false" data-filter="defense">Defense</button><button class="filter-btn" aria-pressed="false" data-filter="lab">Technical labs</button></div></div>
+        <div class="work-grid" id="workGrid">
+          <article class="work-card reveal" data-category="federal"><div class="work-header"><span class="work-number mono">WORKFLOW / 001</span><span class="work-type mono">Federal security</span></div><div class="project-visual" aria-hidden="true"><div class="viz-control"></div><div class="viz-control"></div><div class="viz-control"></div><div class="viz-mid mono">CONTROL → EVIDENCE</div></div><h3>FedRAMP Low, Moderate &amp; High</h3><p>Working across FedRAMP security baselines to connect NIST 800-53 controls with implementation details, documentation, and assessment readiness.</p><div class="work-footer"><span class="work-tags mono">LOW / MODERATE / HIGH</span><button type="button" class="work-open" data-project="fedramp">View approach <span aria-hidden="true">→</span></button></div></article>
+          <article class="work-card reveal" data-category="defense"><div class="work-header"><span class="work-number mono">WORKFLOW / 002</span><span class="work-type mono">DoD cloud security</span></div><div class="project-visual" data-pattern="nodes" aria-hidden="true"><div class="viz-control"></div><div class="viz-control"></div><div class="viz-control"></div><div class="viz-mid mono">IL4 → IL5 → IL6</div></div><h3>DoD Impact Level Advisory</h3><p>Supporting work aligned with DoD IL4, IL5, and IL6 cloud security requirements, control expectations, and documentation considerations.</p><div class="work-footer"><span class="work-tags mono">DOD IL4 / IL5 / IL6</span><button type="button" class="work-open" data-project="dod">View approach <span aria-hidden="true">→</span></button></div></article>
+          <article class="work-card reveal" data-category="federal"><div class="work-header"><span class="work-number mono">WORKFLOW / 003</span><span class="work-type mono">Documentation development</span></div><div class="project-visual" aria-hidden="true"><div class="viz-control"></div><div class="viz-control"></div><div class="viz-control"></div><div class="viz-mid mono">REQUIREMENT → NARRATIVE</div></div><h3>Security Documentation Development</h3><p>Developing and improving control implementation statements and assessment-ready security documentation with a focus on accuracy and traceability.</p><div class="work-footer"><span class="work-tags mono">SSP / CONTROL NARRATIVES</span><button type="button" class="work-open" data-project="documentation">View approach <span aria-hidden="true">→</span></button></div></article>
+          <article class="work-card reveal" data-category="defense"><div class="work-header"><span class="work-number mono">WORKFLOW / 004</span><span class="work-type mono">Defense compliance</span></div><div class="project-visual" data-pattern="nodes" aria-hidden="true"><div class="viz-control"></div><div class="viz-control"></div><div class="viz-control"></div><div class="viz-mid mono">CUI // SCOPE</div></div><h3>CMMC Level 2 Scoping</h3><p>Translating controlled unclassified information flows and assessment objectives into clear boundaries and evidence questions.</p><div class="work-footer"><span class="work-tags mono">CMMC / NIST 800-171</span><button type="button" class="work-open" data-project="cmmc">View approach <span aria-hidden="true">→</span></button></div></article>
+          <article class="work-card reveal" data-category="federal"><div class="work-header"><span class="work-number mono">WORKFLOW / 005</span><span class="work-type mono">Risk &amp; governance</span></div><div class="project-visual" data-pattern="bars" aria-hidden="true"><div class="viz-control"></div><div class="viz-control"></div><div class="viz-control"></div><div class="viz-mid mono">RISK → ACTION</div></div><h3>Control Gap &amp; Risk Mapping</h3><p>Organizing implementation narratives, gaps, and evidence into traceable, actionable security decisions.</p><div class="work-footer"><span class="work-tags mono">GRC / CONTROL MAPPING</span><button type="button" class="work-open" data-project="risk">View approach <span aria-hidden="true">→</span></button></div></article>
+          <article class="work-card reveal" data-category="lab"><div class="work-header"><span class="work-number mono">WORKFLOW / 006</span><span class="work-type mono">Independent lab</span></div><div class="project-visual" data-pattern="terminal" aria-hidden="true"><div class="viz-control"></div><div class="viz-control"></div><div class="viz-control"></div><div class="viz-mid mono">&gt; ANALYZE --ARTIFACTS</div></div><h3>Threat Investigation Exercises</h3><p>Practicing memory, log, and network-traffic analysis in controlled cybersecurity challenge environments.</p><div class="work-footer"><span class="work-tags mono">FORENSICS / NETWORK ANALYSIS</span><button type="button" class="work-open" data-project="threat">View approach <span aria-hidden="true">→</span></button></div></article>
+        </div>
+        <p class="work-disclaimer">Public portfolio note: these cards explain representative workflows and independent learning activities; they are not claims about a specific confidential client engagement or its outcome.</p>
+      </div></section>
+
+      <section class="section cyber-projects-section" id="cyber-projects" aria-labelledby="cyber-projects-title">
+        <div class="container">
+          <div class="section-heading reveal"><div><span class="section-index mono">03 / HANDS-ON SECURITY</span><h2 id="cyber-projects-title">Inside the<br/><span class="muted-heading">cyber lab.</span></h2></div><p class="section-intro">Independent technical investigations, GRC tooling, and public-safe case studies. Explore six working, interactive projects that demonstrate control documentation, defensive analysis, cloud architecture, and security risk management using fictional data.</p></div>
+          <div class="project-toolbox reveal"><div class="project-toolbox-top"><span class="mono project-label">BK / PROJECT HUB</span><span class="project-pulse mono"><span class="status-dot"></span> 6 DEMOS // LIVE</span></div>
+            <div class="project-tabs" role="group" aria-label="Filter cyber projects"><button type="button" class="lab-filter" aria-pressed="true" data-lab-filter="all">All projects</button><button type="button" class="lab-filter" aria-pressed="false" data-lab-filter="forensics">Forensics</button><button type="button" class="lab-filter" aria-pressed="false" data-lab-filter="grc">GRC &amp; Cloud</button></div>
+            <div class="lab-project-grid" id="labProjectGrid" aria-live="polite"></div>
+            <div class="project-toolbox-bottom"><span class="mono">SIX WORKING DEMOS · NO SIGN-IN NEEDED</span><span class="mono"><span id="projectCount">00</span> ENTRIES</span></div>
+          </div>
+          <div class="demo-banner reveal"><div class="demo-symbol mono">&gt;_</div><div><span class="mono demo-kicker">LIVE PORTFOLIO INTERACTION</span><h3>Open the live cyber lab</h3><p>Run six real, interactive browser demos with synthetic data: evidence tracking, blue-team detections, cloud hardening, risk modeling, AWS misconfiguration checks, and threat modeling.</p></div><a class="btn btn-secondary" href="labs/index.html">Explore demos <span aria-hidden="true">↗</span></a><a class="btn btn-secondary" href="labs/methodology.html">Engineering notes <span aria-hidden="true">↗</span></a></div>
+        </div>
+      </section>
+
+      <section class="section experience-section" id="experience" aria-labelledby="experience-title"><div class="container experience-grid"><div class="experience-left reveal"><span class="section-index mono">04 / MY JOURNEY</span><h2 id="experience-title">Driven by<br/><span class="muted-heading">curiosity.</span></h2><p class="section-intro">My approach to cybersecurity combines security consulting with a multidisciplinary foundation in policy, international affairs, history, and technology.</p><div class="mini-note mono"><span class="status-dot"></span> ALWAYS LEARNING. ALWAYS BUILDING.</div></div><div class="timeline reveal">
+        <div class="timeline-item"><span class="timeline-period mono">2025 — PRESENT</span><h3>Public Sector Advisory Consultant</h3><div class="company">Coalfire Systems</div><p>Working across FedRAMP Low, Moderate, and High and DoD IL4, IL5, and IL6 security requirements, with emphasis on security documentation development, control implementation narratives, assessment readiness, and risk-focused advisory work. My broader GRC exposure also includes HITRUST, HIPAA, and SOC 2.</p></div>
+        <div class="timeline-item"><span class="timeline-period mono">2024 — 2025</span><h3>Cybersecurity Advisory Intern</h3><div class="company">Coalfire Systems</div><p>Started my consulting journey learning how teams translate complex security requirements into practical assessments and advisory work.</p></div>
+        <div class="timeline-item"><span class="timeline-period mono">ACADEMIC FOUNDATION</span><h3>Policy, Technology &amp; Security</h3><div class="company">West Virginia University</div><p>Earned my master's degree in Cybersecurity Business Management at West Virginia University, building on a multidisciplinary undergraduate foundation in political science, international studies, and history.</p></div>
+        <div class="timeline-item"><span class="timeline-period mono">FUTURE ACADEMIC GOAL</span><h3>Doctorate in Cybersecurity</h3><div class="company">Planned academic pursuit · not yet enrolled or earned</div><p>I plan to pursue doctoral study in cybersecurity in the near future as the next stage of my professional and academic development, bringing together cloud assurance, security governance, and research.</p></div>
+      </div></div></section>
+
+      <section class="section" id="credentials" aria-labelledby="credentials-title"><div class="container"><div class="section-heading reveal"><div><span class="section-index mono">05 / CREDENTIALS</span><h2 id="credentials-title">Knowledge backed<br/><span class="muted-heading">by practice.</span></h2></div><p class="section-intro">My CCSK cloud security credential, technical certifications, and WVU master's degree reinforce the knowledge I use in federal security consulting and documentation development.</p></div>
+        <div class="credentials-layout">
+          <div class="credential-panel reveal"><div class="credential-heading"><h3>Technical certifications</h3><span class="mono">VERIFIED PATH // 01</span></div>
+            <div class="credential-item"><span class="credential-emblem mono">CCSK</span><div><strong>Certificate of Cloud Security Knowledge (CCSK)</strong><small>Cloud Security Alliance · cloud security fundamentals &amp; governance</small></div></div>
+            <div class="credential-item"><span class="credential-emblem mono">A+</span><div><strong>CompTIA A+</strong><small>IT infrastructure &amp; technical fundamentals</small></div></div>
+            <div class="credential-item"><span class="credential-emblem mono">G</span><div><strong>Google Advanced Data Analytics</strong><small>Data analysis &amp; applied quantitative methods</small></div></div>
+            <div class="credential-item"><span class="credential-emblem mono">G</span><div><strong>Google Data Analytics</strong><small>Analytical workflows &amp; data interpretation</small></div></div>
+            <div class="credential-item"><span class="credential-emblem mono">G</span><div><strong>Google IT Support</strong><small>IT systems, troubleshooting &amp; operations</small></div></div>
+            <div class="credential-item"><span class="credential-emblem mono">MS</span><div><strong>Microsoft Office Specialist Master</strong><small>Productivity systems &amp; business tooling</small></div></div>
+          </div>
+          <div class="credential-panel reveal"><div class="credential-heading"><h3>Academic background</h3><span class="mono">FOUNDATION // 02</span></div>
+            <div class="credential-item"><span class="credential-emblem mono">WVU</span><div><strong>Political Science</strong><small>Policy, institutions &amp; national security</small></div></div>
+            <div class="credential-item"><span class="credential-emblem mono">WVU</span><div><strong>International Studies</strong><small>Security, diplomacy &amp; international affairs</small></div></div>
+            <div class="credential-item"><span class="credential-emblem mono">WVU</span><div><strong>History</strong><small>Research, analysis &amp; historical context</small></div></div>
+            <div class="credential-item"><span class="credential-emblem mono">WVU</span><div><strong>Master's Degree — Cybersecurity Business Management</strong><small>West Virginia University · graduate degree</small></div></div>
+            <div class="learning-panel"><span class="sparkle">✳</span><div><strong>What comes next: cybersecurity doctorate</strong><p>I plan to pursue a doctorate in cybersecurity in the near future. This is a future goal, not a completed credential or current enrollment.</p></div></div>
+          </div>
+        </div>
+      </div></section>
+
+      <section class="terminal-section" id="terminal-demo"><div class="container terminal-grid"><div class="terminal-copy reveal"><span class="section-index mono">06 / EXPLORE THE SYSTEM</span><h2>Think like an<br/><span class="accent-word">analyst.</span></h2><p>There's a little more to explore here. Open this interactive terminal and try a command to navigate my background, explore skills, or get in touch.</p><div class="terminal-chips" aria-label="Suggested terminal commands"><button type="button" data-command="help">help</button><button type="button" data-command="about">about</button><button type="button" data-command="skills">skills</button><button type="button" data-command="contact">contact</button><button type="button" data-command="clear">clear</button></div></div>
+        <div class="terminal reveal" aria-label="Interactive portfolio terminal"><div class="terminal-bar"><div class="traffic"><i></i><i></i><i></i></div><span class="terminal-title mono">brandon@portfolio: ~ / command-center</span><span class="terminal-status mono">● ONLINE</span></div><div class="terminal-body mono" id="terminalOutput" role="log" aria-live="polite"><div class="terminal-line"><span class="terminal-good">◆ BK SECURITY CONSOLE // v1.0</span></div><div class="terminal-line"><span class="terminal-muted">Welcome. This is a portfolio demo, not a real shell.</span></div><div class="terminal-line"><span class="terminal-muted">Type 'help' to see available commands.</span></div><div class="terminal-line"> </div></div><form id="terminalForm" class="terminal-input-row mono" autocomplete="off"><label for="terminalInput">visitor@bk:~$</label><input id="terminalInput" class="terminal-input mono" autocomplete="off" spellcheck="false" maxlength="60" aria-label="Type a terminal command" placeholder="type a command..." /></form></div>
+      </div></section>
+
+      <section class="section linkedin-section" id="linkedin" aria-labelledby="linkedin-title"><div class="container linkedin-panel reveal"><div class="linkedin-glow" aria-hidden="true"></div><div class="linkedin-icon" aria-hidden="true">in</div><div class="linkedin-content"><span class="section-index mono">07 / PROFESSIONAL NETWORK</span><h2 id="linkedin-title">Let's connect on<br/><span class="accent-word">LinkedIn.</span></h2><p>I share an interest in cloud security, federal compliance, practical GRC, and the people building more secure systems. Connect with me to follow along with my professional journey.</p><div class="linkedin-actions"><a id="linkedinProfileLink" class="btn btn-primary" target="_blank" rel="noopener noreferrer" href="https://www.linkedin.com/in/brandon-keesecker-i-ccsk-aws-ccp-24463b242/">View my LinkedIn profile <span aria-hidden="true">↗</span></a><a class="btn btn-secondary" href="https://github.com/itsbdk03" target="_blank" rel="noopener noreferrer">View my GitHub profile <span aria-hidden="true">↗</span></a><span id="linkedinLinkNote" class="mono linkedin-link-note">PUBLIC PROFILES · LINKEDIN &amp; GITHUB</span></div></div></div></section>
+
+      <section class="section contact-section" id="contact" aria-labelledby="contact-title"><div class="container contact-inner reveal"><span class="section-index mono">08 / LET'S CONNECT</span><h2 id="contact-title">Let's build<br/><span>something secure.</span></h2><p>Interested in connecting about cybersecurity, federal security frameworks, technology, or professional opportunities? I'd be glad to hear from you.</p><div class="contact-buttons"><a href="mailto:brandondkeesecker@gmail.com?subject=Hello%20Brandon%20%E2%80%94%20Cybersecurity%20Connection" class="btn btn-primary">Send me an email <span aria-hidden="true">↗</span></a><button type="button" class="btn btn-secondary" id="copyEmail">Copy email address <span aria-hidden="true">⧉</span></button></div><div class="email-display mono">brandondkeesecker@gmail.com</div></div></section>
+    </main>
+
+    <footer><div class="container footer-inner"><div><a class="brand" href="#home"><span class="brand-mark">BK</span> BRANDON<span class="dot">.</span></a><span>© <span id="year"></span> Brandon Keesecker. Built with purpose.</span></div><div><span class="mono">MORGANTOWN, WEST VIRGINIA</span><button type="button" class="back-top" id="backTop">BACK TO TOP ↑</button></div></div></footer>
+  </div>
+
+  <div id="projectModal" class="modal-backdrop" role="presentation"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" tabindex="-1"><button id="modalClose" class="icon-btn modal-close" type="button" aria-label="Close project details">×</button><span id="modalCategory" class="modal-label mono"></span><h3 id="modalTitle"></h3><p id="modalIntro"></p><h4>What I focus on</h4><ul id="modalPoints"></ul><span class="tag" id="modalFooter"></span></div></div>
+  <div id="paletteBackdrop" class="palette-backdrop" role="presentation"><div class="palette" role="dialog" aria-modal="true" aria-label="Command palette"><input id="paletteInput" class="palette-input" placeholder="Where would you like to go?" aria-label="Search site sections" autocomplete="off"/><div class="palette-list" id="paletteList"></div><div class="palette-help mono">↑ ↓ to navigate · Enter to open · Esc to close</div></div></div>
+  <noscript><style>.reveal{opacity:1;transform:none}</style></noscript>
+  <script>
+  (() => {
+    'use strict';
+    const $ = (s, context=document) => context.querySelector(s);
+    const $$ = (s, context=document) => [...context.querySelectorAll(s)];
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isTouch = matchMedia('(pointer:coarse)').matches;
+    const navLinks = $$('#desktopNav a');
+
+    $('#year').textContent = new Date().getFullYear();
+    // ──────────────────────────────────────────────────────────────
+    // LINKEDIN PROFILE: direct public URL supplied by Brandon.
+    // Projects: paste public URLs into the matching `url` fields below.
+    // Leave URL blank until published: no broken or invented links appear.
+    // ──────────────────────────────────────────────────────────────
+    const SITE_CONFIG={
+      linkedinUrl:'https://www.linkedin.com/in/brandon-keesecker-i-ccsk-aws-ccp-24463b242/',
+      projects:[
+        {title:'ControlTrace — Evidence Workbench',category:'grc',icon:'NIST',summary:'Working GRC dashboard: manage fictional NIST 800-53 control narratives, ownership, evidence references, gaps, and CSV reporting across example federal focus areas.',url:'labs/index.html#controls',type:'Live · GRC dashboard'},
+        {title:'SignalHunt — Detection Engineering',category:'forensics',icon:'SOC',summary:'Run transparent detection rules against synthetic authentication, network, and process logs. Explore findings, upload sanitized CSV or JSON, and export analyst results.',url:'labs/index.html#hunt',type:'Live · Blue team tool'},
+        {title:'CloudGuard — Architecture Simulator',category:'grc',icon:'CLD',summary:'Toggle six cloud-security safeguards and watch the architecture diagram, simulated risk posture, and mitigation recommendations update in real time.',url:'labs/index.html#cloud',type:'Live · Cloud security'},
+        {title:'RiskMatrix — Risk Register',category:'grc',icon:'RISK',summary:'Create and score risks, track mitigation maturity, explore an interactive 5×5 heatmap, and export a synthetic governance risk register.',url:'labs/index.html#risk',type:'Live · GRC analytics'},
+        {title:'ConfigLens — AWS Configuration Scanner',category:'grc',icon:'AWS',summary:'Scan fictional AWS JSON configurations for S3, IAM, network, logging, and database exposures. Review explainable findings, compare hardened examples, and export SARIF.',url:'labs/index.html#config',type:'Live · Cloud security engineering'},
+        {title:'AttackPath — Defensive Threat Modeling',category:'forensics',icon:'GRAPH',summary:'Explore a simulated attack graph, find reachable target assets, apply defensive safeguards, compare interrupted routes, and export a detailed tabletop analysis.',url:'labs/index.html#path',type:'Live · Threat modeling & architecture'}
+      ]
+    };
+    const safePublicURL=value=>{try{const u=new URL(value);return ['https:','http:'].includes(u.protocol)?u.href:null}catch(e){return null}};
+    const linkedInUrl=safePublicURL(SITE_CONFIG.linkedinUrl);
+    if(linkedInUrl){$('#linkedinProfileLink').href=linkedInUrl;$('#linkedinProfileLink').firstChild.textContent='View my LinkedIn profile ';$('#linkedinLinkNote').textContent='PUBLIC PROFILE · OPENS LINKEDIN';$$('[data-linkedin-nav]').forEach(link=>{link.href=linkedInUrl;link.target='_blank';link.rel='noopener noreferrer'});}
+
+    const safeProjectURL=value=>/^labs\/index\.html#(controls|hunt|cloud|risk|config|path)$/.test(value)?value:safePublicURL(value);
+    const labGrid=$('#labProjectGrid');
+    function renderLabs(filter='all'){
+      labGrid.replaceChildren();
+      const items=SITE_CONFIG.projects.filter(p=>filter==='all'||p.category===filter);
+      $('#projectCount').textContent=String(items.length).padStart(2,'0');
+      items.forEach((p,index)=>{
+        const card=document.createElement('article');card.className='lab-project-card';
+        const meta=document.createElement('div');meta.className='lab-project-meta';
+        const number=document.createElement('span');number.className='lab-project-index mono';number.textContent=`LAB // ${String(index+1).padStart(2,'0')}`;
+        const status=document.createElement('span');const url=safeProjectURL(p.url);status.className='lab-project-status mono'+(url?' published':'');status.textContent=url?'Live demo':'Write-up planned';meta.append(number,status);
+        const icon=document.createElement('div');icon.className='lab-project-icon mono';icon.textContent=p.icon;
+        const title=document.createElement('h3');title.textContent=p.title;
+        const summary=document.createElement('p');summary.textContent=p.summary;
+        const footer=document.createElement('div');footer.className='lab-project-footer';
+        const tag=document.createElement('span');tag.className='lab-project-category mono';tag.textContent=p.type;
+        let action;
+        if(url){action=document.createElement('a');action.href=url;if(!url.startsWith('labs/')){action.target='_blank';action.rel='noopener noreferrer'}action.textContent='Launch demo ↗';}
+        else{action=document.createElement('span');action.className='project-pending mono';action.textContent='Link coming soon';}
+        footer.append(tag,action);card.append(meta,icon,title,summary,footer);labGrid.appendChild(card);
+      });
+    }
+    renderLabs();
+    $$('.lab-filter').forEach(btn=>btn.addEventListener('click',()=>{
+      $$('.lab-filter').forEach(b=>b.setAttribute('aria-pressed',String(b===btn)));
+      renderLabs(btn.dataset.labFilter);
+    }));
+    const grcItems={
+      hitrust:{type:'ASSURANCE / RISK',title:'HITRUST',description:'Experience with HITRUST-related security and compliance concepts, including reviewing requirements, control evidence, and risk considerations.',code:'H'},
+      hipaa:{type:'HEALTHCARE / PRIVACY',title:'HIPAA',description:'Exposure to HIPAA security and privacy requirements and how they influence safeguards, risk analysis, and documentation in healthcare environments.',code:'P'},
+      soc2:{type:'TRUST SERVICES / ASSURANCE',title:'SOC 2',description:'Experience with SOC 2-oriented GRC concepts, including Trust Services Criteria, control narratives, evidence expectations, and assessment preparation.',code:'2'},
+      grc:{type:'CROSS-FRAMEWORK / GRC',title:'Other GRC Work',description:'Broader work with control gaps, evidence alignment, risk tracking, remediation planning, assessment support, and documentation consistency across security programs.',code:'G'}
+    };
+    const grcButtons=$$('.grc-tab');
+    function activateGRC(key,focus=false){const item=grcItems[key];if(!item)return;
+      grcButtons.forEach(btn=>{const active=btn.dataset.grc===key;btn.setAttribute('aria-selected',String(active));btn.tabIndex=active?0:-1;if(active&&focus)btn.focus();});
+      $('#grcType').textContent=item.type;$('#grcTitle').textContent=item.title;$('#grcDescription').textContent=item.description;
+      $('.grc-signal-ring').textContent=item.code;$('#grcPanel').setAttribute('aria-labelledby','tab-'+key);
+    }
+    grcButtons.forEach((btn,index)=>{btn.addEventListener('click',()=>activateGRC(btn.dataset.grc));btn.addEventListener('keydown',e=>{if(!['ArrowRight','ArrowLeft','Home','End'].includes(e.key))return;e.preventDefault();let target=e.key==='Home'?0:e.key==='End'?grcButtons.length-1:(index+(e.key==='ArrowRight'?1:-1)+grcButtons.length)%grcButtons.length;activateGRC(grcButtons[target].dataset.grc,true);});});
+
+
+    // Theme persists for return visitors; falls back to the intentionally designed dark palette.
+    try { const saved = localStorage.getItem('bk-theme'); if (saved==='light'||saved==='dark') document.documentElement.dataset.theme=saved; } catch(e){}
+    const themeToggle = $('#themeToggle');
+    const updateThemeIcon = () => { themeToggle.setAttribute('aria-label',`Switch to ${document.documentElement.dataset.theme==='dark'?'light':'dark'} theme`); };
+    updateThemeIcon();
+    themeToggle.addEventListener('click',()=>{
+      const next = document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=next;updateThemeIcon();
+      try{localStorage.setItem('bk-theme',next)}catch(e){}
+    });
+
+    const menuToggle=$('#menuToggle'),menu=$('#mobileMenu');
+    const setMenu = open => {menu.classList.toggle('open',open);menuToggle.setAttribute('aria-expanded',String(open));menuToggle.setAttribute('aria-label',open?'Close navigation menu':'Open navigation menu');};
+    menuToggle.addEventListener('click',()=>setMenu(!menu.classList.contains('open')));
+    $$('#mobileMenu a').forEach(a=>a.addEventListener('click',()=>setMenu(false)));
+    window.addEventListener('resize',()=>{if(innerWidth>1050)setMenu(false)},{passive:true});
+
+    let scrolled=false;
+    function onScroll(){if(scrolled)return;scrolled=true;requestAnimationFrame(()=>{
+      const max=document.documentElement.scrollHeight-innerHeight;$('#progress').style.width=(max>0?scrollY/max*100:0)+'%';scrolled=false;
+    });}
+    addEventListener('scroll',onScroll,{passive:true});onScroll();
+
+    if('IntersectionObserver' in window && !reduceMotion){
+      const io=new IntersectionObserver(entries=>{for(const entry of entries){if(entry.isIntersecting){entry.target.classList.add('in-view');io.unobserve(entry.target);}}},{threshold:.09,rootMargin:'0px 0px -35px 0px'});
+      $$('.reveal').forEach((el,i)=>{el.style.transitionDelay = ((i%4)*65)+'ms';io.observe(el)});
+    }else{$$('.reveal').forEach(el=>el.classList.add('in-view'))}
+    if('IntersectionObserver' in window){
+      const sections=$$('main section[id]');
+      const navObserver=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){navLinks.forEach(a=>a.classList.toggle('active',a.hash==='#'+entry.target.id));}})},{rootMargin:'-30% 0px -60% 0px'});
+      sections.forEach(section=>navObserver.observe(section));
+    }
+
+    if(!reduceMotion){
+      // Type rotation is gentle and keeps a stable heading width to prevent layout jumps.
+      const word=$('#rotatingWord');const words=['actionable.','understandable.','resilient.'];let ix=0;
+      setInterval(()=>{ix=(ix+1)%words.length;word.animate([{opacity:1,filter:'blur(0px)',transform:'translateY(0)'},{opacity:0,filter:'blur(3px)',transform:'translateY(-7px)'}],{duration:170,easing:'ease-in'}).finished.then(()=>{word.textContent=words[ix];word.animate([{opacity:0,filter:'blur(3px)',transform:'translateY(7px)'},{opacity:1,filter:'blur(0px)',transform:'translateY(0)'}],{duration:240,easing:'ease-out'})}).catch(()=>{word.textContent=words[ix]});},4200);
+    }
+    // Count up highlights when they enter view.
+    const counters=$$('[data-count]');
+    const countUp=el=>{const target=Number(el.dataset.count);if(target===2024){el.textContent='2024';return}if(reduceMotion){el.textContent=target;return}const start=performance.now();const duration=1050;const tick=now=>{const p=Math.min((now-start)/duration,1);el.textContent=Math.round(target*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(tick)};requestAnimationFrame(tick)};
+    if('IntersectionObserver' in window){const cio=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){countUp(e.target);cio.unobserve(e.target)}})},{threshold:.5});counters.forEach(el=>cio.observe(el))}else counters.forEach(countUp);
+    if(!isTouch&&!reduceMotion){
+      const glow=$('#cursorGlow');let gx=innerWidth/2,gy=innerHeight/2,tx=gx,ty=gy;addEventListener('pointermove',e=>{tx=e.clientX;ty=e.clientY},{passive:true});
+      const animateGlow=()=>{gx+=(tx-gx)*.07;gy+=(ty-gy)*.07;glow.style.left=gx+'px';glow.style.top=gy+'px';requestAnimationFrame(animateGlow)};requestAnimationFrame(animateGlow);
+      $$('[data-spotlight]').forEach(card=>card.addEventListener('pointermove',e=>{const b=card.getBoundingClientRect();card.style.setProperty('--mouse-x',(e.clientX-b.left)+'px');card.style.setProperty('--mouse-y',(e.clientY-b.top)+'px')}));
+      const heroStage=$('#heroStage');const heroVisual=$('.hero-visual');
+      heroVisual.addEventListener('pointermove',e=>{const r=heroVisual.getBoundingClientRect();const x=(e.clientX-r.left)/r.width-.5;const y=(e.clientY-r.top)/r.height-.5;heroStage.style.transform=`rotateY(${x*8}deg) rotateX(${-y*8}deg)`;heroStage.style.animationPlayState='paused'});
+      heroVisual.addEventListener('pointerleave',()=>{heroStage.style.transform='';heroStage.style.animationPlayState='running'});
+    }
+
+    // Canvas starfield/network: low motion and capped nodes for mobile performance.
+    const canvas=$('#network');const context=canvas.getContext && canvas.getContext('2d');
+    if(context&&!reduceMotion){
+      let w=0,h=0,nodes=[],raf=0,inViewport=true;const dpr=Math.min(devicePixelRatio||1,2);
+      const resize=()=>{const r=canvas.getBoundingClientRect();w=r.width;h=r.height;canvas.width=Math.floor(w*dpr);canvas.height=Math.floor(h*dpr);context.setTransform(dpr,0,0,dpr,0,0);const amount=Math.min(w<600?24:45,Math.ceil(w/24));nodes=Array.from({length:amount},()=>({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.24,vy:(Math.random()-.5)*.24,r:Math.random()*1.2+.4}))};
+      resize();addEventListener('resize',resize,{passive:true});
+      const observer=new IntersectionObserver(es=>{inViewport=es[0].isIntersecting},{threshold:0});observer.observe(canvas);
+      let frame=0;const draw=()=>{raf=requestAnimationFrame(draw);if(!inViewport || document.hidden)return;frame++;if(frame%2) return;context.clearRect(0,0,w,h);
+        const rgb=document.documentElement.dataset.theme==='light'?'31,96,129':'102,241,216';
+        nodes.forEach((n,i)=>{n.x+=n.vx;n.y+=n.vy;if(n.x<0||n.x>w)n.vx*=-1;if(n.y<0||n.y>h)n.vy*=-1;context.beginPath();context.fillStyle=`rgba(${rgb},0.48)`;context.arc(n.x,n.y,n.r,0,Math.PI*2);context.fill();for(let j=i+1;j<nodes.length;j++){const m=nodes[j],dx=n.x-m.x,dy=n.y-m.y,dist=dx*dx+dy*dy;if(dist<145*145){context.beginPath();context.strokeStyle=`rgba(${rgb},${.14*(1-dist/(145*145))})`;context.moveTo(n.x,n.y);context.lineTo(m.x,m.y);context.stroke()}}})};draw();
+    }
+
+    // Project filtering.
+    $$('.filter-btn').forEach(btn=>btn.addEventListener('click',()=>{
+      $$('.filter-btn').forEach(b=>b.setAttribute('aria-pressed',String(b===btn)));
+      $$('.work-card').forEach(card=>{card.hidden=btn.dataset.filter!=='all'&&card.dataset.category!==btn.dataset.filter});
+    }));
+
+    const cases={
+      fedramp:{category:'FEDERAL CLOUD / ADVISORY METHOD',title:'FedRAMP Low, Moderate & High',intro:'Experience supporting security and assessment-readiness work across FedRAMP Low, Moderate, and High baselines, emphasizing traceable control implementation and understandable evidence.',points:['Interpret security control requirements across applicable FedRAMP baselines.','Connect NIST 800-53 requirements to implementation statements and artifacts.','Develop and refine security documentation used for readiness discussions.','Identify gaps and inconsistencies before assessment activity.'],footer:'Framework-focused workflow · No confidential engagement details'},
+      dod:{category:'DOD CLOUD / SECURITY ADVISORY',title:'DoD IL4, IL5 & IL6',intro:'Experience with DoD Cloud Computing impact-level requirements, with attention to documentation quality, control expectations, and regulated cloud responsibilities.',points:['Work across the distinct security requirements and expectations associated with IL4, IL5, and IL6.','Trace applicable control responsibilities and implementation narratives.','Support consistency among documented safeguards, artifacts, and assessment needs.','Maintain a clear separation between publicly describable capabilities and confidential engagement details.'],footer:'Impact-level experience · No sensitive architecture or client details'},
+      documentation:{category:'SECURITY DOCUMENTATION / PROFESSIONAL WORK',title:'Security Documentation Development',intro:'Security documentation development is a core part of my advisory experience: making complex control requirements clear, traceable, and usable.',points:['Develop and refine system security documentation and control narratives.','Translate technical or procedural implementations into understandable documentation.','Align documentation and supporting evidence to stated security requirements.','Improve clarity and consistency for review and assessment preparation.'],footer:'Documentation workflow · Examples generalized for confidentiality'},
+      cmmc:{category:'DEFENSE / READINESS METHOD',title:'CMMC Level 2 Scoping',intro:'A method for turning complex CUI environments and NIST 800-171 requirements into a clearer picture of assessment scope and readiness.',points:['Trace where CUI is processed, stored, or transmitted and identify relevant assets.','Connect assessment objectives with evidence requests and implementation statements.','Document gaps in system security plans and actionable remediation tracking.','Keep boundaries and shared responsibilities understandable to stakeholders.'],footer:'Framework-focused workflow · No confidential engagement details'},
+      risk:{category:'SECURITY GOVERNANCE / ADVISORY METHOD',title:'Control Gap & Risk Mapping',intro:'Practical risk work is more than listing failed controls. The goal is to make security findings useful for decisions and remediation.',points:['Compare stated control implementation with the underlying technical or procedural evidence.','Classify gaps in terms of exposure, context, and potential organizational impact.','Separate immediate corrections from longer-term changes and document ownership.','Create a traceable chain from requirement to gap to next action.'],footer:'Framework-focused workflow · No confidential engagement details'},
+      threat:{category:'INDEPENDENT LEARNING / TECHNICAL LAB',title:'Threat Investigation Exercises',intro:'Independent practice with cybersecurity challenge artifacts and defensive investigation techniques in intentionally controlled lab environments.',points:['Correlate system and application log entries to establish a timeline of activity.','Explore memory for process artifacts and possible signs of tampering or concealment.','Inspect packet captures for network patterns and suspicious traffic.','Document evidence, assumptions, and findings so another analyst can retrace the work.'],footer:'Independent educational exercises · Not production incident work'}
+    };
+    const modalOverlay=$('#projectModal'),modal=$('.modal',modalOverlay);let priorFocus=null;
+    const closeModal=()=>{modalOverlay.classList.remove('open');document.body.classList.remove('modal-open');if(priorFocus)priorFocus.focus()};
+    $$('.work-open').forEach(btn=>btn.addEventListener('click',()=>{
+      const item=cases[btn.dataset.project];if(!item)return;priorFocus=document.activeElement;
+      $('#modalCategory').textContent=item.category;$('#modalTitle').textContent=item.title;$('#modalIntro').textContent=item.intro;$('#modalFooter').textContent=item.footer;
+      const ul=$('#modalPoints');ul.replaceChildren();item.points.forEach(p=>{const li=document.createElement('li');li.textContent=p;ul.appendChild(li)});
+      modalOverlay.classList.add('open');document.body.classList.add('modal-open');$('#modalClose').focus();
+    }));
+    $('#modalClose').addEventListener('click',closeModal);modalOverlay.addEventListener('click',e=>{if(e.target===modalOverlay)closeModal()});
+
+    // Command palette. Navigation is the only action here; no backend dependencies.
+    const paletteOverlay=$('#paletteBackdrop'),paletteInput=$('#paletteInput'),paletteList=$('#paletteList');
+    const paletteItems=[['Home','Introduction','#home'],['Expertise','Security focus areas','#expertise'],['Selected Work','Framework workflows and technical labs','#work'],['Cyber Projects','Independent labs and write-ups','#cyber-projects'],['LinkedIn','Professional networking','#linkedin'],['Experience','Career timeline','#experience'],['Credentials','Certifications and education','#credentials'],['Interactive Console','Explore terminal commands','#terminal-demo'],['Contact','Get in touch','#contact']];
+    let paletteIndex=0,filtered=[];
+    function drawPalette(query=''){
+      filtered=paletteItems.filter(item=>(item[0]+' '+item[1]).toLowerCase().includes(query.toLowerCase()));paletteIndex=0;paletteList.replaceChildren();
+      if(!filtered.length){const empty=document.createElement('div');empty.className='palette-help';empty.textContent='No matching sections';paletteList.appendChild(empty);return}
+      filtered.forEach((item,i)=>{const btn=document.createElement('button');btn.type='button';btn.className='palette-option';btn.innerHTML='<span></span><small></small>';btn.children[0].textContent=item[0];btn.children[1].textContent=item[1];btn.dataset.index=i;btn.addEventListener('click',()=>selectPalette(i));paletteList.appendChild(btn)});highlightPalette();
+    }
+    function highlightPalette(){ $$('.palette-option',paletteList).forEach((btn,i)=>{btn.style.background=i===paletteIndex?'rgba(var(--accent-rgb),.09)':'';btn.setAttribute('aria-selected',String(i===paletteIndex))}); }
+    function openPalette(){closeModal();setMenu(false);paletteOverlay.classList.add('open');document.body.classList.add('modal-open');paletteInput.value='';drawPalette();paletteInput.focus();}
+    function closePalette(){paletteOverlay.classList.remove('open');document.body.classList.remove('modal-open')}
+    function selectPalette(i){const item=filtered[i];if(!item)return;closePalette();$(item[2])?.scrollIntoView({behavior:reduceMotion?'auto':'smooth'});}
+    $('#paletteToggle').addEventListener('click',openPalette);$('#mobilePalette').addEventListener('click',openPalette);
+    paletteInput.addEventListener('input',()=>drawPalette(paletteInput.value));
+    paletteInput.addEventListener('keydown',e=>{if(e.key==='ArrowDown'){e.preventDefault();paletteIndex=(paletteIndex+1)%Math.max(1,filtered.length);highlightPalette()}else if(e.key==='ArrowUp'){e.preventDefault();paletteIndex=(paletteIndex-1+filtered.length)%Math.max(1,filtered.length);highlightPalette()}else if(e.key==='Enter'){e.preventDefault();selectPalette(paletteIndex)}});
+    paletteOverlay.addEventListener('click',e=>{if(e.target===paletteOverlay)closePalette()});
+    document.addEventListener('keydown',e=>{
+      if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();paletteOverlay.classList.contains('open')?closePalette():openPalette()}
+      if(e.key==='Escape'){if(paletteOverlay.classList.contains('open'))closePalette();else if(modalOverlay.classList.contains('open'))closeModal();else setMenu(false)}
+      if(e.key==='Tab'){
+        const activeDialog=modalOverlay.classList.contains('open')?modal:paletteOverlay.classList.contains('open')?$('.palette',paletteOverlay):null;
+        if(activeDialog){const items=$$('button:not([disabled]),input:not([disabled]),a[href]',activeDialog).filter(el=>el.offsetParent!==null);if(items.length){const first=items[0],last=items.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}}}
+      }
+    });
+
+    // Fake terminal with intentional, whitelisted commands; not a real shell.
+    const output=$('#terminalOutput'),input=$('#terminalInput'),commands={
+      help:'Commands: help · about · skills · grc · experience · credentials · projects · doctorate · linkedin · github · contact · clear',
+      about:'Brandon Keesecker — Public Sector Advisory Consultant at Coalfire. Focus: translating cybersecurity frameworks into actionable guidance.',
+      skills:'FedRAMP Low / Moderate / High | DoD IL4 / IL5 / IL6 | Security Documentation | CMMC L2 | NIST 800-53 | HITRUST / HIPAA / SOC 2 exposure | Cloud Security',
+      grc:'Additional experience and exposure: HITRUST, HIPAA, SOC 2, gap assessments, control mapping, evidence review, risk tracking, and remediation planning.',
+      experience:'2025–present: Public Sector Advisory Consultant, Coalfire. 2024–2025: Cybersecurity Advisory Intern, Coalfire.',
+      credentials:'CCSK (Cloud Security Alliance) | CompTIA A+ | Google Advanced Data Analytics | Google Data Analytics | Google IT Support | MOS Master | WVU Master\'s in Cybersecurity Business Management',
+      projects:'Six live demos: ControlTrace evidence, SignalHunt detections, CloudGuard architecture, RiskMatrix risk register, ConfigLens AWS configuration scanning, and AttackPath defensive graph modeling. Open Cyber Projects to launch.',
+      doctorate:'Future goal: pursue doctoral study in cybersecurity in the near future. Not enrolled and no doctorate earned yet.',
+      linkedin:'Connect with Brandon on LinkedIn: https://www.linkedin.com/in/brandon-keesecker-i-ccsk-aws-ccp-24463b242/',
+      github:'GitHub profile: https://github.com/itsbdk03 — independent public-safe cybersecurity labs will be shared here.',
+      contact:'Email: brandondkeesecker@gmail.com'
+    };
+    function terminalLine(message,type='normal'){
+      const div=document.createElement('div');div.className='terminal-line';
+      if(type==='prompt'){const b=document.createElement('span');b.className='prompt';b.textContent='visitor@bk:~$ ';div.append(b,document.createTextNode(message))}
+      else{const span=document.createElement('span');if(type==='muted')span.className='terminal-muted';if(type==='good')span.className='terminal-good';span.textContent=message;div.appendChild(span)}
+      output.appendChild(div);output.scrollTop=output.scrollHeight;
+    }
+    function runCommand(value){const command=value.trim().toLowerCase();if(!command)return;terminalLine(value,'prompt');if(command==='clear'){output.replaceChildren();return}if(commands[command])terminalLine(commands[command],'good');else terminalLine(`Unknown command: ${command}. Type 'help' to see available commands.`,'muted');terminalLine(' ')}
+    $('#terminalForm').addEventListener('submit',e=>{e.preventDefault();runCommand(input.value);input.value=''});
+    $$('[data-command]').forEach(btn=>btn.addEventListener('click',()=>{runCommand(btn.dataset.command);input.focus()}));
+
+    $('#backTop').addEventListener('click',()=>scrollTo({top:0,behavior:reduceMotion?'auto':'smooth'}));
+    $('#copyEmail').addEventListener('click',async()=>{
+      const button=$('#copyEmail'),original=button.innerHTML;
+      try{
+        if(navigator.clipboard?.writeText){await navigator.clipboard.writeText('brandondkeesecker@gmail.com')}else{
+          const field=document.createElement('textarea');field.value='brandondkeesecker@gmail.com';field.style.position='fixed';field.style.opacity='0';document.body.appendChild(field);field.select();if(!document.execCommand('copy'))throw new Error('Copy not supported');field.remove();
+        }
+        button.textContent='Copied ✓';setTimeout(()=>{button.innerHTML=original},2000);
+      }catch(e){button.textContent='Select email below to copy';setTimeout(()=>{button.innerHTML=original},2800)}
+    });
+  })();
+  </script>
+</body>
+</html>

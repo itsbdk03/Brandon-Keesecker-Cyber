@@ -1,0 +1,93 @@
+{
+  "account": {
+    "alias": "research-lab-sample",
+    "rootMfa": true
+  },
+  "s3Buckets": [
+    {
+      "name": "demo-public-assets",
+      "blockPublicAccess": true,
+      "enforceTLS": true,
+      "encryption": {
+        "enabled": true,
+        "type": "SSE-S3"
+      }
+    },
+    {
+      "name": "audit-archive",
+      "blockPublicAccess": true,
+      "enforceTLS": true,
+      "encryption": {
+        "enabled": true,
+        "type": "SSE-KMS"
+      }
+    }
+  ],
+  "iamPolicies": [
+    {
+      "name": "over-permissive-demo",
+      "statements": [
+        {
+          "Effect": "Allow",
+          "Action": [
+            "s3:GetObject"
+          ],
+          "Resource": "arn:aws:s3:::demo-public-assets/*"
+        }
+      ]
+    },
+    {
+      "name": "reader-example",
+      "statements": [
+        {
+          "Effect": "Allow",
+          "Action": [
+            "s3:GetObject"
+          ],
+          "Resource": "arn:aws:s3:::audit-archive/*"
+        }
+      ]
+    }
+  ],
+  "securityGroups": [
+    {
+      "id": "sg-remote-admin",
+      "ingress": [
+        {
+          "protocol": "tcp",
+          "fromPort": 22,
+          "toPort": 22,
+          "cidr": "10.20.0.0/16"
+        },
+        {
+          "protocol": "tcp",
+          "fromPort": 443,
+          "toPort": 443,
+          "cidr": "0.0.0.0/0"
+        }
+      ]
+    }
+  ],
+  "cloudTrail": {
+    "enabled": true,
+    "multiRegion": true,
+    "logFileValidation": true
+  },
+  "rdsInstances": [
+    {
+      "id": "orders-db-demo",
+      "publiclyAccessible": false,
+      "storageEncrypted": true
+    }
+  ],
+  "ebsVolumes": [
+    {
+      "id": "vol-test-001",
+      "encrypted": true
+    },
+    {
+      "id": "vol-audit-002",
+      "encrypted": true
+    }
+  ]
+}

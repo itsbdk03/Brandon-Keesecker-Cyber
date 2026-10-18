@@ -1,0 +1,12 @@
+timestamp,type,user,ip,status,process,destination,detail
+2026-10-01T12:00:00Z,auth,alex,192.0.2.18,success,,,Normal MFA login
+2026-10-01T12:01:00Z,auth,jordan,203.0.113.44,failure,,,Incorrect password
+2026-10-01T12:02:00Z,auth,jordan,203.0.113.44,failure,,,Incorrect password
+2026-10-01T12:03:00Z,auth,jordan,203.0.113.44,failure,,,Incorrect password
+2026-10-01T12:04:00Z,auth,jordan,203.0.113.44,failure,,,Incorrect password
+2026-10-01T12:05:00Z,auth,jordan,203.0.113.44,failure,,,Incorrect password
+2026-10-01T12:06:00Z,auth,jordan,203.0.113.44,success,,,Login after failures
+2026-10-01T12:07:00Z,process,jordan,10.0.4.10,started,powershell.exe,,Suspicious script invocation to investigate
+2026-10-01T12:08:00Z,network,jordan,10.0.4.10,allowed,,203.0.113.44,Destination is in configured watchlist
+2026-10-01T12:09:00Z,auth,maya,198.51.100.11,success,,,Routine authentication
+2026-10-01T12:10:00Z,network,svc-web,10.0.0.22,allowed,,192.0.2.80,Routine API call
