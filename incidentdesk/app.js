@@ -28,7 +28,7 @@ function caseItem(item){
 }
 function renderOverview(){
  const overview=s.mode==='live'&&s.metrics?s.metrics:M.overview(rows('incidents'));
- const metrics=[['TOTAL CASES',overview.total,'Cases in visible workspace'],['ACTIVE INVESTIGATIONS',overview.open,'Not yet resolved'],['OPEN CRITICAL',overview.critical,'High-priority response'],['CASES RESOLVED',overview.resolved,'Closed after investigation']];
+ const metrics=[['TOTAL CASES',overview.total,'Cases in visible workspace'],['ACTIVE INVESTIGATIONS',overview.open,'Not yet resolved'],['OPEN CRITICAL',overview.critical,'High-priority response'],['CASES RESOLVED',overview.resolved,'Closed after investigation'],['OVERDUE RESPONSES',overview.overdue||0,'Past modeled response deadline']];
  const host=q('#kpiGrid');clear(host);for(const [label,count,note] of metrics){const card=el('div','kpi');card.append(el('span','kpi-label',label),el('strong','',String(count)),el('small','',note));host.append(card)}
  graph(q('#severityGraph'),overview.bySeverity,{critical:'#fc8096',high:'#f4ad82',medium:'#eacb8c',low:'#89c3ec'});
  graph(q('#statusGraph'),overview.byStatus,{new:'#79b8ed',triage:'#dfc787',investigating:'#8c9fe9',contained:'#73d9bf',resolved:'#4eab97'});
@@ -87,7 +87,7 @@ function showDetail(id){
  s.selected=id;q('#detailTitle').textContent=item.title;q('#detailId').textContent=key(item);
  const badges=q('#detailMeta');clear(badges);badges.append(badge(item.severity),badge(item.status),el('span','mono','Created '+formatDate(item.created_at)));const deadline=O.deadline(item);q('#deadlineInfo').textContent=deadline.visible?'Response deadline: '+new Date(deadline.due_at).toLocaleString()+(deadline.overdue?' · OVERDUE':''):'Response deadline not recorded in this fictional case.';q('#deadlineInfo').classList.toggle('overdue',deadline.overdue);
  q('#detailDescription').textContent=item.description||'No description supplied.';
- q('#editIncident').disabled=!canEdit();q('#noteForm').hidden=!canEdit();q('#evidenceForm').hidden=!canEdit();
+ q('#editIncident').disabled=!canEdit();q('#escalateIncident').disabled=!canEdit()||item.severity==='critical'||item.status==='resolved';q('#noteForm').hidden=!canEdit();q('#evidenceForm').hidden=!canEdit();
  for(const b of document.querySelectorAll('.detail-tab')){b.classList.toggle('active',b.dataset.detail==='notes');b.setAttribute('aria-selected',b.dataset.detail==='notes'?'true':'false')}
  for(const p of document.querySelectorAll('.detail-page'))p.classList.toggle('active',p.id==='detail-notes');
  const comments=rows('comments').filter(c=>c.incident_id===id).slice().sort((a,b)=>Date.parse(b.created_at)-Date.parse(a.created_at));
@@ -254,6 +254,16 @@ function bind(){
  q('#clearFilters').addEventListener('click',()=>{q('#search').value='';q('#statusFilter').value='';q('#severityFilter').value='';if(s.mode==='live'){s.pageIndex=0;refreshLive().catch(e=>toast(e.message))}else renderCases()});
  q('#incidentForm').addEventListener('submit',saveIncident);q('#noteForm').addEventListener('submit',saveNote);q('#evidenceForm').addEventListener('submit',upload);
  q('#editIncident').addEventListener('click',()=>{const item=rows('incidents').find(x=>x.id===s.selected);q('#detailDialog').close();openForm(item)});
+ q('#escalateIncident').addEventListener('click',async()=>{
+  const item=rows('incidents').find(x=>x.id===s.selected);if(!item||!canEdit()||item.severity==='critical'||item.status==='resolved')return;
+  try{
+   const next={title:item.title,description:item.description,severity:'critical',status:item.status};
+   if(s.mode==='demo'){M.update(s.store,item.id,next);persist()}
+   else{await promiseResult(await s.client.from('incidents').update({severity:'critical'}).eq('id',item.id).eq('workspace_id',s.workspace.id));await refreshLive()}
+   showDetail(item.id);render();toast('Severity escalated to critical and audit history updated');
+  }catch(err){toast('Escalation failed: '+err.message)}
+ });
+
  q('#exportIncident').addEventListener('click',()=>{const item=rows('incidents').find(x=>x.id===s.selected);if(!item)return;const id=item.id;download((item.key||'incidentdesk-case')+'.md',M.report(item,rows('comments').filter(x=>x.incident_id===id),rows('events').filter(x=>x.incident_id===id),rows('evidence').filter(x=>x.incident_id===id)))});
  for(const b of document.querySelectorAll('.detail-tab'))b.addEventListener('click',()=>{for(const x of document.querySelectorAll('.detail-tab'))x.classList.toggle('active',x===b);for(const x of document.querySelectorAll('.detail-page'))x.classList.toggle('active',x.id==='detail-'+b.dataset.detail)});
  for(const b of document.querySelectorAll('[data-close]'))b.addEventListener('click',()=>q('#'+b.dataset.close).close());
@@ -275,4 +285,7 @@ function bind(){
  });
 }
 bind();mode();render();initializeLive().catch(e=>toast('Supabase initialization failed: '+e.message));
+window.addEventListener('online',()=>{if(s.mode==='live'){subscribe();refreshLive().catch(e=>toast('Reconnect failed: '+e.message))}});
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&s.mode==='live')refreshLive().catch(e=>console.warn('Incident refresh:',e.message))});
+setInterval(()=>{if(s.mode==='live'&&s.realtimeStatus!=='SUBSCRIBED'&&document.visibilityState==='visible')refreshLive().catch(e=>console.warn('Fallback refresh:',e.message))},60000);
 })();
