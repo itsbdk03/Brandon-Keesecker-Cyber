@@ -4,7 +4,7 @@
 ![Browser lab checks](https://github.com/itsbdk03/Brandon-Keesecker-Cyber/actions/workflows/browser-smoke.yml/badge.svg)
 ![Accessibility and screenshots](https://github.com/itsbdk03/Brandon-Keesecker-Cyber/actions/workflows/accessibility-visual.yml/badge.svg)
 
-**Seven local-first interactive cybersecurity labs** · 66 automated tests · Synthetic data · No API keys or cloud credentials required.
+**Seven local-first interactive cybersecurity labs** · 76 automated tests · Synthetic data · No API keys or cloud credentials required.
 
 An animated, responsive, self-contained professional cybersecurity website. It does not require an API key, build system, package installation, account, or paid service.
 
@@ -136,6 +136,13 @@ The [Engineering Notes page](labs/methodology.html) has been refreshed from five
 
 The shared [architecture dossier model](labs/engineering-model.js) and [visual renderer](labs/engineering-lens.js) have their own regression checks. The automated browser workflow opens each dossier, verifies its four steps, downloads its technical brief, and opens the complete Engineering Notes page in desktop and narrow touch layouts. All preloaded examples remain synthetic and all claims are scoped to the actual implementation.
 
+## Evidence Checks — interactive recruiter exercises
+
+Each of the **seven existing labs** now has a local **Evidence Check** section containing one focused, three-step security analysis exercise. A visitor follows the task, uses the existing workbench, and selects **Verify current result** to check a deterministic condition against the current browser state. Successful outcomes enable an optional, copyable Markdown evidence note; no completion is transmitted to a server and no certification is implied.
+
+Examples include source-matched detections in SignalHunt, verified remediation rather than disappearing JSON fields in ConfigLens, zero modeled reachable targets in AttackPath, and an improved RA-5 documentation record in AssuranceFlow. The checks are deliberately small and explain what constitutes a result and what further real-world evidence would be needed.
+
+The standalone [exercise engine](labs/exercise-model.js) and [browser adapter](labs/exercise-mode.js) remain part of the existing labs, not an additional project. Ten dedicated regression tests cover all seven completion criteria, including false-positive cases and missing state. The browser suite tests both failure and success states for ConfigLens plus successful AttackPath and AssuranceFlow scenarios. See the [Evidence Check documentation](docs/EVIDENCE-CHECKS.md) for task definitions and explicit trust boundaries.
 ## Guided reviewer mode (all seven existing labs)
 
 A non-blocking, keyboard-accessible **Guided walkthrough** control is available inside both the six-tab lab hub and AssuranceFlow. Four curated steps per lab highlight the specific controls to inspect, the outcome to validate, and the scenario limitations. The tour supports Previous, Next, Finish, Escape to close, focus indicators, responsive layouts, and reduced-motion preferences. No browser data or client evidence is transmitted.
