@@ -216,10 +216,10 @@ create policy evidence_insert on public.incident_evidence for insert to authenti
  and storage_path like workspace_id::text||'/'||incident_id::text||'/%');
 
 -- Safe path parsing prevents malformed unrelated Storage keys from causing UUID cast errors.
-create or replace function private.safe_path_uuid(object_name text,position integer) returns uuid
+create or replace function private.safe_path_uuid(object_name text,segment_no integer) returns uuid
 language sql immutable set search_path=''
 as $
- select case when split_part(object_name,'/',position) ~*
+ select case when split_part(object_name,'/',segment_no) ~*
   '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}
 insert into storage.buckets(id,name,public,file_size_limit,allowed_mime_types)
 values ('incidentdesk-evidence','incidentdesk-evidence',false,5242880,
@@ -257,7 +257,7 @@ revoke all on function private.workspace_bootstrap(),private.audit_incident(),
 -- Defense-in-depth assertions (automated SQL catalog checks are in tests).
 -- Caution: integration testing with 2 users and different organizations is required before production.
 
- then split_part(object_name,'/',position)::uuid else null::uuid end
+ then split_part(object_name,'/',segment_no)::uuid else null::uuid end
 $;
 revoke all on function private.safe_path_uuid(text,integer) from public;
 grant execute on function private.safe_path_uuid(text,integer) to authenticated;
