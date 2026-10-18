@@ -1,6 +1,6 @@
 /* IncidentDesk public configuration. Publishable keys ARE safe in a browser only when RLS is enforced.
- * Fill in both values after provisioning the Supabase project. Never put a service-role/secret key here.
- * Before that, the application intentionally runs in local synthetic demonstration mode.
+ * This project is connected using the public Supabase project URL and publishable key.
+ * Never put a service-role or other secret key here. The app uses synthetic demo mode until sign-in.
  */
 window.INCIDENTDESK_CONFIG=Object.freeze({
   url:'https://oacafwldgglatzayqtro.supabase.co',
