@@ -24,3 +24,15 @@
   .bk-reviewer-launch{top:129px!important;bottom:auto!important;left:12px!important;right:auto!important}
   .bk-reviewer-tour{top:179px!important;bottom:auto!important;left:12px!important;right:auto!important;width:min(366px,calc(100vw - 24px));max-height:calc(100dvh - 200px)}
 }
+
+/* On phone-sized displays the tour launcher participates in the document flow
+   instead of being fixed to the expanded layout viewport. */
+@media(max-width:680px){
+  .bk-reviewer-launch{
+    position:relative!important;top:auto!important;bottom:auto!important;
+    right:auto!important;left:auto!important;margin:0 0 20px;
+    display:inline-flex;align-items:center;justify-content:center;
+    max-width:calc(100% - 20px);min-height:44px
+  }
+  .bk-reviewer-tour{position:fixed!important;top:160px!important;bottom:auto!important}
+}
