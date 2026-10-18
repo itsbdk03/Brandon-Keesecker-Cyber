@@ -30,7 +30,7 @@
     $('#configSectionMissing').textContent=summary.missingSections.length;
     $('#configScopeCount').textContent=summary.scopedSections+'/7 SECTIONS';
     const unknownList=$('#configUnknownList');unknownList.replaceChildren();
-    const addRow=(target,kind,main,detail)=>{const row=document.createElement('div');row.className='config-review-item';const label=document.createElement('strong');label.textContent=kind+' · '+main;const sub=document.createElement('small');sub.textContent=detail;row.append(label,sub);target.append(row)};
+    const addRow=(target,kind,main,detail)=>{const row=document.createElement('div');row.className='config-review-item';row.setAttribute('role','listitem');const label=document.createElement('strong');label.textContent=kind+' · '+main;const sub=document.createElement('small');sub.textContent=detail;row.append(label,sub);target.append(row)};
     for(const c of summary.unknown.slice(0,6))addRow(unknownList,'UNASSESSED',c.ruleId+' · '+c.resource,c.field+' — '+c.reason);
     for(const name of summary.missingSections.slice(0,7))addRow(unknownList,'NOT IN SCOPE',name,'This configuration summary did not include this section. No pass/fail inference is possible.');
     if(!unknownList.children.length)addRow(unknownList,'COVERAGE','No field-level gaps in represented sections','Scope is still limited to the supported checks and JSON model.');
