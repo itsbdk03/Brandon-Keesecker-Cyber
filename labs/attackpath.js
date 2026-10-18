@@ -7,18 +7,47 @@
   const parent=$('#panel-path');if(!parent)return;
   const svgNS='http://www.w3.org/2000/svg';
   const download=(name,content,mime)=>{const url=URL.createObjectURL(new Blob([content],{type:mime}));const a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)};
-  let flags=engine.clone(engine.scenarios.exposed.flags),history=[];
+  let flags=engine.clone(engine.scenarios.exposed.flags),history=[],selectedNode='database';
+  const nodeSelect=$('#pathAssetSelect');
+  for(const node of engine.nodes){const option=document.createElement('option');option.value=node.id;option.textContent=node.name;nodeSelect.append(option)}
+  nodeSelect.value=selectedNode;
+  const fit=$('#pathFit');
+  fit.checked=matchMedia('(max-width:590px)').matches;
+  fit.addEventListener('change',()=>$('#pathDiagram').classList.toggle('path-fit',fit.checked));
+  $('#pathDiagram').classList.toggle('path-fit',fit.checked);
+  nodeSelect.addEventListener('change',()=>{selectedNode=nodeSelect.value||'';render()});
+  function selectNode(id,restoreFocus=false){selectedNode=id;nodeSelect.value=id;render();if(restoreFocus)$('#pathDiagram').querySelector('[data-asset="'+id+'"]')?.focus({preventScroll:true})}
+  const txt=(tag,value,className)=>{const el=document.createElement(tag);if(className)el.className=className;el.textContent=value;return el};
+  function inspect(){
+    const host=$('#pathAssetInspector');host.replaceChildren();if(!selectedNode){host.append(txt('p','Choose a fictional asset to inspect its modeled reachability.'));return}
+    const d=engine.inspectNode(selectedNode,flags);
+    const header=document.createElement('div');header.className='path-inspector-head';
+    header.append(txt('strong',d.name),txt('span',d.target?'PROTECTED TARGET':d.kind.toUpperCase(),'path-inspector-chip'));host.append(header);
+    host.append(txt('p',d.routeCount+' target-reaching modeled route(s) contain this asset. This is not a live exposure determination.','path-inspector-summary'));
+    const list=document.createElement('ul');list.className='path-inspector-list';
+    for(const direction of ['incoming','outgoing']){
+      for(const edge of d[direction]){
+        const el=document.createElement('li');
+        el.append(txt('strong',(direction==='incoming'?'IN':'OUT')+' · '+edge.label));
+        const counterpart=direction==='incoming'?edge.from:edge.to;
+        const required=edge.guards.map(g=>g.label+(g.applied?' [safeguard applied]':' [weakness modeled]')).join('; ');
+        el.append(txt('small',nameById[counterpart]+' · '+(edge.active?'Modeled transition active':'Transition interrupted')+(required?' · '+required:' · no additional weakness flag'),'path-inspector-description'));list.append(el);
+      }
+    }
+    if(!list.childElementCount)list.append(txt('li','No incoming or outgoing transitions modeled.'));host.append(list);
+  }
+
   function diagram(report){
     const host=$('#pathDiagram');host.replaceChildren();
     const s=document.createElementNS(svgNS,'svg');s.setAttribute('viewBox','0 0 855 440');s.setAttribute('class','path-svg');s.setAttribute('role','img');s.setAttribute('aria-label','Illustrative attack graph. Reachable assets are highlighted; blocked paths are dashed.');
     const defs=document.createElementNS(svgNS,'defs');defs.innerHTML='<marker id="pathArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#527689"/></marker><marker id="pathArrowHot" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#ffad77"/></marker>';s.append(defs);
     const reachable=new Set(['internet',...report.paths.flat()]);
     engine.edges.forEach(e=>{const from=engine.nodes.find(n=>n.id===e.from),to=engine.nodes.find(n=>n.id===e.to);const active=report.activeEdges.includes(e);const hot=active&&reachable.has(from.id)&&reachable.has(to.id);let line=document.createElementNS(svgNS,'path');let x1=from.x+76,y1=from.y+29,x2=to.x,y2=to.y+29;line.setAttribute('d',`M${x1},${y1} C${x1+38},${y1} ${x2-38},${y2} ${x2},${y2}`);line.setAttribute('class','path-edge '+(hot?'hot':active?'open':'blocked'));line.setAttribute('marker-end',`url(#${hot?'pathArrowHot':'pathArrow'})`);const tt=document.createElementNS(svgNS,'title');tt.textContent=e.label+(active?' · condition modeled as present':' · interrupted by a safeguard');line.append(tt);s.append(line)});
-    engine.nodes.forEach(n=>{let g=document.createElementNS(svgNS,'g');const classes=['path-node',n.kind,reachable.has(n.id)?'reachable':'safe'];g.setAttribute('class',classes.join(' '));const rect=document.createElementNS(svgNS,'rect');rect.setAttribute('x',n.x);rect.setAttribute('y',n.y);rect.setAttribute('width',152);rect.setAttribute('height',59);rect.setAttribute('rx',12);g.append(rect);let title=document.createElementNS(svgNS,'text');title.setAttribute('x',n.x+76);title.setAttribute('y',n.y+25);title.setAttribute('text-anchor','middle');title.textContent=n.name;g.append(title);let type=document.createElementNS(svgNS,'text');type.setAttribute('x',n.x+76);type.setAttribute('y',n.y+43);type.setAttribute('text-anchor','middle');type.setAttribute('class','path-node-sub');type.textContent=n.kind==='target'?(reachable.has(n.id)?'REACHABLE':'NOT REACHED'):n.kind.toUpperCase();g.append(type);s.append(g)});
+    engine.nodes.forEach(n=>{let g=document.createElementNS(svgNS,'g');const classes=['path-node',n.kind,reachable.has(n.id)?'reachable':'safe',selectedNode===n.id?'selected':''];g.setAttribute('class',classes.join(' '));g.dataset.asset=n.id;g.setAttribute('role','button');g.setAttribute('tabindex','0');g.setAttribute('aria-label','Inspect '+n.name+' modeled security routes');g.setAttribute('aria-pressed',String(selectedNode===n.id));g.addEventListener('click',()=>selectNode(n.id));g.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();selectNode(n.id,true)}});const rect=document.createElementNS(svgNS,'rect');rect.setAttribute('x',n.x);rect.setAttribute('y',n.y);rect.setAttribute('width',152);rect.setAttribute('height',59);rect.setAttribute('rx',12);g.append(rect);let title=document.createElementNS(svgNS,'text');title.setAttribute('x',n.x+76);title.setAttribute('y',n.y+25);title.setAttribute('text-anchor','middle');title.textContent=n.name;g.append(title);let type=document.createElementNS(svgNS,'text');type.setAttribute('x',n.x+76);type.setAttribute('y',n.y+43);type.setAttribute('text-anchor','middle');type.setAttribute('class','path-node-sub');type.textContent=n.kind==='target'?(reachable.has(n.id)?'REACHABLE':'NOT REACHED'):n.kind.toUpperCase();g.append(type);s.append(g)});
     host.append(s);
   }
   function render(){
-    const analysis=engine.analyze(flags);const priorities=engine.prioritize(flags);diagram(analysis);
+    const analysis=engine.analyze(flags);const priorities=engine.prioritize(flags);diagram(analysis);inspect();
     $('#pathReach').textContent=analysis.reachedCount+' / '+engine.targets.length;
     $('#pathRoutes').textContent=analysis.totalPaths;
     $('#pathBroken').textContent=engine.edges.length-analysis.activeEdges.length;
