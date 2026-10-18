@@ -37,7 +37,7 @@ function renderOverview(){
 function renderCases(){
  const params={query:q('#search').value,status:q('#statusFilter').value,severity:q('#severityFilter').value};
  const list=s.mode==='live'?rows('incidents'):M.filter(rows('incidents'),params),tbody=q('#caseRows');clear(tbody);q('#caseEmpty').hidden=list.length>0;const pagination=q('#casePagination');pagination.hidden=s.mode!=='live';if(s.mode==='live'){q('#pageCount').textContent='Page '+(s.pageIndex+1)+' of '+Math.max(1,Math.ceil(s.pageTotal/O.PAGE_SIZE))+' · '+s.pageTotal+' cases';q('#pagePrev').disabled=s.pageIndex===0;q('#pageNext').disabled=(s.pageIndex+1)*O.PAGE_SIZE>=s.pageTotal;}
- for(const item of list){const tr=document.createElement('tr');const a=document.createElement('td');a.append(el('strong','',item.title),el('small','',key(item)));const open=el('button','','Open →');open.type='button';open.setAttribute('aria-label','Open case '+key(item));open.addEventListener('click',()=>showDetail(item.id));const last=document.createElement('td');last.append(open);const owner=item.assigned_to?'Assigned':'Unassigned';const cells=[a,document.createElement('td'),document.createElement('td'),el('td','',owner),el('td','',formatDate(item.updated_at)),last];cells[1].append(badge(item.severity));cells[2].append(badge(item.status));tr.append(...cells);tbody.append(tr)}
+ for(const item of list){const tr=document.createElement('tr');const a=document.createElement('td');a.append(el('strong','',item.title),el('small','',key(item)));const open=el('button','','Open →');open.type='button';open.setAttribute('aria-label','Open case '+key(item));open.addEventListener('click',()=>showDetail(item.id));const last=document.createElement('td');last.append(open);const owner=item.assigned_to?(item.assigned_to===s.user?.id?'You':item.assigned_to.slice(0,8)):'Unassigned';const cells=[a,document.createElement('td'),document.createElement('td'),el('td','',owner),el('td','',formatDate(item.updated_at)),last];cells[1].append(badge(item.severity));cells[2].append(badge(item.status));tr.append(...cells);tbody.append(tr)}
 }
 function activityView(host,events,empty='No activity yet.'){
  clear(host);if(!events.length){host.append(el('p','muted-small',empty));return}
@@ -74,6 +74,10 @@ function openForm(item=null){
  if(!canEdit()){toast('Read-only role: only analysts and admins can modify records.');return}
  s.editing=item?.id||null;
  const form=q('#incidentForm');form.reset();
+ const choices=q('#assigneeSelect');choices.replaceChildren();
+ const blank=el('option','', 'Unassigned');blank.value='';choices.append(blank);
+ for(const member of rows('members')){const option=el('option','',member.user_id===s.user?.id?'You · '+member.role:member.user_id.slice(0,8)+' · '+member.role);option.value=member.user_id;choices.append(option)}
+ choices.value=item?.assigned_to||'';
  q('#formTitle').textContent=item?'Edit incident':'Create incident';
  if(item){for(const k of ['title','description','severity','status'])form.elements.namedItem(k).value=item[k]}
  q('#incidentDialog').showModal();form.elements.namedItem('title').focus()
@@ -104,6 +108,7 @@ async function saveIncident(evt){
  evt.preventDefault();const form=evt.currentTarget;
  const input=Object.fromEntries(new FormData(form));
  const next=M.validate(input);
+ if(s.mode==='live'){const member=rows('members').find(m=>m.user_id===input.assigned_to);next.assigned_to=member?member.user_id:null}
  if(s.editing&&s.mode==='live'){const prior=rows('incidents').find(x=>x.id===s.editing);if(prior&&!O.canTransition(prior.status,next.status)){toast('Invalid transition: '+prior.status+' → '+next.status);return}}
  try{
   if(s.mode==='demo'){if(s.editing)M.update(s.store,s.editing,next);else M.create(s.store,next);persist()}
