@@ -25,6 +25,7 @@ def exercise(browser,url,width,height):
     page.locator("#incidentForm [name=status]").select_option("triage")
     page.locator("#incidentForm button[type=submit]").click()
     expect(page.locator("#incidentDialog")).to_be_hidden()
+    if width < 900: page.locator("#mobileMenu").click()
     page.locator(".nav-item[data-view=incidents]").click()
     expect(page.locator("#view-incidents")).to_be_visible()
     page.locator("#search").fill("Synthetic escalation workflow")
@@ -44,8 +45,10 @@ def exercise(browser,url,width,height):
     assert "Fictional first responder note" in payload
     assert "independent" in payload
     page.locator('[data-close=detailDialog]').click()
+    if width < 900: page.locator("#mobileMenu").click()
     page.locator(".nav-item[data-view=team]").click()
     expect(page.locator("#memberList .member-row")).to_have_count(3)
+    if width < 900: page.locator("#mobileMenu").click()
     page.locator(".nav-item[data-view=activity]").click()
     expect(page.locator("#activityList")).to_contain_text("COMMENTED")
     page.locator("#authButton").click()
