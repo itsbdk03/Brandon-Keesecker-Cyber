@@ -16,6 +16,10 @@ def exercise(browser,url,width,height):
     page.on("pageerror",lambda error:errors.append(str(error)))
     page.goto(url,wait_until="load")
     expect(page.locator("#overviewTitle")).to_be_visible()
+    # A live Supabase client must actually be loadable, even while no user is signed in.
+    page.wait_for_function("typeof window.supabase?.createClient === 'function'",timeout=20000)
+    assert page.evaluate("window.INCIDENTDESK_CONFIG.url.endsWith('.supabase.co')")
+    assert page.evaluate("window.INCIDENTDESK_CONFIG.publishableKey.startsWith('sb_publishable_')")
     expect(page.locator("#modeName")).to_have_text("Fictional demo environment")
     expect(page.locator("#kpiGrid .kpi")).to_have_count(4)
     ARTIFACTS.mkdir(parents=True,exist_ok=True)
