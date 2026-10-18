@@ -254,6 +254,7 @@ function subscribe(){
  s.channel=s.client.channel('incidentdesk:'+s.workspace.id)
  .on('postgres_changes',{event:'*',schema:'public',table:'incidents',filter:'workspace_id=eq.'+s.workspace.id},()=>refreshLive().catch(console.warn))
  .on('postgres_changes',{event:'*',schema:'public',table:'incident_events',filter:'workspace_id=eq.'+s.workspace.id},()=>refreshLive().catch(console.warn))
+ .on('postgres_changes',{event:'*',schema:'public',table:'incident_notifications',filter:'workspace_id=eq.'+s.workspace.id},()=>refreshLive().catch(console.warn))
  .subscribe(status=>{s.realtimeStatus=O.eventLabel(status);mode();if(status==='CHANNEL_ERROR'||status==='TIMED_OUT')toast('Realtime interrupted; refresh or reconnect to see latest case changes');});
 }
 async function initializeLive(){
