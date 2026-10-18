@@ -126,3 +126,39 @@ as $fn$
 $fn$;
 revoke all on function public.workspace_incident_metrics(uuid) from public,anon;
 grant execute on function public.workspace_incident_metrics(uuid) to authenticated;
+
+-- Safe, database-checked team access management. User IDs cannot be changed in client code.
+create or replace function public.set_workspace_member_role(wid uuid,target_user uuid,new_role text)
+returns void language plpgsql security definer set search_path=''
+as $role$
+declare previous_role text;
+begin
+ if auth.uid() is null or not private.is_admin(wid) then raise exception 'Admin membership required'; end if;
+ if new_role not in ('admin','analyst','viewer') then raise exception 'Invalid role'; end if;
+ select role into previous_role from public.workspace_members where workspace_id=wid and user_id=target_user for update;
+ if not found then raise exception 'Member not found'; end if;
+ if previous_role='admin' and new_role<>'admin' and
+  (select count(*) from public.workspace_members where workspace_id=wid and role='admin')<=1
+ then raise exception 'Workspace requires an administrator'; end if;
+ update public.workspace_members set role=new_role where workspace_id=wid and user_id=target_user;
+end
+$role$;
+revoke all on function public.set_workspace_member_role(uuid,uuid,text) from public,anon;
+grant execute on function public.set_workspace_member_role(uuid,uuid,text) to authenticated;
+
+create or replace function public.remove_workspace_member(wid uuid,target_user uuid)
+returns void language plpgsql security definer set search_path=''
+as $remove$
+declare previous_role text;
+begin
+ if auth.uid() is null or not private.is_admin(wid) then raise exception 'Admin membership required'; end if;
+ select role into previous_role from public.workspace_members where workspace_id=wid and user_id=target_user for update;
+ if not found then raise exception 'Member not found'; end if;
+ if previous_role='admin' and
+  (select count(*) from public.workspace_members where workspace_id=wid and role='admin')<=1
+ then raise exception 'Cannot remove last administrator'; end if;
+ delete from public.workspace_members where workspace_id=wid and user_id=target_user;
+end
+$remove$;
+revoke all on function public.remove_workspace_member(uuid,uuid) from public,anon;
+grant execute on function public.remove_workspace_member(uuid,uuid) to authenticated;
