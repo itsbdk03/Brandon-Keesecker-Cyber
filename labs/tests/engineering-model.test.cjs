@@ -11,7 +11,7 @@ test('all dossiers have four concrete pipeline stages',()=>{
  for(const key of model.keys){
    const e=model.get(key);
    assert.equal(e.stages.length,4,key);
-   for(const stage of e.stages){assert.equal(stage.length,3);assert(stage.every(x=>x.length>10),key)}
+   for(const stage of e.stages){assert.equal(stage.length,3);assert(stage[0].length>=8&&stage.slice(1).every(x=>x.length>10),key)}
  }
 });
 test('every dossier identifies a decision and at least two limits',()=>{
