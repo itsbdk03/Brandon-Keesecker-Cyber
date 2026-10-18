@@ -1,0 +1,30 @@
+name: IncidentDesk staging security gate
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  staging-authorization:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run local security and workflow checks
+        run: |
+          node --check incidentdesk/app.js
+          node --check incidentdesk/operations.js
+          node --test incidentdesk/tests/*.test.cjs
+      - name: Run rollback-only RLS tests against staging
+        env:
+          STAGING_DATABASE_URL: ${{ secrets.INCIDENTDESK_STAGING_DATABASE_URL }}
+          PGSSLMODE: require
+        run: |
+          if [ -z "$STAGING_DATABASE_URL" ]; then
+            echo 'BLOCKED: Configure the INCIDENTDESK_STAGING_DATABASE_URL GitHub Actions secret before running staged integration checks.'
+            exit 1
+          fi
+          psql "$STAGING_DATABASE_URL" -v ON_ERROR_STOP=1 -f incidentdesk/tests/rls-transactional.sql
+          echo 'PASS: staged cross-workspace policy checks completed under SQL transaction rollback.'
