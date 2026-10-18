@@ -51,7 +51,7 @@ Email delivery is not live until these secrets, a sender domain, and a reachable
 ## Reproducibility
 
 Automated frontend testing: `.github/workflows/incidentdesk.yml`.
-Database migrations: `schema.sql` then `performance-indexes.sql`, then migrations `0002` through `0008` in numeric order.
+Database migrations: `schema.sql` then `performance-indexes.sql`, then migrations `0002` through `0010` in numeric order.
 Transactional authorization test: `tests/rls-transactional.sql` (do not run on production with existing sensitive data).
 Server code: `functions/secure-workflows/index.ts` (staging and live deployed with JWT verification enabled).
 
@@ -64,3 +64,5 @@ The repository includes .github/workflows/incidentdesk-staging-gate.yml and .git
 The Supabase Edge Function incidentdesk-secure-workflows is deployed in live and staging with JWT verification enabled. Invitation email requires Resend credentials and a verified sender domain in Supabase Edge Functions Secrets. Required keys: RESEND_API_KEY, INCIDENTDESK_MAIL_FROM and INCIDENTDESK_APP_URL. Without these, sending is disabled, and the browser correctly reports that the email has not been sent. The database's scheduled in-app SLA checks are active, but scheduled outbound SLA emails are not yet connected.
 
 Neither public GitHub Pages publishing nor live email redirect allowlisting has been verified. The controlled release workflow is staged but has not executed, since the protected connection secret and Pages settings must be supplied. Two independently signed-in users have not yet been created: SQL-authenticated, rolled-back policy tests are not a substitute for Auth redirects and live Storage API penetration testing.
+
+Migration 0010 implements whole-workspace weekly and assignment aggregates using security-invoker SQL with RLS. The operational SQL test was extended to reject cross-tenant reads of this RPC and was executed with rollback on staging and live.
