@@ -14,3 +14,8 @@
 .deadline-info{padding:10px 13px;color:#8be3d1;background:#10323b;border:1px solid #326c71;border-radius:8px;font:700 11px/1.5 var(--mono)}
 .deadline-info.overdue{color:#ffc9ad;border-color:#a96d51;background:#412b29}
 @media(max-width:620px){.pagination{padding:13px 12px;justify-content:space-between}.pagination .button{font-size:10px;padding:7px 10px}}
+
+/* IncidentDesk v3: escalation and five live security metrics. */
+@media(min-width:1201px){.kpi-grid{grid-template-columns:repeat(5,minmax(0,1fr))}}
+.button.danger{color:#ffd8ca;border:1px solid #ab604a;background:#4a2b2e}
+.button.danger:hover{background:#65403e}
