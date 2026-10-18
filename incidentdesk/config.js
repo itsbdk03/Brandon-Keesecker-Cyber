@@ -3,7 +3,7 @@
  * Before that, the application intentionally runs in local synthetic demonstration mode.
  */
 window.INCIDENTDESK_CONFIG=Object.freeze({
-  url:'',
-  publishableKey:'',
+  url:'https://oacafwldgglatzayqtro.supabase.co',
+  publishableKey:'sb_publishable_cA7MMARo9mv4ExI4wx795g_pDmZHE0W',
   evidenceBucket:'incidentdesk-evidence'
 });
