@@ -9,10 +9,10 @@ const vm=require('node:vm');
 let inline=0;
 for(const relative of ['index.html','labs/index.html','labs/methodology.html','labs/assuranceflow.html']){
   const markup=fs.readFileSync(path.join(root,relative),'utf8');
-  for(const match of markup.matchAll(/<script\\b([^>]*)>([\\s\\S]*?)<\\/script>/gi)){
-    if(/\\bsrc\\s*=/.test(match[1]))continue;
+  for(const match of markup.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)){
+    if(/\bsrc\s*=/.test(match[1]))continue;
     try{new vm.Script(match[2],{filename:relative});inline++}
-    catch(error){process.stderr.write(String(error)+'\\n');process.exitCode=1}
+    catch(error){process.stderr.write(String(error)+'\n');process.exitCode=1}
   }
 }
 console.log(`Syntax checked ${files.length} JS files and ${inline} inline scripts`);
