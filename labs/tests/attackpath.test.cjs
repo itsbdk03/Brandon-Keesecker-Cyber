@@ -63,3 +63,27 @@ test('invalid inputs are rejected and not counted as safe',()=>{
   assert.throws(()=>e.analyze({}),/boolean/);
   assert.throws(()=>e.analyze({...exposed(),unpatchedApp:'false'}),/boolean/);
 });
+
+test('asset inspection explains route membership and graph dependencies',()=>{
+  const d=e.inspectNode('database',exposed());
+  assert.equal(d.id,'database');assert.equal(d.target,true);
+  assert(d.routeCount>0);assert(d.incoming.length>0);
+  assert(d.incoming.some(x=>x.from==='workload'&&x.active));
+  assert(d.sampledRoutes.every(p=>p.includes('database')));
+});
+test('asset inspector does not confuse applying safeguards with deleting edges',()=>{
+  const before=e.inspectNode('database',exposed());
+  const after=e.inspectNode('database',e.scenarios.hardened.flags);
+  assert.equal(after.routeCount,0);assert.equal(after.onTargetRoute,false);
+  assert.equal(after.incoming.length,before.incoming.length);
+  assert(after.incoming.some(x=>!x.active&&x.guards.some(g=>g.applied)));
+});
+test('every modeled asset is available for inspection',()=>{
+  for(const node of e.nodes){const state=e.inspectNode(node.id,exposed());assert.equal(state.id,node.id);assert.equal(state.name,node.name)}
+});
+test('inspecting assets does not mutate their input safeguard flags',()=>{
+  const flags=exposed(),original=JSON.stringify(flags);
+  e.inspectNode('backup',flags);
+  assert.equal(JSON.stringify(flags),original);
+  assert.throws(()=>e.inspectNode('unknown',flags),/Unknown modeled asset/);
+});
