@@ -6,6 +6,7 @@ import functools, http.server, pathlib, threading
 from playwright.sync_api import sync_playwright, expect
 
 ROOT=pathlib.Path(__file__).resolve().parents[2]
+ARTIFACTS=ROOT/"artifacts"/"incidentdesk"
 class Handler(http.server.SimpleHTTPRequestHandler):
     def log_message(self,*_): pass
 
@@ -17,6 +18,8 @@ def exercise(browser,url,width,height):
     expect(page.locator("#overviewTitle")).to_be_visible()
     expect(page.locator("#modeName")).to_have_text("Fictional demo environment")
     expect(page.locator("#kpiGrid .kpi")).to_have_count(4)
+    ARTIFACTS.mkdir(parents=True,exist_ok=True)
+    page.screenshot(path=str(ARTIFACTS/("overview-"+str(width)+".png")),full_page=True,animations="disabled")
     page.locator("#createOverview").click()
     expect(page.locator("#incidentDialog")).to_be_visible()
     page.locator("#incidentForm [name=title]").fill("Synthetic escalation workflow")
@@ -30,6 +33,9 @@ def exercise(browser,url,width,height):
     expect(page.locator("#view-incidents")).to_be_visible()
     page.locator("#search").fill("Synthetic escalation workflow")
     expect(page.locator("#caseRows tr")).to_have_count(1)
+    page.locator("#search").fill("")
+    page.screenshot(path=str(ARTIFACTS/("queue-"+str(width)+".png")),full_page=True,animations="disabled")
+    page.locator("#search").fill("Synthetic escalation workflow")
     page.locator("#caseRows tr button").click()
     expect(page.locator("#detailDialog")).to_be_visible()
     expect(page.locator("#detailTitle")).to_have_text("Synthetic escalation workflow")
@@ -38,6 +44,7 @@ def exercise(browser,url,width,height):
     expect(page.locator("#caseNotes")).to_contain_text("Fictional first responder note")
     page.locator(".detail-tab[data-detail=history]").click()
     expect(page.locator("#caseHistory")).to_contain_text("COMMENTED")
+    page.screenshot(path=str(ARTIFACTS/("case-"+str(width)+".png")),full_page=True,animations="disabled")
     with page.expect_download() as download:
         page.locator("#exportIncident").click()
     assert download.value.suggested_filename.endswith(".md")
