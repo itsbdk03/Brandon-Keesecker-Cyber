@@ -4,7 +4,7 @@
 (()=>{'use strict';
 const M=window.IncidentDeskModel,O=window.IncidentDeskOps,C=window.INCIDENTDESK_CONFIG||{},q=s=>document.querySelector(s);
 if(!M||!O)return;
-const s={mode:'demo',client:null,user:null,workspace:null,role:'demo',selected:null,view:'overview',channel:null,editing:null,loading:false,store:null,workspaces:[],invites:[],pageIndex:0,pageTotal:0,metrics:null,realtimeStatus:'DISCONNECTED'};
+const s={mode:'demo',client:null,user:null,workspace:null,role:'demo',selected:null,view:'overview',channel:null,editing:null,loading:false,store:null,workspaces:[],invites:[],pageIndex:0,pageTotal:0,metrics:null,realtimeStatus:'DISCONNECTED',playbooks:[],playbookSteps:[],notifications:[],socMetrics:null,custody:[]};
 const clone=x=>JSON.parse(JSON.stringify(x));
 try{s.store=JSON.parse(sessionStorage.getItem('incidentdesk_demo_v1')||'null')}catch(e){}
 if(!s.store||!Array.isArray(s.store.incidents))s.store=M.sample();
@@ -19,7 +19,7 @@ function canEdit(){return s.mode==='demo'||['admin','analyst'].includes(s.role)}
 function isAdmin(){return s.mode==='demo'||s.role==='admin'}
 function urlFor(kind,id){return kind==='workspaces'?null:id}
 function key(item){return item.key||'IR-'+item.id.slice(0,8).toUpperCase()}
-function page(name){s.view=name;for(const v of document.querySelectorAll('.view'))v.classList.toggle('active',v.id==='view-'+name);for(const b of document.querySelectorAll('.nav-item[data-view]')){const on=b.dataset.view===name;b.classList.toggle('active',on);b.setAttribute('aria-current',on?'page':'false')}q('#pageName').textContent=name==='overview'?'Overview':name==='incidents'?'Incidents':name==='activity'?'Activity trail':'Team & access';q('.sidebar').classList.remove('open');q('#mobileMenu').setAttribute('aria-expanded','false');render()}
+function page(name){s.view=name;for(const v of document.querySelectorAll('.view'))v.classList.toggle('active',v.id==='view-'+name);for(const b of document.querySelectorAll('.nav-item[data-view]')){const on=b.dataset.view===name;b.classList.toggle('active',on);b.setAttribute('aria-current',on?'page':'false')}q('#pageName').textContent=name==='overview'?'Overview':name==='incidents'?'Incidents':name==='activity'?'Activity trail':name==='analytics'?'SOC performance':'Team & access';q('.sidebar').classList.remove('open');q('#mobileMenu').setAttribute('aria-expanded','false');render()}
 function graph(host,data,palette){clear(host);const max=Math.max(1,...Object.values(data));for(const [k,v] of Object.entries(data)){const row=el('div','bar-row');const name=el('span','bar-label',k),track=el('div','bar-track'),fill=el('div','bar-fill'),value=el('span','bar-value',String(v));fill.style.width=(v/max*100)+'%';fill.style.background=palette[k]||'#67d5c2';track.append(fill);row.append(name,track,value);host.append(row)}}
 function caseItem(item){
  const row=el('div','case-item'),title=el('div','case-name');title.append(el('strong','',item.title),el('small','',key(item)+' · '+formatDate(item.updated_at)));
@@ -76,6 +76,8 @@ function render(){
  if(s.view==='incidents')renderCases();
  if(s.view==='activity')activityView(q('#activityList'),rows('events').slice().sort((a,b)=>Date.parse(b.created_at)-Date.parse(a.created_at)));
  if(s.view==='team')renderTeam();
+ if(s.view==='analytics')renderAnalytics();
+ renderNotificationCount();
 }
 function mode(){
  const live=s.mode==='live';
@@ -114,7 +116,8 @@ function showDetail(id){
  for(const evidence of rows('evidence').filter(e=>e.incident_id===id)){const row=el('div','evidence-row'),body=el('div','activity-body');body.append(el('strong','',evidence.original_name),el('small','',evidence.size_bytes+' bytes · '+formatDate(evidence.created_at)+' · v'+(evidence.version||1)+(evidence.sha256?' · SHA-256 '+evidence.sha256.slice(0,16)+'…':'')));row.append(el('span','activity-symbol','▣'),body);if(s.mode==='live'){const link=el('button','button subtle','Download');link.type='button';link.addEventListener('click',()=>downloadEvidence(evidence));row.append(link)}files.append(row)}
  if(!files.children.length)files.append(el('p','muted-small','No evidence metadata. Use fictional files only.'));
  activityView(q('#caseHistory'),rows('events').filter(e=>e.incident_id===id).slice().sort((a,b)=>Date.parse(b.created_at)-Date.parse(a.created_at)));
- if(!q('#detailDialog').open)q('#detailDialog').showModal()
+ if(!q('#detailDialog').open)q('#detailDialog').showModal();
+ renderPlaybook().catch(e=>console.warn('Playbook:',e.message));loadCustody().catch(e=>console.warn('Custody:',e.message))
 }
 function download(name,text,type='text/markdown'){
  const blob=new Blob([text],{type:type+';charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1200)
@@ -180,7 +183,7 @@ async function refreshLive(){
   s.invites=(pending||[]).map(x=>({...x,accept:true}));
  }catch(err){s.invites=[];console.warn('Pending invitation lookup failed:',err.message)}
  if(!s.workspace){
-  s.role='none';s.metrics=null;s.pageTotal=0;s.pageIndex=0;
+  s.role='none';s.metrics=null;s.socMetrics=null;s.notifications=[];s.pageTotal=0;s.pageIndex=0;
   s.store={workspaces:[],members:[],incidents:[],comments:[],events:[],evidence:[]};
   mode();render();return;
  }
@@ -195,6 +198,9 @@ async function refreshLive(){
   promiseResult(await client.rpc('workspace_incident_metrics',{wid}))
  ]);
  s.metrics=summary;
+ try{s.socMetrics=await promiseResult(await client.rpc('incident_soc_metrics',{wid}));}catch(e){s.socMetrics=null;console.warn('SOC metrics unavailable:',e.message)}
+ try{s.playbooks=await promiseResult(await client.from('response_playbooks').select('id,title,steps').limit(12));}catch(e){s.playbooks=[];console.warn('Playbooks unavailable:',e.message)}
+ try{s.notifications=await promiseResult(await client.from('incident_notifications').select('*').eq('workspace_id',wid).order('created_at',{ascending:false}).limit(80));}catch(e){s.notifications=[];console.warn('Notifications unavailable:',e.message)}
  s.role=members.find(m=>m.user_id===s.user.id)?.role||'viewer';
  if(s.role==='admin'){
   try{
@@ -255,7 +261,128 @@ async function connected(user){
  catch(e){toast('Workspace loading failed: '+e.message)}
 }
 function disconnected(){if(s.channel&&s.client)s.client.removeChannel(s.channel);s.channel=null;s.user=null;s.workspace=null;s.workspaces=[];s.invites=[];s.metrics=null;s.pageIndex=0;s.role='demo';s.mode='demo';try{s.store=JSON.parse(sessionStorage.getItem('incidentdesk_demo_v1')||'null')||M.sample()}catch(e){s.store=M.sample()}mode();render()}
+
+const starterPlaybooks=[
+ {id:'identity',title:'Suspicious sign-in',steps:[{key:'confirm',title:'Validate alert provenance and sign-in timestamps'},{key:'identity',title:'Confirm identity and MFA challenge records'},{key:'session',title:'Review session and device context'},{key:'contain',title:'Document containment decisions'},{key:'report',title:'Record outcome and residual risk'}]},
+ {id:'endpoint',title:'Endpoint execution',steps:[{key:'scope',title:'Record process tree and execution timestamps'},{key:'artifact',title:'Verify hashes and software signing'},{key:'network',title:'Correlate associated network events'},{key:'decision',title:'Document isolation decision'},{key:'close',title:'Capture findings and owner sign-off'}]},
+ {id:'cloud',title:'Cloud policy drift',steps:[{key:'resource',title:'Identify affected cloud resource'},{key:'baseline',title:'Compare to approved policy baseline'},{key:'scope',title:'Determine modeled affected scope'},{key:'fix',title:'Record change and independent recheck'},{key:'review',title:'Document review and unresolved exposure'}]},
+ {id:'exposure',title:'Potential exposure',steps:[{key:'source',title:'Validate alert source and timeline'},{key:'scope',title:'Identify assets and classifications'},{key:'access',title:'Review access events and object permissions'},{key:'preserve',title:'Preserve fictional investigation records'},{key:'notify',title:'Record escalation decision'}]}
+];
+function getPlaybooks(){return s.playbooks?.length?s.playbooks:starterPlaybooks}
+async function renderPlaybook(){
+ const host=q('#playbookChecklist');if(!host)return;clear(host);
+ const id=s.selected;if(!id){host.append(el('p','muted-small','Select an incident first.'));return}
+ try{
+  if(s.mode==='live'){
+   s.playbookSteps=await promiseResult(await s.client.from('incident_playbook_steps').select('*').eq('incident_id',id).order('created_at',{ascending:true}).limit(100));
+  }else{s.store.playbookSteps=s.store.playbookSteps||[];s.playbookSteps=s.store.playbookSteps.filter(x=>x.incident_id===id)}
+  const current=s.playbookSteps;
+  q('#startPlaybook').disabled=!canEdit()||current.length>0;
+  q('#playbookPick').disabled=!canEdit()||current.length>0;
+  if(!current.length){host.append(el('p','muted-small','Choose one of the response checklists and start it. Every check is a fictional analyst record, not independent incident proof.'));return}
+  const complete=current.filter(x=>x.completed_at).length;
+  host.append(el('p','muted-small',complete+' of '+current.length+' investigation tasks completed.'));
+  for(const item of current){
+   const label=el('label','playbook-step');
+   const check=el('input');check.type='checkbox';check.checked=!!item.completed_at;check.disabled=!canEdit();check.setAttribute('aria-label','Completed: '+item.step_title);
+   const body=el('span','');body.append(el('strong','',item.step_title),el('small','',item.completed_at?'Completed · '+formatDate(item.completed_at):'Awaiting analyst confirmation'));
+   check.addEventListener('change',async()=>{
+    const previous=!check.checked;
+    check.disabled=true;
+    try{
+     if(s.mode==='live'){
+      const data={completed_at:check.checked?new Date().toISOString():null,completed_by:check.checked?s.user.id:null};
+      await promiseResult(await s.client.from('incident_playbook_steps').update(data).eq('id',item.id).eq('workspace_id',s.workspace.id));
+     }else{
+      item.completed_at=check.checked?new Date().toISOString():null;item.completed_by=check.checked?'demo-admin':null;
+      const stored=s.store.playbookSteps.find(x=>x.id===item.id);if(stored)Object.assign(stored,{completed_at:item.completed_at,completed_by:item.completed_by});persist();
+     }
+     await renderPlaybook();toast('Playbook step updated');
+    }catch(e){check.checked=previous;check.disabled=false;toast('Playbook change blocked: '+e.message)}
+   });
+   label.append(check,body);host.append(label);
+  }
+ }catch(e){host.append(el('p','muted-small','Unable to load playbook: '+e.message))}
+}
+async function startPlaybook(){
+ if(!canEdit()||!s.selected)return;
+ const template=getPlaybooks().find(x=>x.id===q('#playbookPick').value);
+ if(!template)return;
+ const steps=template.steps.map(x=>({incident_id:s.selected,workspace_id:s.workspace?.id||'demo-workspace',playbook_id:template.id,step_key:x.key,step_title:x.title,created_by:s.user?.id||'demo-admin'}));
+ try{
+  if(s.mode==='live'){
+   await promiseResult(await s.client.from('incident_playbook_steps').insert(steps));
+  }else{
+   s.store.playbookSteps=s.store.playbookSteps||[];
+   s.store.playbookSteps.push(...steps.map((x,i)=>({...x,id:'demo-step-'+Date.now()+'-'+i,completed_at:null})));
+   persist();
+  }
+  await renderPlaybook();toast('Fictional response playbook started');
+ }catch(e){toast('Unable to start playbook: '+e.message)}
+}
+function renderAnalytics(){
+ const host=q('#socAnalytics');clear(host);
+ const data=s.mode==='live'?s.socMetrics||{}:{
+  cases:rows('incidents').length,
+  resolved:rows('incidents').filter(x=>x.status==='resolved').length,
+  unassigned:rows('incidents').filter(x=>!x.assigned_to).length,
+  overdue_open:0,avg_ack_minutes:null,avg_resolution_hours:null,response_sla_percent:null
+ };
+ const cards=[
+  ['CASES',data.cases??0,'Visible workspace'],
+  ['MTTA',data.avg_ack_minutes==null?'N/A':data.avg_ack_minutes+' min','Acknowledged incidents only'],
+  ['MTTR',data.avg_resolution_hours==null?'N/A':data.avg_resolution_hours+' h','Resolved incidents only'],
+  ['SLA COMPLIANCE',data.response_sla_percent==null?'N/A':data.response_sla_percent+'%','Measured acknowledgments only'],
+  ['OVERDUE',data.overdue_open??0,'Open deadline violations'],
+  ['UNASSIGNED',data.unassigned??0,'Cases awaiting ownership']
+ ];
+ for(const [title,count,detail] of cards){const card=el('div','kpi');card.append(el('span','kpi-label',title),el('strong','',String(count)),el('small','',detail));host.append(card)}
+ const workload={};for(const i of rows('incidents')){const owner=i.assigned_to?'Assigned':'Unassigned';workload[owner]=(workload[owner]||0)+1}graph(q('#socWorkload'),workload,{'Assigned':'#74e1cc','Unassigned':'#edc17c'});
+ const byWeek={};for(const i of rows('incidents')){const when=Date.parse(i.created_at);if(!Number.isFinite(when))continue;const date=new Date(when);const label=date.getUTCFullYear()+'-W'+String(Math.ceil((date-Date.UTC(date.getUTCFullYear(),0,1))/604800000)).padStart(2,'0');byWeek[label]=(byWeek[label]||0)+1}graph(q('#socWeekly'),byWeek,{}); 
+}
+function renderNotificationCount(){
+ const count=(s.notifications||[]).filter(n=>!n.seen_at).length;
+ q('#notificationCount').textContent=String(count);
+}
+async function openNotifications(){
+ const box=q('#notificationList');clear(box);
+ if(s.mode==='live'&&s.workspace){
+  try{s.notifications=await promiseResult(await s.client.from('incident_notifications').select('*').eq('workspace_id',s.workspace.id).order('created_at',{ascending:false}).limit(80));}catch(e){toast('Notification query failed: '+e.message)}
+ }
+ renderNotificationCount();
+ if(!s.notifications?.length){box.append(el('p','muted-small',s.mode==='demo'?'Fictional demo: no alerts are delivered. Connect an authenticated workspace to receive in-app SLA and assignment alerts.':'No response notifications yet. Background SLA checks run every 15 minutes.')); }
+ for(const n of s.notifications||[]){
+  const row=el('div','activity-row'),body=el('div','activity-body');
+  body.append(el('strong','',n.title),el('p','',n.detail),el('small','',formatDate(n.created_at)+(n.seen_at?' · Seen':' · Unread')));
+  row.append(el('span','activity-symbol','!'),body);
+  if(!n.seen_at&&s.mode==='live'){const button=el('button','button subtle','Mark read');button.type='button';button.addEventListener('click',async()=>{
+   try{await promiseResult(await s.client.from('incident_notifications').update({seen_at:new Date().toISOString()}).eq('id',n.id));await openNotifications()}catch(e){toast(e.message)}
+  });row.append(button)}box.append(row);
+ }
+ if(!q('#notificationDialog').open)q('#notificationDialog').showModal();
+}
+async function loadCustody(){
+ const host=q('#custodyList');if(!host)return;clear(host);
+ if(s.mode!=='live'||!s.selected){host.append(el('p','muted-small','No server custody records in the fictional demo.'));return}
+ try{
+  const events=await promiseResult(await s.client.from('evidence_custody_events').select('*').eq('incident_id',s.selected).order('occurred_at',{ascending:false}).limit(100));
+  for(const e of events){const row=el('div','activity-row'),body=el('div','activity-body');body.append(el('strong','',e.action.replaceAll('_',' ')),el('p','',e.description),el('small','',formatDate(e.occurred_at)+' · '+e.sha256.slice(0,14)+'…'));row.append(el('span','activity-symbol','▣'),body);host.append(row)}
+  if(!events.length)host.append(el('p','muted-small','No custody registrations yet.'));
+ }catch(e){host.append(el('p','muted-small','Cannot read custody events: '+e.message))}
+}
+async function exportEvidenceManifest(){
+ const item=rows('incidents').find(i=>i.id===s.selected);if(!item)return;
+ const files=rows('evidence').filter(x=>x.incident_id===item.id).map(e=>({id:e.id,filename:e.original_name,version:e.version||1,sha256:e.sha256||null,size_bytes:e.size_bytes,uploaded_at:e.created_at,uploaded_by:e.uploaded_by}));
+ const body=JSON.stringify({notice:'Fictional or workspace-scoped metadata; client-generated hashes are not independent proof',case_id:item.id,case_title:item.title,files},null,2);
+ const digest=await O.hash(new Blob([body],{type:'application/json'}));
+ download('incidentdesk-evidence-manifest-'+item.id.slice(0,8)+'.json',JSON.stringify({manifest_sha256:digest,manifest:JSON.parse(body)},null,2),'application/json');
+}
+
 function bind(){
+ q('#startPlaybook').addEventListener('click',()=>startPlaybook());
+ q('#notificationButton').addEventListener('click',()=>openNotifications());
+ q('#exportEvidenceManifest').addEventListener('click',()=>exportEvidenceManifest().catch(e=>toast('Manifest error: '+e.message)));
+
  for(const b of document.querySelectorAll('.nav-item[data-view]'))b.addEventListener('click',()=>page(b.dataset.view));
  q('#mobileMenu').addEventListener('click',()=>{const open=q('.sidebar').classList.toggle('open');q('#mobileMenu').setAttribute('aria-expanded',String(open))});
  q('#createOverview').addEventListener('click',()=>openForm());q('#createIncidents').addEventListener('click',()=>openForm());q('#viewAll').addEventListener('click',()=>page('incidents'));
