@@ -65,6 +65,8 @@ def audit(browser, base, label, dims):
         target = skip.get_attribute("href")
         assert target and target.startswith("#"), f"Skip destination invalid on {name}"
         assert page.locator(target).count() == 1, f"Skip target missing on {name}"
+        page.keyboard.press("Tab")
+        expect(skip).to_be_focused()
         page.add_script_tag(path=str(AXE))
         detail = page.evaluate(
             """async () => {
