@@ -1,5 +1,5 @@
 /* Consistent, keyboard-friendly command center, shared by six-tab hub and AssuranceFlow. */
-.bk-command-trigger{position:fixed;right:16px;bottom:17px;z-index:75;border:1px solid #6ee9d7;background:linear-gradient(125deg,#143f4c,#0a3446);color:#edfffb;border-radius:12px;padding:13px 17px;font:750 12px/1.35 system-ui,sans-serif;box-shadow:0 12px 32px #0009;min-height:45px;cursor:pointer;white-space:nowrap}
+.bk-command-trigger{position:fixed;left:16px;right:auto;bottom:17px;z-index:2147483645;border:1px solid #6ee9d7;background:linear-gradient(125deg,#143f4c,#0a3446);color:#edfffb;border-radius:12px;padding:13px 17px;font:750 12px/1.35 system-ui,sans-serif;box-shadow:0 12px 32px #0009;min-height:45px;cursor:pointer;white-space:nowrap}
 .bk-command-trigger:hover{background:#1d5664}
 .bk-command-trigger:focus-visible,.bk-command-dialog button:focus-visible,.bk-command-dialog input:focus-visible{outline:3px solid #e4fffb;outline-offset:3px}
 .bk-command-dialog{border:0;padding:0;background:transparent;color:#ecfaff;max-width:min(95vw,660px);max-height:min(80dvh,710px);overflow:visible}
@@ -22,5 +22,5 @@
 .bk-command-result-end{font:700 9px ui-monospace,monospace;color:#9ed7d5;white-space:nowrap}
 .bk-command-empty{font:12px/1.7 system-ui,sans-serif;color:#bed2df;padding:20px 12px}
 .bk-command-footer{border-top:1px solid #264b5b;padding:11px 19px;font:10px/1.4 ui-monospace,monospace;color:#a3c6d2;display:flex;gap:10px;justify-content:space-between}
-@media(max-width:680px){.bk-command-trigger{position:fixed;right:12px;bottom:12px;padding:11px 13px;font-size:11px;max-width:58vw;min-height:44px}.bk-command-dialog{margin:auto;max-width:calc(100vw - 18px)}.bk-command-panel{max-height:78dvh}.bk-command-heading{padding:12px 14px 8px}.bk-command-search-row{padding:0 14px 6px}.bk-command-hint{margin:4px 14px 10px}.bk-command-results{padding:0 8px 10px}.bk-command-result-end{display:none}}
+@media(max-width:680px){.bk-command-trigger{position:fixed;left:12px;right:auto;bottom:12px;padding:11px 13px;font-size:11px;max-width:58vw;min-height:44px}.bk-command-dialog{margin:auto;max-width:calc(100vw - 18px)}.bk-command-panel{max-height:78dvh}.bk-command-heading{padding:12px 14px 8px}.bk-command-search-row{padding:0 14px 6px}.bk-command-hint{margin:4px 14px 10px}.bk-command-results{padding:0 8px 10px}.bk-command-result-end{display:none}}
 @media(prefers-reduced-motion:reduce){.bk-command-dialog::backdrop{backdrop-filter:none}}
