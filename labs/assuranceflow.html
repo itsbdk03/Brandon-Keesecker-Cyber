@@ -19,4 +19,4 @@ $('exportFragment').addEventListener('click',()=>download('assuranceflow-partial
 $('exportReport').addEventListener('click',()=>download('assuranceflow-review.md',A.report(controls),'text/markdown'));
 window.BKAssuranceReport=()=>A.analyze(controls);
 $('file').addEventListener('change',async e=>{const file=e.target.files?.[0];if(!file)return;if(file.size>1000000){notify('File too large (1 MB maximum)');e.target.value='';return}try{const imported=A.importControls(JSON.parse(await file.text()));if(!imported.length)throw Error('No control records found');controls=imported;initial=JSON.parse(JSON.stringify(imported));active=controls[0].id;$('search').value='';$('filter').value='all';render();notify('Imported '+controls.length+' sample controls locally')}catch(err){notify('Import error: '+esc(err.message).slice(0,130))}e.target.value=''});render()})();
-</script><script src="reviewer-tour.js" defer></script></body></html>
+</script><script src="reviewer-tour.js" defer></script><script src="report-engine.js" defer></script><script src="report-studio.js" defer></script></body></html>
