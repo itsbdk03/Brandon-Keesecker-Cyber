@@ -9,3 +9,10 @@
 /* Ensure floating tour controls remain tappable over transform/animation layers on mobile. */
 .bk-reviewer-launch{position:fixed!important;z-index:2147483646!important;pointer-events:auto!important;isolation:isolate}
 .bk-reviewer-tour{position:fixed!important;z-index:2147483647!important;pointer-events:auto!important;isolation:isolate}
+
+/* In mobile browser viewports, keep controls within the visible left inset even when
+   a wider, horizontally scrollable dashboard affects the layout viewport. */
+@media(max-width:680px){
+  .bk-reviewer-launch{left:12px!important;right:auto!important}
+  .bk-reviewer-tour{left:12px!important;right:auto!important;width:min(366px,calc(100vw - 24px))}
+}
