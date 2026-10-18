@@ -60,9 +60,11 @@ def audit(browser, base, label, dims):
             slug = uri.split("#")[-1]
             expect(page.locator("#panel-" + slug)).to_be_visible()
         # A keyboard user must be able to bypass navigation.
-        skip = page.locator("a[href='#main-content']").first
+        skip = page.locator("a.bk-skip-link").first
         assert skip.count() == 1, f"Skip-to-content link missing on {name}"
-        assert page.locator("#main-content").count() == 1, f"Skip target missing on {name}"
+        target = skip.get_attribute("href")
+        assert target and target.startswith("#"), f"Skip destination invalid on {name}"
+        assert page.locator(target).count() == 1, f"Skip target missing on {name}"
         page.add_script_tag(path=str(AXE))
         detail = page.evaluate(
             """async () => {
