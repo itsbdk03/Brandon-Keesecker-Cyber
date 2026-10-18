@@ -215,6 +215,53 @@ create policy evidence_insert on public.incident_evidence for insert to authenti
  and workspace_id=private.incident_workspace(incident_id)
  and storage_path like workspace_id::text||'/'||incident_id::text||'/%');
 
+-- Safe path parsing prevents malformed unrelated Storage keys from causing UUID cast errors.
+create or replace function private.safe_path_uuid(object_name text,position integer) returns uuid
+language sql immutable set search_path=''
+as $
+ select case when split_part(object_name,'/',position) ~*
+  '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}
+insert into storage.buckets(id,name,public,file_size_limit,allowed_mime_types)
+values ('incidentdesk-evidence','incidentdesk-evidence',false,5242880,
+ array['text/plain','application/json','text/csv','image/png','image/jpeg','application/pdf'])
+on conflict(id) do nothing;
+
+create policy incidentdesk_object_read on storage.objects for select to authenticated
+ using (bucket_id='incidentdesk-evidence'
+ and (select private.member_of(private.safe_path_uuid(name,1)))
+ and private.incident_workspace(private.safe_path_uuid(name,2))=private.safe_path_uuid(name,1));
+create policy incidentdesk_object_upload on storage.objects for insert to authenticated
+ with check (bucket_id='incidentdesk-evidence'
+ and (select private.can_edit(private.safe_path_uuid(name,1)))
+ and private.incident_workspace(private.safe_path_uuid(name,2))=private.safe_path_uuid(name,1)
+ and (select auth.uid()) is not null);
+
+-- Only the authenticated tenant's authorized row changes may reach the Realtime client.
+do $
+begin
+ if exists(select 1 from pg_publication where pubname='supabase_realtime') then
+  if not exists(select 1 from pg_publication_tables where pubname='supabase_realtime'
+     and schemaname='public' and tablename='incidents') then
+    alter publication supabase_realtime add table public.incidents;
+  end if;
+  if not exists(select 1 from pg_publication_tables where pubname='supabase_realtime'
+     and schemaname='public' and tablename='incident_events') then
+    alter publication supabase_realtime add table public.incident_events;
+  end if;
+ end if;
+end $;
+-- Trigger procedures have no reason to be invoked directly by API roles.
+revoke all on function private.workspace_bootstrap(),private.audit_incident(),
+ private.audit_comment(),private.audit_evidence(),private.touch_incident() from public,anon,authenticated;
+
+-- Defense-in-depth assertions (automated SQL catalog checks are in tests).
+-- Caution: integration testing with 2 users and different organizations is required before production.
+
+ then split_part(object_name,'/',position)::uuid else null::uuid end
+$;
+revoke all on function private.safe_path_uuid(text,integer) from public;
+grant execute on function private.safe_path_uuid(text,integer) to authenticated;
+
 -- Private object bucket: max 5 MB. No public link, no HTML, no executables.
 insert into storage.buckets(id,name,public,file_size_limit,allowed_mime_types)
 values ('incidentdesk-evidence','incidentdesk-evidence',false,5242880,
@@ -223,12 +270,12 @@ on conflict(id) do nothing;
 
 create policy incidentdesk_object_read on storage.objects for select to authenticated
  using (bucket_id='incidentdesk-evidence'
- and (select private.member_of((split_part(name,'/',1))::uuid))
- and private.incident_workspace((split_part(name,'/',2))::uuid)=(split_part(name,'/',1))::uuid);
+ and (select private.member_of(private.safe_path_uuid(name,1)))
+ and private.incident_workspace(private.safe_path_uuid(name,2))=private.safe_path_uuid(name,1));
 create policy incidentdesk_object_upload on storage.objects for insert to authenticated
  with check (bucket_id='incidentdesk-evidence'
- and (select private.can_edit((split_part(name,'/',1))::uuid))
- and private.incident_workspace((split_part(name,'/',2))::uuid)=(split_part(name,'/',1))::uuid
+ and (select private.can_edit(private.safe_path_uuid(name,1)))
+ and private.incident_workspace(private.safe_path_uuid(name,2))=private.safe_path_uuid(name,1)
  and (select auth.uid()) is not null);
 
 -- Defense-in-depth assertions (automated SQL catalog checks are in tests).
