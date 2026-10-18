@@ -40,7 +40,8 @@ def check(browser,base,width,height,mobile):
         dossier.locator("summary").click()
         report=page.locator("#panel-"+name+" .bk-print-report")
         expect(report).to_be_visible()
-        with page.expect_download() as export:
+        print("REPORT AUDIT", name, "JS exceptions:", errors, flush=True)
+        with page.expect_download(timeout=8000) as export:
             report.click()
         downloaded=export.value
         assert downloaded.suggested_filename.endswith("-print-ready-report.html")
