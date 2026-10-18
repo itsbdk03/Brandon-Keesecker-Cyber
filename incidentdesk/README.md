@@ -54,3 +54,22 @@ The CI suite exercises the fictional demo, not the live Supabase backend. It can
 The app is a portfolio showcase, not a managed production incident response service. Never store CUI, actual company incidents, secrets, real malware or confidential logs here. File type and size checks do not provide malware detection. An audit history stored in a normal database is not a tamper-proof forensic chain of custody. Browser-side restrictions are supplemental; database RLS and least-privilege grants are the real security boundary.
 
 The primary engineering talking points are tenant isolation, auth-scoped data access, private object storage, explainable audit provenance, and disciplined differences between modeled sample data and production security evidence.
+
+## Six security-hardening improvements — October 2026
+
+These features extend IncidentDesk, not the original seven independent security labs.
+
+1. **Authorization and cross-tenant regression testing.** [Transactional RLS tests](tests/rls-transactional.sql) exercised two temporary SQL-authenticated identities, different workspaces, denied cross-tenant reads/edits/comments, invitation acceptance and Viewer write denial against the real database. All test users and records were rolled back. This verifies database policy behavior under simulated JWT claims, not end-to-end magic-link authentication.
+2. **Email invitations, roles and multiple workspaces.** Admins create 7-day invitations for email addresses; recipients use their confirmed account to accept. Direct membership insertion by normal authenticated API users has been revoked. Accounts can create and switch workspaces. Invitations are not separately emailed; the existing sign-in link must be shared.
+3. **Versioned evidence integrity.** SHA-256 is computed by the browser before private upload. Metadata includes the hash, version, MIME type, and prior-version link. PostgreSQL enforces same-incident revision lineage and downloads verify hashes. This is not an independent server-side file attestation or a legally complete chain-of-custody system.
+4. **Server-side incident SLAs and manual escalation.** PostgreSQL computes response due dates and enforces lifecycle transitions. The fifth dashboard metric counts overdue cases. Analysts can escalate a case to Critical severity, which generates an auditable change. Scheduled email/SMS alerts are not configured.
+5. **Database search and pagination.** The PostgreSQL incident table has GIN-indexed English full-text search. Live filters and 25-row pagination are handled by the database, along with a workspace-scoped metrics RPC, rather than preloading every case into the browser.
+6. **Operational monitoring and verification.** Realtime connection state is visible, interruptions generate a warning, and reconnect/visibility-based refreshes plus limited fallback polling improve recoverability. Domain tests, SQL policy checks, browser tests, and Supabase security advisors provide defense in depth.
+
+### Database reproduction — new empty project only
+
+Apply [initial schema](schema.sql), then [v2 workflows](migrations/0002_workflows.sql), then [v3 security and scaling](migrations/0003_security_scale.sql). The connected project already includes these capabilities. Do not rerun setup files blindly on the live database.
+
+### Activation and remaining checks
+
+The live backend is provisioned. An actual email magic-link sign-in, the deployed HTTPS origin/redirect allowlist, two independently signed-in users, and end-to-end cross-tenant Storage API tests remain to be verified. The SQL tests use simulated JWT identities and rolled-back fixtures, not delivered emails or production sessions. Keep all evidence fictional.
