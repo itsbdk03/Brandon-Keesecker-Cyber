@@ -54,6 +54,8 @@ def audit(browser, base, label, dims):
     results = []
     for name, uri, visible in VIEWS:
         page.goto(base + uri, wait_until="load")
+        if errors:
+            print(f"JS exception while loading {name}: {errors[:3]}", flush=True)
         expect(page.locator(visible).first).to_be_visible()
         if name in {"controltrace", "signalhunt", "cloudguard", "riskmatrix", "configlens", "attackpath"}:
             # Hash navigation must expose only the selected project workbench.
