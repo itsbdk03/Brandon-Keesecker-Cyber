@@ -26,6 +26,17 @@ def check(browser,base,width,height,mobile):
     for name in ["controls","hunt","cloud","risk","config","path"]:
         page.locator('.lab-nav[data-panel="'+name+'"]').click()
         expect(page.locator("#panel-"+name)).to_be_visible()
+        # Architecture is part of the existing panel, not another project.
+        dossier=page.locator("#panel-"+name+" .bk-engineering-lens")
+        expect(dossier).to_have_count(1)
+        dossier.locator("summary").click()
+        expect(dossier.locator(".bk-eng-stage")).to_have_count(4)
+        assert dossier.locator(".bk-eng-source").count()>=2
+        with page.expect_download() as export:
+            dossier.locator(".bk-eng-download").click()
+        notes=pathlib.Path(export.value.path()).read_text(encoding="utf-8")
+        assert "Security Engineering Case Study" in notes and "## Known limitations" in notes
+        dossier.locator("summary").click()
         report=page.locator("#panel-"+name+" .bk-print-report")
         expect(report).to_be_visible()
         with page.expect_download() as export:
@@ -51,6 +62,14 @@ def check(browser,base,width,height,mobile):
     assert download.value.suggested_filename.endswith(".md")
     page.goto(base+"/labs/assuranceflow.html",wait_until="load")
     expect(page.locator("#rows button")).to_have_count(8)
+    dossier=page.locator(".bk-engineering-lens")
+    expect(dossier).to_have_count(1)
+    dossier.locator("summary").click()
+    expect(dossier.locator(".bk-eng-stage")).to_have_count(4)
+    with page.expect_download() as export:
+        dossier.locator(".bk-eng-download").click()
+    assert "AssuranceFlow" in pathlib.Path(export.value.path()).read_text(encoding="utf-8")
+    dossier.locator("summary").click()
     report=page.locator(".bk-print-report")
     expect(report).to_be_visible()
     with page.expect_download() as export:
@@ -70,6 +89,11 @@ def check(browser,base,width,height,mobile):
     assert int(page.locator("#quality").inner_text())>0
     with page.expect_download() as download: page.locator("#exportReport").click()
     assert download.value.suggested_filename.endswith(".md")
+    page.goto(base+"/labs/methodology.html",wait_until="load")
+    expect(page.locator(".method-section")).to_have_count(7)
+    expect(page.locator(".bk-method-architecture")).to_have_count(7)
+    for section in ["controltrace","signalhunt","cloudguard","riskmatrix","configlens","attackpath","assuranceflow"]:
+        expect(page.locator("#"+section+" .bk-eng-stage")).to_have_count(4)
     assert not errors,"Page JS errors: "+"; ".join(errors)
     context.close()
 def main():
