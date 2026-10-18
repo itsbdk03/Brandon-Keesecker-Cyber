@@ -68,8 +68,12 @@ These features extend IncidentDesk, not the original seven independent security 
 
 ### Database reproduction — new empty project only
 
-Apply [initial schema](schema.sql), then [v2 workflows](migrations/0002_workflows.sql), then [v3 security and scaling](migrations/0003_security_scale.sql). The connected project already includes these capabilities. Do not rerun setup files blindly on the live database.
+Apply [initial schema](schema.sql), then [v2 workflows](migrations/0002_workflows.sql), [v3 security and scaling](migrations/0003_security_scale.sql), and finally [v4 private RPC hardening](migrations/0004_private_rpc_implementations.sql). The connected project already includes these capabilities. Do not rerun setup files blindly on the live database.
 
 ### Activation and remaining checks
 
 The live backend is provisioned. An actual email magic-link sign-in, the deployed HTTPS origin/redirect allowlist, two independently signed-in users, and end-to-end cross-tenant Storage API tests remain to be verified. The SQL tests use simulated JWT identities and rolled-back fixtures, not delivered emails or production sessions. Keep all evidence fictional.
+
+### Additional RPC hardening
+
+The membership and invitation operations are exposed through restricted `SECURITY INVOKER` public wrappers; the privileged implementations reside in the unexposed `private` database schema. The change was applied and the Supabase security advisor rechecked with zero findings. The public function signatures are unchanged, so browser RPC calls do not need new names. Authorization still depends on the internal authenticated identity and workspace permissions; this is not an unrestricted API.
