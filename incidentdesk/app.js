@@ -173,9 +173,13 @@ async function downloadEvidence(item){
    try{
     const status=await s.client.functions.invoke('incidentdesk-secure-workflows',{body:{operation:'verify_evidence',evidence_id:item.id}});
     if(status.error)throw status.error;
-    if(!status.data?.verified)throw Error('Server-side evidence hash mismatch');
+    if(status.data?.verified===false)throw Error('SERVER_INTEGRITY_MISMATCH');
+    if(!status.data?.verified)throw Error('Server did not confirm verification');
     edgeVerified=true;
-   }catch(e){toast('Server verification unavailable; checking browser SHA-256 locally')}
+   }catch(e){
+    if(e.message==='SERVER_INTEGRITY_MISMATCH')throw Error('Server detected evidence integrity failure; download blocked');
+    toast('Server verification unavailable; checking browser SHA-256 locally');
+   }
    const res=await s.client.storage.from(C.evidenceBucket).download(item.storage_path);const blob=await promiseResult(res);
    if(item.sha256&&!await O.verify(blob,item.sha256))throw Error('SHA-256 mismatch: evidence differs from recorded digest');
    if(item.sha256)toast(edgeVerified?'Server and browser SHA-256 verified':'Browser SHA-256 verified; server verification not confirmed');const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=item.original_name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1400)}catch(err){toast('Download blocked: '+err.message)}
