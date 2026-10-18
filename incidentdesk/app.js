@@ -45,7 +45,24 @@ function activityView(host,events,empty='No activity yet.'){
 }
 function renderTeam(){
  const host=q('#memberList');clear(host);q('#workspaceName').textContent=s.workspace?.name||(s.mode==='demo'?'Fictional SOC Team':'No workspace');
- for(const member of rows('members')){const line=el('div','member-row');const avatar=el('span','activity-symbol',(member.user_id||'?').slice(-2).toUpperCase()),body=el('div','activity-body');body.append(el('strong','',member.user_id===s.user?.id?'Your account':member.user_id),el('small','',member.role.toUpperCase()));line.append(avatar,body);host.append(line)}
+ for(const member of rows('members')){const line=el('div','member-row');const avatar=el('span','activity-symbol',(member.user_id||'?').slice(-2).toUpperCase()),body=el('div','activity-body');body.append(el('strong','',member.user_id===s.user?.id?'Your account':member.user_id),el('small','',member.role.toUpperCase()));line.append(avatar,body);
+ if(s.mode==='live'&&isAdmin()&&s.workspace&&member.user_id!==s.user?.id){
+  const roleSelect=el('select','member-role-select');roleSelect.setAttribute('aria-label','Update access role for '+member.user_id);
+  for(const role of ['viewer','analyst','admin']){const option=el('option','',role);option.value=role;roleSelect.append(option)}
+  roleSelect.value=member.role;
+  roleSelect.addEventListener('change',async()=>{
+   try{await promiseResult(await s.client.rpc('set_workspace_member_role',{wid:s.workspace.id,target_user:member.user_id,new_role:roleSelect.value}));await refreshLive();toast('Member access updated')}
+   catch(err){toast('Role update blocked: '+err.message);roleSelect.value=member.role}
+  });
+  const remove=el('button','button danger','Remove');remove.type='button';remove.setAttribute('aria-label','Remove member '+member.user_id);
+  remove.addEventListener('click',async()=>{
+   if(!window.confirm('Remove this user from the workspace?'))return;
+   try{await promiseResult(await s.client.rpc('remove_workspace_member',{wid:s.workspace.id,target_user:member.user_id}));await refreshLive();toast('Member access removed')}
+   catch(err){toast('Removal blocked: '+err.message)}
+  });
+  line.append(roleSelect,remove);
+ }
+ host.append(line)}
  if(!rows('members').length)host.append(el('p','muted-small','Sign in and create a workspace to begin.'));
  const select=q('#workspaceSelect');select.replaceChildren();for(const w of (s.mode==='demo'?rows('workspaces'):s.workspaces)){const option=el('option','',w.name);option.value=w.id;select.append(option)}if(s.workspace)select.value=s.workspace.id;select.disabled=s.mode==='demo'||s.workspaces.length<2;
  const invites=q('#pendingInvitations');clear(invites);
