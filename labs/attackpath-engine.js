@@ -64,5 +64,33 @@
       return {...w,pathsBlocked:before.totalPaths-after.totalPaths,targetsReduced:before.reachedCount-after.reachedCount,remainingPaths:after.totalPaths};
     }).sort((a,b)=>b.targetsReduced-a.targetsReduced||b.pathsBlocked-a.pathsBlocked||a.label.localeCompare(b.label));
   }
-  return {nodes,edges,weaknesses,targets,scenarios,clone,validate,analyze,prioritize};
+  // A read-only drilldown of the selected synthetic asset; route membership is
+  // not a finding of real exposure or confirmation that the asset is compromised.
+  function inspectNode(id,flags){
+    validate(flags);
+    const node=nodes.find(n=>n.id===id);
+    if(!node)throw Error('Unknown modeled asset: '+String(id));
+    const analysis=analyze(flags);
+    const relevant=analysis.paths.filter(path=>path.includes(id));
+    const incoming=edges.filter(e=>e.to===id);
+    const outgoing=edges.filter(e=>e.from===id);
+    const edgeSummary=e=>({
+      from:e.from,to:e.to,label:e.label,
+      active:e.requires.every(requirement=>flags[requirement]===true),
+      guards:e.requires.map(requirement=>{
+        const item=weaknesses.find(w=>w.id===requirement);
+        return {id:requirement,label:item.label,applied:!flags[requirement]};
+      })
+    });
+    return {
+      id:node.id,name:node.name,kind:node.kind,
+      target:targets.includes(id),
+      routeCount:relevant.length,
+      onTargetRoute:relevant.length>0,
+      incoming:incoming.map(edgeSummary),
+      outgoing:outgoing.map(edgeSummary),
+      sampledRoutes:relevant.slice(0,5).map(path=>path.slice())
+    };
+  }
+  return {nodes,edges,weaknesses,targets,scenarios,clone,validate,analyze,prioritize,inspectNode};
 });
