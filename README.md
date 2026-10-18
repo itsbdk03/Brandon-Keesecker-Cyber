@@ -1,8 +1,9 @@
 # Brandon Keesecker — Cybersecurity Portfolio
 
 ![Automated verification](https://github.com/itsbdk03/Brandon-Keesecker-Cyber/actions/workflows/verify.yml/badge.svg)
+![Browser lab checks](https://github.com/itsbdk03/Brandon-Keesecker-Cyber/actions/workflows/browser-smoke.yml/badge.svg)
 
-**Seven local-first interactive cybersecurity labs** · 49 automated tests · Synthetic data · No API keys or cloud credentials required.
+**Seven local-first interactive cybersecurity labs** · 57 automated tests · Synthetic data · No API keys or cloud credentials required.
 
 An animated, responsive, self-contained professional cybersecurity website. It does not require an API key, build system, package installation, account, or paid service.
 
@@ -137,3 +138,11 @@ The separate script and stylesheet are `labs/reviewer-tour.js` and `labs/reviewe
 A separate [Chromium browser smoke workflow](.github/workflows/browser-smoke.yml) now runs on lab code changes. It opens the existing static website through a temporary local HTTP server at desktop (1366 × 820) and phone-sized (390 × 844) viewports, and verifies the guided tours, all seven project routes, ConfigLens baseline/remediation comparisons, SignalHunt activity timeline, AssuranceFlow editing, and downloadable reports. The repeatable test runner is [`tools/browser-smoke.py`](tools/browser-smoke.py). Node.js unit tests remain independent and fast, while browser tests exercise real DOM interactions and downloads.
 
 The guided reviewer experience is educational. Real browser smoke tests provide functional confidence, not an accessibility certification, security audit, or production-availability guarantee.
+
+## Report Studio — Shared executive summaries (all seven projects)
+
+Every existing workbench offers an **Executive report** button. It creates a consistent, standalone, print-ready HTML report of the **current browser session**, with a synthetic-data notice, executive metrics, observed findings and evidence, recommended verification, methodological notes, and documented limitations. Open the downloaded HTML file and use **Print / Save as PDF** in your browser. This is not server-side PDF generation, official compliance reporting, or an audited customer deliverable.
+
+The reusable [report engine](labs/report-engine.js) escapes user-controlled strings before inserting them into its HTML output. Report state is supplied by the current project modules rather than illustrative screenshots. The [project report adapters](labs/report-studio.js) generate a distinct summary for each of the seven labs. See [Report Studio architecture and trust boundaries](docs/REPORT-STUDIO.md).
+
+Additional unit tests check report escaping, input validation, bounds, and output format. Real Chromium browser tests also download report files from all seven labs on desktop and phone-sized viewports and verify their core report content.
