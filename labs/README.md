@@ -100,3 +100,7 @@ OSCAL import/export, versioned control history, downloadable SSP control snippet
 - Tests: `node --test tests/attackpath.test.cjs` (run from the `labs` directory)
 - Read: [`ATTACKPATH.md`](ATTACKPATH.md)
 - Browser-only graph traversal with annotated routes, counterfactual defense ranking, tabletop report and JSON export.
+
+## AssuranceFlow (standalone lab 07)
+
+Open [`assuranceflow.html`](assuranceflow.html) for a fully client-side control documentation quality review. It supports a local `controls` JSON shape or a narrow subset of an OSCAL SSP `implemented-requirements` array; imports and exports do not imply OSCAL schema validation. Quality weights are purely illustrative: owner 15, narrative 30, evidence 30, implementation status 25 (in review 10). The example catalog contains eight fictional control records, not the full FedRAMP or DoD baselines. Code and 12 regression tests: `assuranceflow-engine.js`, `tests/assuranceflow.test.cjs`.
