@@ -6,7 +6,9 @@ ROOT=pathlib.Path(__file__).resolve().parents[1]
 class Handler(http.server.SimpleHTTPRequestHandler):
     def log_message(self,*_): pass
 def check(browser,base,width,height,mobile):
-    context=browser.new_context(viewport={"width":width,"height":height},is_mobile=mobile,has_touch=mobile,
+    # Test narrow responsive layout with touch input, without Chrome's device
+    # viewport auto-scaling (which enlarges its layout viewport in CI).
+    context=browser.new_context(viewport={"width":width,"height":height},is_mobile=False,has_touch=mobile,
                                 reduced_motion="reduce",accept_downloads=True)
     page=context.new_page();errors=[]
     page.on("pageerror",lambda error:errors.append(str(error)))
