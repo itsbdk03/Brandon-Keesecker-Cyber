@@ -32,3 +32,11 @@ jobs:
           python -m playwright install --with-deps chromium
       - name: Exercise desktop and mobile demo UI
         run: python incidentdesk/tests/browser_smoke.py
+      - name: Preserve demo screenshots for review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: incidentdesk-demo-desktop-mobile
+          path: artifacts/incidentdesk/
+          retention-days: 30
+          if-no-files-found: warn
