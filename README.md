@@ -4,7 +4,7 @@
 ![Browser lab checks](https://github.com/itsbdk03/Brandon-Keesecker-Cyber/actions/workflows/browser-smoke.yml/badge.svg)
 ![Accessibility and screenshots](https://github.com/itsbdk03/Brandon-Keesecker-Cyber/actions/workflows/accessibility-visual.yml/badge.svg)
 
-**Seven local-first interactive cybersecurity labs** · 76 automated tests · Synthetic data · No API keys or cloud credentials required.
+**Seven local-first interactive cybersecurity labs** · 80 automated tests · Synthetic data · No API keys or cloud credentials required.
 
 An animated, responsive, self-contained professional cybersecurity website. It does not require an API key, build system, package installation, account, or paid service.
 
@@ -168,3 +168,10 @@ Additional unit tests check report escaping, input validation, bounds, and outpu
 A [third GitHub Actions workflow](.github/workflows/accessibility-visual.yml) runs axe-core WCAG-tagged automated accessibility checks and saves 18 screenshots—desktop (1440×900) and narrow touch-width (390×844) views of the homepage, all seven labs, and the engineering case studies. It verifies keyboard-first skip-navigation links, browser errors, and serious/critical accessibility rules. Results are available as a downloadable 30-day **visual-and-accessibility-evidence** artifact on each workflow run, containing the screenshots and a detailed machine-readable JSON report. See the [reproducible QA guide](docs/ACCESSIBILITY-VISUAL-QA.md).
 
 The initial audit uncovered and led to fixes for invalid ARIA states, heatmap semantics, keyboard-inaccessible horizontal scroll areas, and visual link distinguishability. This is automated quality assurance, **not a claim of full WCAG certification** or pixel-baseline visual regression coverage; assistive-technology/manual review is still recommended.
+
+## Interactive investigation views — two existing projects refined
+
+- **AttackPath:** Select any of the eight fictional assets directly in its SVG graph (pointer, Enter or Space) or from a native asset menu. The details panel explains target-route membership, incoming/outgoing transitions, modeled vulnerabilities, and applied safeguards. A Fit graph to screen toggle improves small-screen access without replacing the full graph. The standalone graph engine now exposes a non-mutating `inspectNode()` method with dedicated unit tests.
+- **SignalHunt:** The temporal investigation stages are now keyboard-navigable buttons with their own inspection panel. Selecting an observation shows its timestamp, detection context and validation questions. Left/right arrows navigate adjacent stages. Device and causal linkage is never inferred solely from a matched identity and time window.
+
+The same existing [browser smoke workflow](.github/workflows/browser-smoke.yml) tests graph asset selection, keyboard behavior, display fitting, and timeline drill-down at desktop and narrow touch-screen widths. See [interactive inspection design notes](docs/INTERACTIVE-INSPECTION.md). No eighth project, paid backend or client data is involved.
