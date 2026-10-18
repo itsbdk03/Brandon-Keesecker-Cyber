@@ -136,7 +136,7 @@ async function upload(evt){
    const storage=s.client.storage.from(C.evidenceBucket||'incidentdesk-evidence');
    const uploaded=await storage.upload(path,file,{contentType:file.type,upsert:false});
    if(uploaded.error)throw uploaded.error;
-   try{await promiseResult(await s.client.from('incident_evidence').insert({incident_id:s.selected,workspace_id:s.workspace.id,uploaded_by:s.user.id,original_name:file.name,size_bytes:file.size,storage_path:path,sha256,content_type:file.type,version}))}
+   try{await promiseResult(await s.client.from('incident_evidence').insert({incident_id:s.selected,workspace_id:s.workspace.id,uploaded_by:s.user.id,original_name:file.name,size_bytes:file.size,storage_path:path,sha256,content_type:file.type,version,parent_evidence_id:previous?.id||null}))}
    catch(e){throw new Error(e.message+'; administrator review may be needed for an unlinked private object')}
    await refreshLive();toast('Private evidence stored successfully');
   }
@@ -174,6 +174,13 @@ async function refreshLive(){
  ]);
  s.metrics=summary;
  s.role=members.find(m=>m.user_id===s.user.id)?.role||'viewer';
+ if(s.role==='admin'){
+  try{
+   const outgoing=await promiseResult(await client.from('workspace_invitations').select('id,email,role,expires_at').eq('workspace_id',wid).is('accepted_at',null).limit(40));
+   s.invites.push(...(outgoing||[]).map(x=>({...x,accept:false})));
+  }catch(err){console.warn('Workspace invitation listing failed:',err.message)}
+ }
+
  const range=O.pageRange(s.pageIndex);
  const output=await results.order('updated_at',{ascending:false}).range(range.from,range.to);
  if(output.error)throw output.error;
