@@ -4,7 +4,7 @@
 ![Browser lab checks](https://github.com/itsbdk03/Brandon-Keesecker-Cyber/actions/workflows/browser-smoke.yml/badge.svg)
 ![Accessibility and screenshots](https://github.com/itsbdk03/Brandon-Keesecker-Cyber/actions/workflows/accessibility-visual.yml/badge.svg)
 
-**Seven local-first interactive cybersecurity labs** · 80 automated tests · Synthetic data · No API keys or cloud credentials required.
+**Seven local-first interactive cybersecurity labs** · 89 automated tests · Synthetic data · No API keys or cloud credentials required.
 
 An animated, responsive, self-contained professional cybersecurity website. It does not require an API key, build system, package installation, account, or paid service.
 
@@ -175,3 +175,9 @@ The initial audit uncovered and led to fixes for invalid ARIA states, heatmap se
 - **SignalHunt:** The temporal investigation stages are now keyboard-navigable buttons with their own inspection panel. Selecting an observation shows its timestamp, detection context and validation questions. Left/right arrows navigate adjacent stages. Device and causal linkage is never inferred solely from a matched identity and time window.
 
 The same existing [browser smoke workflow](.github/workflows/browser-smoke.yml) tests graph asset selection, keyboard behavior, display fitting, and timeline drill-down at desktop and narrow touch-screen widths. See [interactive inspection design notes](docs/INTERACTIVE-INSPECTION.md). No eighth project, paid backend or client data is involved.
+
+## Unified Command Center — search your existing tools
+
+Both the six-project workbench and standalone AssuranceFlow now have the same **Explore projects** navigation command. Press **Ctrl+K / ⌘K** or tap the command button to search the **same seven existing labs**, switch workbenches, and access a guided tour, Evidence Check, architectural notes, printable executive report, or direct project link. Search is browser-local, uses a constrained known-project catalog, and requires no external search provider or paid service.
+
+The [command model](labs/command-model.js) provides testable query ranking and route validation, while the [accessible dialog](labs/command-menu.js) supports keyboard navigation and touch-friendly search. The existing browser smoke checks also exercise search, actions and cross-project navigation. See the [Command Center design notes](docs/COMMAND-CENTER.md). No eighth project was created.
