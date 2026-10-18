@@ -56,3 +56,11 @@ Transactional authorization test: `tests/rls-transactional.sql` (do not run on p
 Server code: `functions/secure-workflows/index.ts` (staging and live deployed with JWT verification enabled).
 
 Current non-security performance warnings about *unused indexes* are expected on empty datasets. Monitor real workloads before removing indexes solely based on unused statistics.
+
+## Controlled deployment and current limitations
+
+The repository includes .github/workflows/incidentdesk-staging-gate.yml and .github/workflows/incidentdesk-controlled-release.yml. Both require the protected GitHub Actions secret INCIDENTDESK_STAGING_DATABASE_URL and run the rollback-only RLS suites in tests/rls-transactional.sql and tests/operations-rls-transactional.sql. No connection string should be committed or posted in chat.
+
+The Supabase Edge Function incidentdesk-secure-workflows is deployed in live and staging with JWT verification enabled. Invitation email requires Resend credentials and a verified sender domain in Supabase Edge Functions Secrets. Required keys: RESEND_API_KEY, INCIDENTDESK_MAIL_FROM and INCIDENTDESK_APP_URL. Without these, sending is disabled, and the browser correctly reports that the email has not been sent. The database's scheduled in-app SLA checks are active, but scheduled outbound SLA emails are not yet connected.
+
+Neither public GitHub Pages publishing nor live email redirect allowlisting has been verified. The controlled release workflow is staged but has not executed, since the protected connection secret and Pages settings must be supplied. Two independently signed-in users have not yet been created: SQL-authenticated, rolled-back policy tests are not a substitute for Auth redirects and live Storage API penetration testing.
