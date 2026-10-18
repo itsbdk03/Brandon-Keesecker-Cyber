@@ -2,6 +2,7 @@
 
 ![Automated verification](https://github.com/itsbdk03/Brandon-Keesecker-Cyber/actions/workflows/verify.yml/badge.svg)
 ![Browser lab checks](https://github.com/itsbdk03/Brandon-Keesecker-Cyber/actions/workflows/browser-smoke.yml/badge.svg)
+![Accessibility and screenshots](https://github.com/itsbdk03/Brandon-Keesecker-Cyber/actions/workflows/accessibility-visual.yml/badge.svg)
 
 **Seven local-first interactive cybersecurity labs** · 66 automated tests · Synthetic data · No API keys or cloud credentials required.
 
@@ -154,3 +155,9 @@ Every existing workbench offers an **Executive report** button. It creates a con
 The reusable [report engine](labs/report-engine.js) escapes user-controlled strings before inserting them into its HTML output. Report state is supplied by the current project modules rather than illustrative screenshots. The [project report adapters](labs/report-studio.js) generate a distinct summary for each of the seven labs. See [Report Studio architecture and trust boundaries](docs/REPORT-STUDIO.md).
 
 Additional unit tests check report escaping, input validation, bounds, and output format. Real Chromium browser tests also download report files from all seven labs on desktop and phone-sized viewports and verify their core report content.
+
+## Accessible review and visual evidence
+
+A [third GitHub Actions workflow](.github/workflows/accessibility-visual.yml) runs axe-core WCAG-tagged automated accessibility checks and saves 18 screenshots—desktop (1440×900) and narrow touch-width (390×844) views of the homepage, all seven labs, and the engineering case studies. It verifies keyboard-first skip-navigation links, browser errors, and serious/critical accessibility rules. Results are available as a downloadable 30-day **visual-and-accessibility-evidence** artifact on each workflow run, containing the screenshots and a detailed machine-readable JSON report. See the [reproducible QA guide](docs/ACCESSIBILITY-VISUAL-QA.md).
+
+The initial audit uncovered and led to fixes for invalid ARIA states, heatmap semantics, keyboard-inaccessible horizontal scroll areas, and visual link distinguishability. This is automated quality assurance, **not a claim of full WCAG certification** or pixel-baseline visual regression coverage; assistive-technology/manual review is still recommended.
