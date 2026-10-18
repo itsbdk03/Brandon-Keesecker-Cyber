@@ -169,7 +169,16 @@ async function upload(evt){
  }catch(err){toast('Evidence failed: '+err.message)}
 }
 async function downloadEvidence(item){
- try{requireAuth();const res=await s.client.storage.from(C.evidenceBucket).download(item.storage_path);const blob=await promiseResult(res);if(item.sha256&&!await O.verify(blob,item.sha256))throw Error('SHA-256 mismatch: evidence differs from recorded digest');if(item.sha256)toast('Evidence SHA-256 verified');const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=item.original_name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1400)}catch(err){toast('Download blocked: '+err.message)}
+ try{requireAuth();let edgeVerified=false;
+   try{
+    const status=await s.client.functions.invoke('incidentdesk-secure-workflows',{body:{operation:'verify_evidence',evidence_id:item.id}});
+    if(status.error)throw status.error;
+    if(!status.data?.verified)throw Error('Server-side evidence hash mismatch');
+    edgeVerified=true;
+   }catch(e){toast('Server verification unavailable; checking browser SHA-256 locally')}
+   const res=await s.client.storage.from(C.evidenceBucket).download(item.storage_path);const blob=await promiseResult(res);
+   if(item.sha256&&!await O.verify(blob,item.sha256))throw Error('SHA-256 mismatch: evidence differs from recorded digest');
+   if(item.sha256)toast(edgeVerified?'Server and browser SHA-256 verified':'Browser SHA-256 verified; server verification not confirmed');const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=item.original_name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1400)}catch(err){toast('Download blocked: '+err.message)}
 }
 async function refreshLive(){
  if(!s.user||!s.client)return;
@@ -420,11 +429,17 @@ function bind(){
   const data=Object.fromEntries(new FormData(e.currentTarget));
   try{
    const email=O.validateEmail(data.email);
-   await promiseResult(await s.client.from('workspace_invitations').insert({
+   const invitation=await promiseResult(await s.client.from('workspace_invitations').insert({
     workspace_id:s.workspace.id,email,role:data.role,created_by:s.user.id
-   }));
+   }).select('id').single());
+   let emailStatus='not sent; share the sign-in link manually';
+   try{
+    const result=await s.client.functions.invoke('incidentdesk-secure-workflows',{body:{operation:'send_invitation',invitation_id:invitation.id}});
+    if(!result.error&&result.data?.sent)emailStatus='accepted by email provider';
+   }catch(e){console.warn('Optional invitation email unavailable:',e.message)}
+
    s.invites=await promiseResult(await s.client.from('workspace_invitations').select('id,email,role,expires_at').eq('workspace_id',s.workspace.id).is('accepted_at',null));
-   await refreshLive();e.target.reset();toast('Invitation created. Share the app sign-in link with '+email);
+   await refreshLive();e.target.reset();toast('Invitation created for '+email+'; email '+emailStatus+'.');
   }catch(err){toast('Invitation failed: '+err.message)}
  });
 }
