@@ -21,7 +21,7 @@ def exercise(browser,url,width,height):
     assert page.evaluate("window.INCIDENTDESK_CONFIG.url.endsWith('.supabase.co')")
     assert page.evaluate("window.INCIDENTDESK_CONFIG.publishableKey.startsWith('sb_publishable_')")
     expect(page.locator("#modeName")).to_have_text("Fictional demo environment")
-    expect(page.locator("#kpiGrid .kpi")).to_have_count(4)
+    expect(page.locator("#kpiGrid .kpi")).to_have_count(5)
     ARTIFACTS.mkdir(parents=True,exist_ok=True)
     page.screenshot(path=str(ARTIFACTS/("overview-"+str(width)+".png")),full_page=True,animations="disabled")
     page.locator("#createOverview").click()
