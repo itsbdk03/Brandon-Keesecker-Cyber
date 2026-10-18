@@ -15,6 +15,7 @@ def check(browser,base,width,height,mobile):
     page.goto(base+"/labs/index.html",wait_until="load")
     expect(page.locator(".bk-reviewer-launch")).to_be_visible()
     assert page.locator(".lab-nav[data-panel]").count()==6
+    assert page.locator('a.lab-nav[href="assuranceflow.html"]').get_attribute("aria-pressed") is None, "Standalone project link must not be given button-only ARIA state"
     if mobile:
         assert page.locator(".workspace > .bk-reviewer-launch").count()==1, "Mobile tour should live within content, not offscreen"
     page.locator(".bk-reviewer-launch").click()
