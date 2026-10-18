@@ -78,9 +78,9 @@ The live backend is provisioned. An actual email magic-link sign-in, the deploye
 
 The membership and invitation operations are exposed through restricted `SECURITY INVOKER` public wrappers; the privileged implementations reside in the unexposed `private` database schema. The change was applied and the Supabase security advisor rechecked with zero findings. The public function signatures are unchanged, so browser RPC calls do not need new names. Authorization still depends on the internal authenticated identity and workspace permissions; this is not an unrestricted API.
 
-## Operational additions — staging and migrations v5–v9
+## Operational additions — staging and migrations v5–v10
 
-- Staging: A second independent Supabase project was created at the quoted $0/month project cost. Project: https://supabase.com/dashboard/project/okarjtdmthfhfwvnjblr. Original schema through v9 has been applied; rolled-back staging and live SQL authorization tests passed.
+- Staging: A second independent Supabase project was created at the quoted $0/month project cost. Project: https://supabase.com/dashboard/project/okarjtdmthfhfwvnjblr. Original schema through v10 has been applied; rolled-back staging and live SQL authorization tests passed.
 - In-app alerts: PostgreSQL Cron checks response deadlines every 15 minutes, assignment events create notices and the RLS-protected inbox refreshes through Realtime. Outbound SLA emails are not yet enabled.
 - Playbooks: Four response checklists are available inside each case, with RLS-protected completion and ownership.
 - Evidence verification: An authenticated Supabase Edge Function independently downloads private evidence, hashes the bytes, and records a custody event. Explicit server-side mismatches block download. Browser verification is labeled separately.
@@ -90,3 +90,5 @@ The membership and invitation operations are exposed through restricted `SECURIT
 - Release gate: A manual GitHub Actions staging authorization gate and controlled Pages release are committed. Protected staging database secret and GitHub Pages configuration are still needed for activation.
 
 See RELEASE-ACCEPTANCE.md for the remaining email-provider, two-real-user, HTTPS redirect and Storage API checks. No production-security certification is claimed.
+
+**Analytics correction:** Migration 0010 adds RLS-invoker workspace-wide weekly counts and assignment workload. Live analytics no longer infer whole-workspace counts from a 25-record incident page. Transactional cross-tenant tests verify the breakdown does not expose another workspace.
