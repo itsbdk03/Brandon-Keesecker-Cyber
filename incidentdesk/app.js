@@ -225,13 +225,21 @@ async function connected(user){
  try{await refreshLive();subscribe();toast('Authenticated workspace connected')}
  catch(e){toast('Workspace loading failed: '+e.message)}
 }
-function disconnected(){if(s.channel&&s.client)s.client.removeChannel(s.channel);s.channel=null;s.user=null;s.workspace=null;s.role='demo';s.mode='demo';try{s.store=JSON.parse(sessionStorage.getItem('incidentdesk_demo_v1')||'null')||M.sample()}catch(e){s.store=M.sample()}mode();render()}
+function disconnected(){if(s.channel&&s.client)s.client.removeChannel(s.channel);s.channel=null;s.user=null;s.workspace=null;s.workspaces=[];s.invites=[];s.metrics=null;s.pageIndex=0;s.role='demo';s.mode='demo';try{s.store=JSON.parse(sessionStorage.getItem('incidentdesk_demo_v1')||'null')||M.sample()}catch(e){s.store=M.sample()}mode();render()}
 function bind(){
  for(const b of document.querySelectorAll('.nav-item[data-view]'))b.addEventListener('click',()=>page(b.dataset.view));
  q('#mobileMenu').addEventListener('click',()=>{const open=q('.sidebar').classList.toggle('open');q('#mobileMenu').setAttribute('aria-expanded',String(open))});
  q('#createOverview').addEventListener('click',()=>openForm());q('#createIncidents').addEventListener('click',()=>openForm());q('#viewAll').addEventListener('click',()=>page('incidents'));
- for(const id of ['search','statusFilter','severityFilter'])q('#'+id).addEventListener(id==='search'?'input':'change',renderCases);
- q('#clearFilters').addEventListener('click',()=>{q('#search').value='';q('#statusFilter').value='';q('#severityFilter').value='';renderCases()});
+ let searchTimeout=null;
+ for(const id of ['search','statusFilter','severityFilter'])q('#'+id).addEventListener(id==='search'?'input':'change',()=>{
+  if(s.mode==='demo'){renderCases();return}
+  clearTimeout(searchTimeout);searchTimeout=setTimeout(()=>{s.pageIndex=0;refreshLive().catch(e=>toast('Search failed: '+e.message))},id==='search'?350:0);
+ });
+ q('#pagePrev').addEventListener('click',()=>{if(s.mode==='live'&&s.pageIndex>0){s.pageIndex--;refreshLive().catch(e=>toast(e.message))}});
+ q('#pageNext').addEventListener('click',()=>{if(s.mode==='live'&&(s.pageIndex+1)*O.PAGE_SIZE<s.pageTotal){s.pageIndex++;refreshLive().catch(e=>toast(e.message))}});
+ q('#workspaceSelect').addEventListener('change',e=>switchWorkspace(e.target.value).catch(err=>toast(err.message)));
+
+ q('#clearFilters').addEventListener('click',()=>{q('#search').value='';q('#statusFilter').value='';q('#severityFilter').value='';if(s.mode==='live'){s.pageIndex=0;refreshLive().catch(e=>toast(e.message))}else renderCases()});
  q('#incidentForm').addEventListener('submit',saveIncident);q('#noteForm').addEventListener('submit',saveNote);q('#evidenceForm').addEventListener('submit',upload);
  q('#editIncident').addEventListener('click',()=>{const item=rows('incidents').find(x=>x.id===s.selected);q('#detailDialog').close();openForm(item)});
  q('#exportIncident').addEventListener('click',()=>{const item=rows('incidents').find(x=>x.id===s.selected);if(!item)return;const id=item.id;download((item.key||'incidentdesk-case')+'.md',M.report(item,rows('comments').filter(x=>x.incident_id===id),rows('events').filter(x=>x.incident_id===id),rows('evidence').filter(x=>x.incident_id===id)))});
@@ -241,7 +249,18 @@ function bind(){
  q('#authForm').addEventListener('submit',async e=>{e.preventDefault();if(!s.client){q('#authHint').textContent='Live backend not provisioned yet. The demo remains available.';return}const email=new FormData(e.currentTarget).get('email');const redirectTo=location.origin+location.pathname;const {error}=await s.client.auth.signInWithOtp({email,options:{emailRedirectTo:redirectTo}});q('#authHint').textContent=error?'Sign-in failed: '+error.message:'Magic link sent. Check your inbox and return to this page.'});
  q('#signOut').addEventListener('click',async()=>{if(s.client){await s.client.auth.signOut();q('#authDialog').close();toast('Signed out; returned to fictional demo')}});
  q('#setupWorkspace').addEventListener('click',async()=>{if(!s.client||!s.user)return;const name=window.prompt('Workspace name (fictional data only):','My Security Response Team');if(!name)return;try{await promiseResult(await s.client.from('workspaces').insert({name:name.trim(),created_by:s.user.id}));s.workspace=null;await refreshLive();subscribe();toast('Workspace created')}catch(e){toast('Workspace creation failed: '+e.message)}});
- q('#memberForm').addEventListener('submit',async e=>{e.preventDefault();if(s.mode!=='live'||!isAdmin()||!s.workspace){toast('Admin access required');return}const data=Object.fromEntries(new FormData(e.currentTarget));if(!/^[0-9a-f-]{36}$/i.test(data.user_id)){toast('Provide the existing user Auth UUID');return}try{await promiseResult(await s.client.from('workspace_members').insert({...data,workspace_id:s.workspace.id}));await refreshLive();e.target.reset();toast('Member added')}catch(err){toast('Membership rejected: '+err.message)}});
+ q('#memberForm').addEventListener('submit',async e=>{
+  e.preventDefault();if(s.mode!=='live'||!isAdmin()||!s.workspace){toast('Admin workspace required');return}
+  const data=Object.fromEntries(new FormData(e.currentTarget));
+  try{
+   const email=O.validateEmail(data.email);
+   await promiseResult(await s.client.from('workspace_invitations').insert({
+    workspace_id:s.workspace.id,email,role:data.role,created_by:s.user.id
+   }));
+   s.invites=await promiseResult(await s.client.from('workspace_invitations').select('id,email,role,expires_at').eq('workspace_id',s.workspace.id).is('accepted_at',null));
+   await refreshLive();e.target.reset();toast('Invitation created. Share the app sign-in link with '+email);
+  }catch(err){toast('Invitation failed: '+err.message)}
+ });
 }
 bind();mode();render();initializeLive().catch(e=>toast('Supabase initialization failed: '+e.message));
 })();
