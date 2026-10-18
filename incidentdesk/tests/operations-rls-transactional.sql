@@ -37,6 +37,7 @@ begin
  if (select count(*) from public.evidence_custody_events)<>0 then raise exception 'Unexpected custody read';end if;
  result=public.incident_soc_metrics('cccccccc-cccc-4ccc-8ccc-cccccccccccc');
  if (result->>'cases')::integer<>0 then raise exception 'Cross-tenant analytics aggregation';end if;
+ if (public.incident_soc_breakdown('cccccccc-cccc-4ccc-8ccc-cccccccccccc')->'weekly')<>'{}'::jsonb then raise exception 'Cross-tenant weekly analytics exposed';end if;
  update public.incident_playbook_steps set note='unauthorized' where incident_id='cccccccc-3333-4333-8333-cccccccccccc';
  get diagnostics affected=row_count;
  if affected<>0 then raise exception 'Cross-tenant playbook mutation succeeded';end if;
