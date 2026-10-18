@@ -16,3 +16,4 @@ node_modules/
 coverage/
 .playwright/
 __pycache__/
+artifacts/
