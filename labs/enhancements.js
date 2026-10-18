@@ -15,17 +15,39 @@
     const watch=$('#huntWatch').value.split(',').map(x=>x.trim()).filter(Boolean);
     const chains=window.SignalHuntCorrelation.correlate(data.events(),watch,{limit:5});
     const box=$('#huntCorrelation');if(!box)return;
-    box.innerHTML=heading('Correlated activity sequences','Initial authentication requires matching identity and source IP within ten minutes. Later activity is identity/time context, not proven device linkage.');
+    box.innerHTML=heading('Correlated activity sequences','Initial authentication requires matching identity and source IP within ten minutes. Select a timeline event to inspect its context and verification needs.');
     if(!chains.length){const empty=document.createElement('div');empty.className='v6-insight';empty.textContent='No authentication chain met the same-source, three-failure rule. Individual findings may still merit review.';box.append(empty);return;}
     for(const c of chains){
       const article=document.createElement('article');article.className='v6-timeline-card';
       const top=document.createElement('div');top.className='v6-timeline-title';
       const label=document.createElement('strong');label.textContent='Identity: '+c.user+' · Auth source: '+c.sourceIp;
       const pill=document.createElement('span');pill.className='pill '+(c.steps.length>=4?'red':'amber');pill.textContent=c.confidence;top.append(label,pill);
-      const timeline=document.createElement('div');timeline.className='v6-timeline';
-      c.steps.forEach((s,i)=>{const row=document.createElement('div'),n=document.createElement('span'),heading=document.createElement('strong'),detail=document.createElement('small');n.className='v6-timeline-dot';n.textContent=i+1;heading.textContent=s.label;detail.textContent=s.time.replace('T',' ').slice(0,19)+'Z · '+s.tip;row.append(n,heading,detail);timeline.append(row)});
-      const tip=document.createElement('p');tip.className='note';tip.textContent='Validate account ownership, source IP, endpoint process tree, and network provenance before establishing an attack chain.';
-      article.append(top,timeline,tip);box.append(article);
+      const timeline=document.createElement('div');timeline.className='v6-timeline';timeline.setAttribute('role','group');timeline.setAttribute('aria-label','Investigate correlated sequence stages');
+      const inspector=document.createElement('div');inspector.className='v6-timeline-inspector';inspector.setAttribute('aria-live','polite');
+      const buttons=[];
+      const inspectStep=index=>{
+        const step=c.steps[index];
+        buttons.forEach((btn,i)=>btn.setAttribute('aria-pressed',String(i===index)));
+        inspector.replaceChildren();
+        const marker=document.createElement('span');marker.className='v6-timeline-kicker';marker.textContent='SELECTED OBSERVATION '+(index+1)+' / '+c.steps.length;
+        const name=document.createElement('h4');name.textContent=step.label;
+        const when=document.createElement('p');when.textContent='Observed: '+step.time.replace('T',' ').slice(0,19)+'Z · '+step.tip;
+        const caution=document.createElement('p');caution.className='v6-timeline-caution';
+        caution.textContent=index<2?'Confirm identity, source IP ownership, event order and the actual sign-in trail before attributing an attack.':'This later observation shares an identity and time window only; verify process lineage, endpoint and network provenance independently.';
+        inspector.append(marker,name,when,caution);
+      };
+      c.steps.forEach((step,i)=>{
+        const row=document.createElement('button');row.type='button';row.className='v6-timeline-step';row.setAttribute('aria-pressed',String(i===0));
+        const n=document.createElement('span');n.className='v6-timeline-dot';n.textContent=i+1;
+        const title=document.createElement('strong');title.textContent=step.label;
+        const detail=document.createElement('small');detail.textContent=step.time.replace('T',' ').slice(0,19)+'Z · '+step.tip;
+        row.append(n,title,detail);
+        row.addEventListener('click',()=>inspectStep(i));
+        row.addEventListener('keydown',event=>{if(!['ArrowRight','ArrowLeft'].includes(event.key))return;event.preventDefault();const next=(i+(event.key==='ArrowRight'?1:-1)+c.steps.length)%c.steps.length;buttons[next].focus();inspectStep(next)});
+        timeline.append(row);buttons.push(row);
+      });
+      const tip=document.createElement('p');tip.className='note';tip.textContent='Timeline links are analyst leads: validate raw timestamps, device evidence and account provenance before drawing conclusions.';
+      article.append(top,timeline,inspector,tip);inspectStep(0);box.append(article);
     }
   }
   function cloudInsights(){let d=source();if(!d)return;let state=d.cloud(),items=d.cloudControls();let pending=items.filter(c=>!state[c.id]);let points=items.filter(c=>state[c.id]).reduce((s,c)=>s+c.weight,0);let el=$('#cloudInsights');el.innerHTML=heading('Defense-in-depth review','A lightweight gap summary for explaining architectural tradeoffs—not a validated estimate of risk reduction.')+`<div class="v6-insight-grid">${panel('Illustrative improvement',`${points} model points below the original unprotected example.`,'good')}${panel('Open safeguards',`${pending.length} of ${items.length} measures remain disabled.`,'warn')}${panel('Next verification','Collect configuration evidence, confirm ownership, and test whether enabled safeguards work as intended.')}</div>`;
