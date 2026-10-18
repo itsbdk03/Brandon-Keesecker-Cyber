@@ -26,7 +26,7 @@ searchRow.append(searchLabel,input);
 const footer=elt('div','bk-command-footer');
 footer.append(elt('span','', '7 existing tools · fictional data · browser-local'),elt('span','',''));
 panel.append(head,searchRow,hint,results,footer);dialog.append(panel);document.body.append(trigger,dialog);
-let liveButtons=[],lastTrigger=null,lastProject='',cachedProject='',openFlag=false;
+let liveButtons=[],lastTrigger=null,restoreFocus=true;
 function section(title,items,kind){
   if(!items.length)return null;
   const group=elt('section','bk-command-group');
@@ -62,7 +62,7 @@ function render(){
 }
 function show(){
   if(dialog.open)return;
-  lastTrigger=document.activeElement;input.value='';dialog.showModal();openFlag=true;render();input.focus();
+  lastTrigger=document.activeElement;restoreFocus=true;input.value='';dialog.showModal();render();input.focus();
 }
 function hide(){if(dialog.open)dialog.close()}
 function reveal(selector){
@@ -86,6 +86,7 @@ function runAction(id){
   }
 }
 function activate(kind,id){
+  restoreFocus=false;
   hide();
   if(kind==='project'){
     if(id==='assurance'){if(!isAssurance)location.href=model.urlFor(id,'hub');else document.querySelector('main')?.scrollIntoView({block:'start'});return}
@@ -106,5 +107,5 @@ document.addEventListener('keydown',e=>{
   if((e.ctrlKey||e.metaKey)&&!e.altKey&&e.key.toLowerCase()==='k'){e.preventDefault();if(dialog.open)hide();else show()}
 });
 dialog.addEventListener('click',e=>{if(e.target===dialog)hide()});
-dialog.addEventListener('close',()=>{openFlag=false;lastTrigger?.focus?.({preventScroll:true})});
+dialog.addEventListener('close',()=>{if(restoreFocus)lastTrigger?.focus?.({preventScroll:true})});
 })();
