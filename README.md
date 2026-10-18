@@ -131,3 +131,9 @@ Visit [`labs/assuranceflow.html`](labs/assuranceflow.html) for a local-first dem
 A non-blocking, keyboard-accessible **Guided walkthrough** control is available inside both the six-tab lab hub and AssuranceFlow. Four curated steps per lab highlight the specific controls to inspect, the outcome to validate, and the scenario limitations. The tour supports Previous, Next, Finish, Escape to close, focus indicators, responsive layouts, and reduced-motion preferences. No browser data or client evidence is transmitted.
 
 The separate script and stylesheet are `labs/reviewer-tour.js` and `labs/reviewer-tour.css`. The site verifier checks their integration.
+
+### End-to-end browser verification
+
+A separate [Chromium browser smoke workflow](.github/workflows/browser-smoke.yml) now runs on lab code changes. It opens the existing static website through a temporary local HTTP server at desktop (1366 × 820) and phone-sized (390 × 844) viewports, and verifies the guided tours, all seven project routes, ConfigLens baseline/remediation comparisons, SignalHunt activity timeline, AssuranceFlow editing, and downloadable reports. The repeatable test runner is [`tools/browser-smoke.py`](tools/browser-smoke.py). Node.js unit tests remain independent and fast, while browser tests exercise real DOM interactions and downloads.
+
+The guided reviewer experience is educational. Real browser smoke tests provide functional confidence, not an accessibility certification, security audit, or production-availability guarantee.
