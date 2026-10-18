@@ -1,0 +1,1 @@
+create index if not exists workspace_invites_workspace_cover_idx on public.workspace_invitations(workspace_id);
