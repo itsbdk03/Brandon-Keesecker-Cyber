@@ -47,6 +47,9 @@ function renderTeam(){
  const host=q('#memberList');clear(host);q('#workspaceName').textContent=s.workspace?.name||(s.mode==='demo'?'Fictional SOC Team':'No workspace');
  for(const member of rows('members')){const line=el('div','member-row');const avatar=el('span','activity-symbol',(member.user_id||'?').slice(-2).toUpperCase()),body=el('div','activity-body');body.append(el('strong','',member.user_id===s.user?.id?'Your account':member.user_id),el('small','',member.role.toUpperCase()));line.append(avatar,body);host.append(line)}
  if(!rows('members').length)host.append(el('p','muted-small','Sign in and create a workspace to begin.'));
+ const select=q('#workspaceSelect');select.replaceChildren();for(const w of (s.mode==='demo'?rows('workspaces'):s.workspaces)){const option=el('option','',w.name);option.value=w.id;select.append(option)}if(s.workspace)select.value=s.workspace.id;select.disabled=s.mode==='demo'||s.workspaces.length<2;
+ const invites=q('#pendingInvitations');clear(invites);
+ for(const invite of s.invites){const row=el('div','member-row'),body=el('div','activity-body');body.append(el('strong','',invite.workspace_name||invite.email||'Invitation'),el('small','',invite.role+' · expires '+formatDate(invite.expires_at)));row.append(el('span','activity-symbol','✉'),body);if(invite.accept){const accept=el('button','button subtle','Accept');accept.type='button';accept.addEventListener('click',()=>acceptInvitation(invite.id));row.append(accept)}invites.append(row)}
  q('#setupWorkspace').hidden=s.mode==='demo'||!!s.workspace;
  q('#memberForm').querySelector('button[type=submit]').disabled=!isAdmin()||!s.workspace;
 }
@@ -145,27 +148,61 @@ async function downloadEvidence(item){
 }
 async function refreshLive(){
  if(!s.user||!s.client)return;
+ const client=s.client;
+ const workspaces=await promiseResult(await client.from('workspaces').select('id,name,created_by').order('created_at',{ascending:true}).limit(100));
+ s.workspaces=workspaces;
+ if(s.workspace&&!workspaces.some(w=>w.id===s.workspace.id))s.workspace=null;
+ if(!s.workspace)s.workspace=workspaces[0]||null;
+ try{
+  const pending=await promiseResult(await client.rpc('my_pending_invitations'));
+  s.invites=(pending||[]).map(x=>({...x,accept:true}));
+ }catch(err){s.invites=[];console.warn('Pending invitation lookup failed:',err.message)}
  if(!s.workspace){
-  const workspaces=await promiseResult(await s.client.from('workspaces').select('id,name,created_by').order('created_at',{ascending:true}).limit(1));
-  s.workspace=workspaces?.[0]||null;
+  s.role='none';s.metrics=null;s.pageTotal=0;s.pageIndex=0;
+  s.store={workspaces:[],members:[],incidents:[],comments:[],events:[],evidence:[]};
+  mode();render();return;
  }
- if(!s.workspace){s.role='none';s.store={workspaces:[],members:[],incidents:[],comments:[],events:[],evidence:[]};mode();render();return}
  const wid=s.workspace.id;
- const [members,incidents]=await Promise.all([
-  promiseResult(await s.client.from('workspace_members').select('user_id,role,workspace_id').eq('workspace_id',wid)),
-  promiseResult(await s.client.from('incidents').select('*').eq('workspace_id',wid).order('updated_at',{ascending:false}).limit(250))
+ const filters={query:q('#search').value.trim(),status:q('#statusFilter').value,severity:q('#severityFilter').value};
+ const results=client.from('incidents').select('*',{count:'exact'}).eq('workspace_id',wid);
+ if(filters.status)results.eq('status',filters.status);
+ if(filters.severity)results.eq('severity',filters.severity);
+ if(filters.query)results.ilike('title','%'+O.escapeLike(filters.query)+'%');
+ const [members,summary]=await Promise.all([
+  promiseResult(await client.from('workspace_members').select('user_id,role,workspace_id').eq('workspace_id',wid)),
+  promiseResult(await client.rpc('workspace_incident_metrics',{wid}))
  ]);
- s.role=members.find(x=>x.user_id===s.user.id)?.role||'viewer';
- const ids=incidents.map(x=>x.id);
+ s.metrics=summary;
+ s.role=members.find(m=>m.user_id===s.user.id)?.role||'viewer';
+ const range=O.pageRange(s.pageIndex);
+ const output=await results.order('updated_at',{ascending:false}).range(range.from,range.to);
+ if(output.error)throw output.error;
+ s.pageTotal=output.count||0;
+ if(s.pageIndex>0&&s.pageIndex*O.PAGE_SIZE>=s.pageTotal){s.pageIndex=Math.max(0,Math.ceil(s.pageTotal/O.PAGE_SIZE)-1);return refreshLive()}
+ const incidents=output.data||[],ids=incidents.map(x=>x.id);
  let comments=[],events=[],evidence=[];
- if(ids.length){[comments,events,evidence]=await Promise.all([
-  promiseResult(await s.client.from('incident_comments').select('*').in('incident_id',ids).limit(500)),
-  promiseResult(await s.client.from('incident_events').select('*').eq('workspace_id',wid).limit(600)),
-  promiseResult(await s.client.from('incident_evidence').select('*').eq('workspace_id',wid).limit(500))
- ])}
- s.store={workspaces:[s.workspace],members,incidents,comments,events,evidence};
- mode();render();
- if(s.selected&&q('#detailDialog').open)showDetail(s.selected);
+ if(ids.length){
+  [comments,evidence]=await Promise.all([
+   promiseResult(await client.from('incident_comments').select('*').in('incident_id',ids).order('created_at',{ascending:false}).limit(500)),
+   promiseResult(await client.from('incident_evidence').select('*').in('incident_id',ids).order('created_at',{ascending:false}).limit(500))
+  ]);
+ }
+ events=await promiseResult(await client.from('incident_events').select('*').eq('workspace_id',wid).order('created_at',{ascending:false}).limit(150));
+ s.store={workspaces,members,incidents,comments,events,evidence};
+ mode();render();if(s.selected&&q('#detailDialog').open)showDetail(s.selected);
+}
+async function acceptInvitation(id){
+ try{
+  if(s.mode!=='live')throw Error('Sign in to accept an invitation');
+  await promiseResult(await s.client.rpc('accept_workspace_invitation',{invitation_id:id}));
+  s.workspace=null;s.pageIndex=0;await refreshLive();subscribe();toast('Invitation accepted: your workspace is available');
+ }catch(err){toast('Invitation not accepted: '+err.message)}
+}
+async function switchWorkspace(id){
+ if(s.mode!=='live')return;
+ const target=s.workspaces.find(w=>w.id===id);if(!target)return;
+ s.workspace=target;s.pageIndex=0;s.selected=null;s.metrics=null;
+ await refreshLive();subscribe();toast('Switched workspace to '+target.name);
 }
 function subscribe(){
  if(s.channel){s.client.removeChannel(s.channel);s.channel=null}
@@ -173,7 +210,7 @@ function subscribe(){
  s.channel=s.client.channel('incidentdesk:'+s.workspace.id)
  .on('postgres_changes',{event:'*',schema:'public',table:'incidents',filter:'workspace_id=eq.'+s.workspace.id},()=>refreshLive().catch(console.warn))
  .on('postgres_changes',{event:'*',schema:'public',table:'incident_events',filter:'workspace_id=eq.'+s.workspace.id},()=>refreshLive().catch(console.warn))
- .subscribe();
+ .subscribe(status=>{s.realtimeStatus=O.eventLabel(status);mode();if(status==='CHANNEL_ERROR'||status==='TIMED_OUT')toast('Realtime interrupted; refresh or reconnect to see latest case changes');});
 }
 async function initializeLive(){
  const valid=/^https:\/\/[a-z0-9-]+\.supabase\.co\/?$/.test(C.url||'')&&/^sb_publishable_[\w-]+$/.test(C.publishableKey||'');
