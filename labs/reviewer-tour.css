@@ -16,3 +16,11 @@
   .bk-reviewer-launch{left:12px!important;right:auto!important}
   .bk-reviewer-tour{left:12px!important;right:auto!important;width:min(366px,calc(100vw - 24px))}
 }
+
+/* Fixed bottom offsets use the expanded layout viewport on some emulated phones.
+   Position the reviewer controls below mobile sticky navigation so both remain in
+   the actual visible viewport even when content is horizontally oversized. */
+@media(max-width:680px){
+  .bk-reviewer-launch{top:129px!important;bottom:auto!important;left:12px!important;right:auto!important}
+  .bk-reviewer-tour{top:179px!important;bottom:auto!important;left:12px!important;right:auto!important;width:min(366px,calc(100vw - 24px));max-height:calc(100dvh - 200px)}
+}
