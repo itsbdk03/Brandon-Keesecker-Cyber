@@ -7,7 +7,7 @@ for(const file of files){const r=cp.spawnSync(process.execPath,['--check',file],
 // Parse inline browser scripts without executing them, to catch syntax errors before deployment.
 const vm=require('node:vm');
 let inline=0;
-for(const relative of ['index.html','labs/index.html','labs/methodology.html','labs/assuranceflow.html']){
+for(const relative of ['index.html','architectures/index.html','labs/index.html','labs/methodology.html','labs/assuranceflow.html']){
   const markup=fs.readFileSync(path.join(root,relative),'utf8');
   for(const match of markup.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)){
     if(/\bsrc\s*=/.test(match[1]))continue;
