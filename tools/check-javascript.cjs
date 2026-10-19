@@ -11,6 +11,12 @@ for(const relative of ['index.html','architectures/index.html','labs/index.html'
   const markup=fs.readFileSync(path.join(root,relative),'utf8');
   for(const match of markup.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)){
     if(/\bsrc\s*=/.test(match[1]))continue;
+    // SEO structured data is JSON rather than executable JavaScript.
+    if(/\btype\s*=\s*["']application\/ld\+json["']/i.test(match[1])){
+      try{JSON.parse(match[2])}
+      catch(error){process.stderr.write('Invalid JSON-LD in '+relative+': '+error.message+'\n');process.exitCode=1}
+      continue;
+    }
     try{new vm.Script(match[2],{filename:relative});inline++}
     catch(error){process.stderr.write(String(error)+'\n');process.exitCode=1}
   }
