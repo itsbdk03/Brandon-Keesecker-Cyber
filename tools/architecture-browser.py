@@ -47,6 +47,7 @@ def run_case(browser, url, width):
         assert page.url.endswith("#" + slug), "Deep link did not update for " + slug
         expect(page.locator("#referenceDiagram")).to_have_count(1)
         expect(page.locator("#posterMode")).to_be_enabled(timeout=12000)
+        page.locator("#posterMode").click()  # Poster/vector preference intentionally persists across tabs.
         expect(page.locator("#posterImage")).to_have_js_property("complete", True)
         dimensions = page.locator("#posterImage").evaluate("(img)=>({w:img.naturalWidth,h:img.naturalHeight})")
         assert dimensions["w"] > 600 and dimensions["h"] > 400, f"Poster broken for {slug}"
