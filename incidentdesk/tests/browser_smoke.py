@@ -96,6 +96,26 @@ def exercise(browser,url,width,height):
     assert not errors,"Uncaught page errors: "+" | ".join(errors)
     context.close()
 
+def exercise_staging(browser,url):
+    context=browser.new_context(viewport={"width":390,"height":844},reduced_motion="reduce")
+    page=context.new_page();errors=[]
+    page.on("pageerror",lambda error:errors.append(str(error)))
+    page.goto(url,wait_until="load")
+    page.wait_for_function("typeof window.supabase?.createClient === 'function'",timeout=20000)
+    expect(page.locator(".incidentdesk-staging-ribbon")).to_contain_text("STAGING / TEST ENVIRONMENT")
+    expect(page.locator("#overviewTitle")).to_be_visible()
+    assert page.evaluate("window.INCIDENTDESK_CONFIG.url === 'https://okarjtdmthfhfwvnjblr.supabase.co'")
+    assert page.evaluate("window.INCIDENTDESK_CONFIG.publishableKey.startsWith('sb_publishable_')")
+    expect(page.locator("#modeName")).to_have_text("Fictional demo environment")
+    expect(page.locator("#seedFictionalCases")).to_be_hidden()
+    page.locator("#mobileMenu").click()
+    page.locator(".nav-item[data-view=team]").click()
+    expect(page.locator("#view-team")).to_be_visible()
+    page.locator("#authButton").click()
+    expect(page.locator("#authDialog")).to_be_visible()
+    assert not errors,"Staging mobile JS errors: "+" | ".join(errors)
+    context.close()
+
 def main():
     with http.server.ThreadingHTTPServer(("127.0.0.1",0),functools.partial(Handler,directory=str(ROOT))) as server:
         threading.Thread(target=server.serve_forever,daemon=True).start()
@@ -105,6 +125,8 @@ def main():
                 for w,h in [(1440,900),(390,844)]:
                     exercise(browser,f"http://127.0.0.1:{server.server_port}/incidentdesk/index.html",w,h)
                     print(f"PASS: IncidentDesk synthetic operations browser flow at {w}x{h}",flush=True)
+                exercise_staging(browser,f"http://127.0.0.1:{server.server_port}/incidentdesk/staging.html")
+                print("PASS: IncidentDesk isolated staging 390px mobile initialization and authentication UI",flush=True)
             finally:
                 browser.close();server.shutdown()
 if __name__=="__main__":main()
