@@ -63,7 +63,7 @@ test('tenant analytics is security invoker and uses real acknowledgment mileston
 });
 test('all eight existing improvements have a user-facing route',()=>{
  for(const id of ['socAnalytics','playbookChecklist','custodyList','notificationList','exportEvidenceManifest'])assert(page.includes('id="'+id+'"'),id);
- assert(app.includes("s.client.rpc('incident_soc_metrics'"));
+ assert(app.includes("client.rpc('incident_soc_metrics'"));
 });
 test('foreign key index final patch is present',()=>{
  assert(v8.includes('workspace_invitations(workspace_id)'));
