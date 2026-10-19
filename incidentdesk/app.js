@@ -436,7 +436,14 @@ function bind(){
  q('#authButton').addEventListener('click',()=>{q('#authHint').textContent=s.client?'Use a magic link to sign in. Redirect must be allowlisted in Supabase.':'Backend not yet configured. You can explore the complete fictional demo; live authentication will work after Supabase is connected.';q('#authDialog').showModal()});
  q('#authForm').addEventListener('submit',async e=>{e.preventDefault();if(!s.client){q('#authHint').textContent='Live backend not provisioned yet. The demo remains available.';return}const email=new FormData(e.currentTarget).get('email');const redirectTo=location.origin+location.pathname;const {error}=await s.client.auth.signInWithOtp({email,options:{emailRedirectTo:redirectTo}});q('#authHint').textContent=error?'Sign-in failed: '+error.message:'Magic link sent. Check your inbox and return to this page.'});
  q('#signOut').addEventListener('click',async()=>{if(s.client){await s.client.auth.signOut();q('#authDialog').close();toast('Signed out; returned to fictional demo')}});
- q('#setupWorkspace').addEventListener('click',async()=>{if(!s.client||!s.user)return;const name=window.prompt('Workspace name (fictional data only):','My Security Response Team');if(!name)return;try{const created=await promiseResult(await s.client.from('workspaces').insert({name:name.trim(),created_by:s.user.id}).select('id,name,created_by').single());s.workspace=created;s.pageIndex=0;await refreshLive();subscribe();toast('Workspace created')}catch(e){toast('Workspace creation failed: '+e.message)}});
+ q('#setupWorkspace').addEventListener('click',async()=>{if(!s.client||!s.user)return;const name=window.prompt('Workspace name (fictional data only):','My Security Response Team');if(!name)return;try{
+  // INSERT ... RETURNING is rejected by workspace SELECT RLS until the bootstrap membership exists.
+  // Insert without RETURNING, then query through normal member-scoped RLS after the trigger runs.
+  const workspaceId=crypto.randomUUID();
+  await promiseResult(await s.client.from('workspaces').insert({id:workspaceId,name:name.trim(),created_by:s.user.id}));
+  s.workspace={id:workspaceId,name:name.trim(),created_by:s.user.id};s.pageIndex=0;
+  await refreshLive();subscribe();toast('Workspace created')
+ }catch(e){toast('Workspace creation failed: '+e.message)}});
  q('#memberForm').addEventListener('submit',async e=>{
   e.preventDefault();if(s.mode!=='live'||!isAdmin()||!s.workspace){toast('Admin workspace required');return}
   const data=Object.fromEntries(new FormData(e.currentTarget));
