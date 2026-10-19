@@ -212,7 +212,7 @@ async function refreshLive(){
  ]);
  s.metrics=summary;
  try{s.socMetrics=await promiseResult(await client.rpc('incident_soc_metrics',{wid}));}catch(e){s.socMetrics=null;console.warn('SOC metrics unavailable:',e.message)}
- try{s.socBreakdown=await promiseResult(await client.rpc('incident_soc_breakdown',{wid}));}catch(e){s.socBreakdown=null;console.warn('SOC breakdown unavailable:',e.message)}
+ s.socBreakdown=s.socMetrics&&s.socMetrics.workload&&s.socMetrics.weekly?s.socMetrics:null;
  try{s.playbooks=await promiseResult(await client.from('response_playbooks').select('id,title,steps').limit(12));}catch(e){s.playbooks=[];console.warn('Playbooks unavailable:',e.message)}
  try{s.notifications=await promiseResult(await client.from('incident_notifications').select('*').eq('workspace_id',wid).order('created_at',{ascending:false}).limit(80));}catch(e){s.notifications=[];console.warn('Notifications unavailable:',e.message)}
  s.role=members.find(m=>m.user_id===s.user.id)?.role||'viewer';
