@@ -59,7 +59,7 @@ for(const title of ['ControlTrace','SignalHunt','CloudGuard','RiskMatrix','Confi
   assert(home.includes("title:'"+title),'Missing public project record for '+title);
 assert(home.includes('View source ↗')&&home.includes('projectSourceFiles'),'Employer-facing source links not configured');
 assert(gallery.includes('id="posterMode"')&&gallery.includes('id="vectorMode"')&&gallery.includes('id="openPoster"'),'Architecture poster/vector controls missing');
-assert(gallery.includes('class="skip-link"')&&gallery.includes('aria-labelledby','tab-'),'Architecture navigation accessibility requirements missing');
+assert(gallery.includes('class="skip-link"')&&gallery.includes('aria-labelledby="tab-fedramp-moderate"')&&gallery.includes('setAttribute("aria-labelledby","tab-"+current)'),'Architecture navigation accessibility requirements missing');
 assert(exists('tools/architecture-browser.py'),'Architecture Playwright regression script missing');
 
 console.log(`Verified ${scripts.length} lab scripts, 8 project routes, 8 illustrated architecture posters, LinkedIn and example data.`);
