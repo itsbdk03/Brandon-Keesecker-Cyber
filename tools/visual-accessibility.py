@@ -32,6 +32,7 @@ VIEWS = [
     ("attackpath", "/labs/index.html#path", "#panel-path"),
     ("assuranceflow", "/labs/assuranceflow.html", "#rows"),
     ("engineering-notes", "/labs/methodology.html", ".method-section"),
+    ("architectures", "/architectures/index.html#fedramp-moderate", "#architecturePanel"),
 ]
 
 
@@ -63,7 +64,12 @@ def audit(browser, base, label, dims):
             slug = uri.split("#")[-1]
             expect(page.locator("#panel-" + slug)).to_be_visible()
         # A keyboard user must be able to bypass navigation.
-        skip = page.locator("a.bk-skip-link").first
+        skip = page.locator("a.skip-link" if name == "architectures" else "a.bk-skip-link").first
+        if name == "architectures":
+            expect(page.locator("#architectureTabs [role=tab]")).to_have_count(8)
+            expect(page.locator("#posterMode")).to_be_enabled(timeout=12000)
+            expect(page.locator("#posterContainer")).to_be_visible()
+            expect(page.locator("#referenceDiagram")).to_have_count(1)
         assert skip.count() == 1, f"Skip-to-content link missing on {name}"
         target = skip.get_attribute("href")
         assert target and target.startswith("#"), f"Skip destination invalid on {name}"
@@ -159,7 +165,7 @@ def main():
         f"- Views and viewports reviewed: **{len(output)}**",
         f"- Serious/critical rule violations: **{len(issues)}**",
         f"- Browser JavaScript errors: **{len(js_errors)}**",
-        "- Screenshots: each of seven labs, the homepage, and methodology at desktop and touch widths",
+        "- Screenshots: each of seven labs, the homepage, methodology and the architecture library at desktop and touch widths",
         "",
         "> This is automated inspection, not a claim of WCAG AA conformance, "
         "full accessibility coverage, or pixel-perfect regression testing.",
