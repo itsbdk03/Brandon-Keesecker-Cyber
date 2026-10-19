@@ -2,9 +2,9 @@ name: Browser lab smoke tests
 on:
   push:
     branches: [main]
-    paths: ['labs/**','tools/browser-smoke.py','.github/workflows/browser-smoke.yml']
+    paths: ['labs/**','architectures/**','tools/browser-smoke.py','tools/architecture-browser.py','.github/workflows/browser-smoke.yml']
   pull_request:
-    paths: ['labs/**','tools/browser-smoke.py','.github/workflows/browser-smoke.yml']
+    paths: ['labs/**','architectures/**','tools/browser-smoke.py','tools/architecture-browser.py','.github/workflows/browser-smoke.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -23,3 +23,5 @@ jobs:
           python -m playwright install --with-deps chromium
       - name: Exercise seven labs in Chromium at desktop and mobile sizes
         run: python tools/browser-smoke.py
+      - name: Verify eight architecture posters and vector diagrams at desktop and mobile sizes
+        run: python tools/architecture-browser.py
