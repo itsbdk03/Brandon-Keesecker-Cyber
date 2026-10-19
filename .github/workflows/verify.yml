@@ -18,5 +18,7 @@ jobs:
           node-version: '22'
       - name: Check JavaScript syntax
         run: npm run check:js
+      - name: Audit tracked files for accidental credentials
+        run: npm run audit:security
       - name: Run portable rules and graph tests
         run: npm run verify
