@@ -1,37 +1,49 @@
-# Publish the portfolio under your own GitHub account
+# Portfolio deployment and release verification
 
-The public source repository is **[https://github.com/itsbdk03/Brandon-Keesecker-Cyber](https://github.com/itsbdk03/Brandon-Keesecker-Cyber)**. This guide covers verification and optional GitHub Pages hosting. Separating focused engines into additional repositories is a possible later step.
+**Live portfolio:** https://itsbdk03.github.io/Brandon-Keesecker-Cyber/  
+**Source:** https://github.com/itsbdk03/Brandon-Keesecker-Cyber  
+**Published from:** GitHub Pages, `main` branch, repository root.
 
-## 1. Review before making public
+This repository contains the deployed public website and its eight linked applications. The Pages workflow publishes committed static assets; the verification workflows validate source, test logic, and browser behavior. The homepage, project hub, and architecture gallery are public portfolio deliverables rather than installation examples.
 
-- Confirm every experience, certification, and academic statement is accurate. A doctorate is a **plan**, not a completed degree.
-- Confirm the contact email in `index.html` is the one you want made public.
-- Do **not** include employer/customer artifacts, credentials, access tokens, CUI, PHI, or internal vulnerability details.
-- The code uses synthetic examples. Do not describe it as production assessment tooling or professional client work.
-- Decide what license, if any, you want to publish under. This starter does not automatically grant an open-source license.
+## Published destinations
 
-## 2. Keep the repository up to date
+| Surface | URL |
+|---|---|
+| Professional homepage | https://itsbdk03.github.io/Brandon-Keesecker-Cyber/ |
+| Cybersecurity project gallery | https://itsbdk03.github.io/Brandon-Keesecker-Cyber/#cyber-projects |
+| Integrated security lab | https://itsbdk03.github.io/Brandon-Keesecker-Cyber/labs/ |
+| AssuranceFlow studio | https://itsbdk03.github.io/Brandon-Keesecker-Cyber/labs/assuranceflow.html |
+| IncidentDesk demo | https://itsbdk03.github.io/Brandon-Keesecker-Cyber/incidentdesk/index.html |
+| Architecture gallery | https://itsbdk03.github.io/Brandon-Keesecker-Cyber/architectures/ |
 
-The repository already exists. For future changes, clone the repo, edit and test files, commit, and push to `main` or submit a pull request. Do not commit secrets or confidential materials.
+## Verification and release process
 
-```bash
-git clone https://github.com/itsbdk03/Brandon-Keesecker-Cyber.git
-cd Brandon-Keesecker-Cyber
-```
+- **[Portfolio verification](https://github.com/itsbdk03/Brandon-Keesecker-Cyber/actions/workflows/verify.yml):** static route checks, JavaScript syntax, portable unit tests, and tracked-file credential hygiene.
+- **[Browser smoke tests](https://github.com/itsbdk03/Brandon-Keesecker-Cyber/actions/workflows/browser-smoke.yml):** Chromium desktop and mobile exercise of the browser-based labs.
+- **[Accessibility and visual QA](https://github.com/itsbdk03/Brandon-Keesecker-Cyber/actions/workflows/accessibility-visual.yml):** automated WCAG checks and screenshot artifacts.
+- **[IncidentDesk application checks](https://github.com/itsbdk03/Brandon-Keesecker-Cyber/actions/workflows/incidentdesk.yml):** application code checks and separate UI smoke tests.
+- **[Staging authorization gate](https://github.com/itsbdk03/Brandon-Keesecker-Cyber/actions/workflows/incidentdesk-staging-gate.yml):** protected, manually started SQL regression tests against staging when its database URL is configured as an Actions secret. A normal website deployment does not imply this gate has run.
 
-## 3. Run the verification checks
+Successful automated checks establish the scope tested by those workflows, not independent certification, penetration-test coverage, accessibility certification or validation of all live backend paths.
+
+## Public-safe operation
+
+- The portfolio and seven browser-based labs use fictional examples without privileged API credentials.
+- IncidentDesk supports a public fictional demo and optional signed-in access to its separately hosted Supabase environment.
+- The frontend's Supabase publishable key is public by design; service-role keys, database passwords and outbound email provider credentials must remain in private service secret stores.
+- No source file is intended to contain employer/client documentation, CUI, PHI, internal infrastructure details, private keys, or production customer datasets.
+- `npm run audit:security` checks tracked source for high-confidence credential patterns and sensitive filenames. Its patterns complement rather than replace GitHub secret scanning and careful manual review.
+- Source and test descriptions preserve the difference between finished portfolio demonstrations and production-approved security systems.
+
+## Reproducibility
+
+The source is maintained in this repository. Code checks use Node.js 20+:
 
 ```bash
 npm run check:js
+npm run audit:security
 npm run verify
 ```
 
-The GitHub Actions workflow also runs on new pushes and pull requests. Allow workflows in your repository settings if prompted. CI checks the exported code; it does not conduct production penetration testing.
-
-## 4. Publish GitHub Pages
-
-On the GitHub repository open **Settings → Pages → Build and deployment**, choose **Deploy from a branch**, select **main** and **/(root)**, then Save. Once deployed, your site will be accessible at a URL with the format `https://itsbdk03.github.io/Brandon-Keesecker-Cyber/`. The actual URL depends on your username and Pages settings.
-
-## 5. Link the public repo
-
-After publishing, add the repository URL to your portfolio's GitHub link area (or ask ChatGPT to update the site) and Netlify profile. To add individual focused GitHub projects later, separate the six lab engines into their own repos, including tests, screenshots, and limitations.
+The static site uses no build stage. Its HTML, JavaScript, CSS and compressed architecture posters are published with the repository; back-end service authorization, storage access and email configuration are documented separately under [IncidentDesk](../incidentdesk/README.md).
