@@ -2,7 +2,7 @@
 
 **Portfolio project 08 — Brandon Keesecker**
 
-Current status: Synthetic demonstration complete; Supabase project **ACTIVE_HEALTHY**, with all six database tables, RLS policies, private evidence bucket and Realtime publication created. The frontend is configured with a publishable key. Email redirect allowlisting, real user sign-in, and two-user cross-tenant access tests still need to be completed. Do not claim production readiness.
+Current status (October 19, 2026): Production and staging Supabase projects are healthy, with 11 RLS-protected application tables, private evidence storage, Realtime configuration, a deployed JWT-protected secure workflow function, and scheduled in-app SLA checks. Both environments have one registered user, but no persisted workspace, incident, or uploaded evidence yet. Three rollback-only SQL authorization suites passed against staging, including expanded Storage metadata isolation. End-to-end two-account sign-in, binary Storage APIs, provider email, and complete data-restore testing remain outstanding. The Supabase Security Advisor flags leaked-password protection as disabled in both projects. This is a fictional portfolio application, **not** a production-certified incident management system.
 
 ## Demo mode and live mode
 
