@@ -5,12 +5,14 @@ on:
     branches: [main]
     paths:
       - 'index.html'
+      - 'architectures/**'
       - 'labs/**'
       - 'tools/visual-accessibility.py'
       - '.github/workflows/accessibility-visual.yml'
   pull_request:
     paths:
       - 'index.html'
+      - 'architectures/**'
       - 'labs/**'
       - 'tools/visual-accessibility.py'
       - '.github/workflows/accessibility-visual.yml'
