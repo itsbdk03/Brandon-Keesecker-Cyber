@@ -30,4 +30,5 @@ jobs:
           psql "$STAGING_DATABASE_URL" -X -v ON_ERROR_STOP=1 -f incidentdesk/tests/staging-schema.sql
           psql "$STAGING_DATABASE_URL" -X -v ON_ERROR_STOP=1 -f incidentdesk/tests/rls-transactional.sql
           psql "$STAGING_DATABASE_URL" -X -v ON_ERROR_STOP=1 -f incidentdesk/tests/rls-operations.sql
+          psql "$STAGING_DATABASE_URL" -X -v ON_ERROR_STOP=1 -f incidentdesk/tests/soc-analytics-tenant.sql
           echo 'Staging schema and transaction-scoped RLS checks passed.'
