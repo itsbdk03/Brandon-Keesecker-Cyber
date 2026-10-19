@@ -92,3 +92,7 @@ The membership and invitation operations are exposed through restricted `SECURIT
 See RELEASE-ACCEPTANCE.md for the remaining email-provider, two-real-user, HTTPS redirect and Storage API checks. No production-security certification is claimed.
 
 **Analytics correction:** Migration 0010 adds RLS-invoker workspace-wide weekly counts and assignment workload. Live analytics no longer infer whole-workspace counts from a 25-record incident page. Transactional cross-tenant tests verify the breakdown does not expose another workspace.
+
+## October 18 — operational upgrades
+
+The current release now includes server-driven in-app incident deadlines and assignments, four response playbooks, a SOC analytics view, evidence manifests with authenticated Edge Function verification, a second $0/month quoted staging project, foreign-key indexes, and an optional JWT-validated invitation email bridge. The [full operations upgrade notes](OPERATIONS-HARDENING.md) explain migration order, tested properties, and activation steps. Live SMTP/provider delivery and full two-account authentication/Storage validation are still outstanding.
