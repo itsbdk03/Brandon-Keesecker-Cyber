@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://itsbdk03.github.io/Brandon-Keesecker-Cyber/</loc><changefreq>monthly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://itsbdk03.github.io/Brandon-Keesecker-Cyber/labs/</loc><changefreq>quarterly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://itsbdk03.github.io/Brandon-Keesecker-Cyber/labs/assuranceflow.html</loc><changefreq>quarterly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://itsbdk03.github.io/Brandon-Keesecker-Cyber/labs/methodology.html</loc><changefreq>quarterly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://itsbdk03.github.io/Brandon-Keesecker-Cyber/incidentdesk/index.html</loc><changefreq>quarterly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://itsbdk03.github.io/Brandon-Keesecker-Cyber/architectures/</loc><changefreq>quarterly</changefreq><priority>0.7</priority></url>
+</urlset>
