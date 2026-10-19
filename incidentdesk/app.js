@@ -67,6 +67,7 @@ function renderTeam(){
  const select=q('#workspaceSelect');select.replaceChildren();for(const w of (s.mode==='demo'?rows('workspaces'):s.workspaces)){const option=el('option','',w.name);option.value=w.id;select.append(option)}if(s.workspace)select.value=s.workspace.id;select.disabled=s.mode==='demo'||s.workspaces.length<2;
  const invites=q('#pendingInvitations');clear(invites);
  for(const invite of s.invites){const row=el('div','member-row'),body=el('div','activity-body');body.append(el('strong','',invite.workspace_name||invite.email||'Invitation'),el('small','',invite.role+' · expires '+formatDate(invite.expires_at)));row.append(el('span','activity-symbol','✉'),body);if(invite.accept){const accept=el('button','button subtle','Accept');accept.type='button';accept.addEventListener('click',()=>acceptInvitation(invite.id));row.append(accept)}invites.append(row)}
+ q('#seedFictionalCases').hidden=s.mode==='demo'||!s.workspace||!isAdmin();
  q('#setupWorkspace').hidden=s.mode==='demo';q('#setupWorkspace').textContent=s.workspace?'Create another workspace':'Create my workspace';
  q('#memberForm').querySelector('button[type=submit]').disabled=!isAdmin()||!s.workspace;
 }
@@ -169,20 +170,18 @@ async function upload(evt){
  }catch(err){toast('Evidence failed: '+err.message)}
 }
 async function downloadEvidence(item){
- try{requireAuth();let edgeVerified=false;
-   try{
-    const status=await s.client.functions.invoke('incidentdesk-secure-workflows',{body:{operation:'verify_evidence',evidence_id:item.id}});
-    if(status.error)throw status.error;
-    if(status.data?.verified===false)throw Error('SERVER_INTEGRITY_MISMATCH');
-    if(!status.data?.verified)throw Error('Server did not confirm verification');
-    edgeVerified=true;
-   }catch(e){
-    if(e.message==='SERVER_INTEGRITY_MISMATCH')throw Error('Server detected evidence integrity failure; download blocked');
-    toast('Server verification unavailable; checking browser SHA-256 locally');
-   }
-   const res=await s.client.storage.from(C.evidenceBucket).download(item.storage_path);const blob=await promiseResult(res);
-   if(item.sha256&&!await O.verify(blob,item.sha256))throw Error('SHA-256 mismatch: evidence differs from recorded digest');
-   if(item.sha256)toast(edgeVerified?'Server and browser SHA-256 verified':'Browser SHA-256 verified; server verification not confirmed');const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=item.original_name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1400)}catch(err){toast('Download blocked: '+err.message)}
+ try{
+   requireAuth();
+   // Evidence is released only after the server independently verifies the bytes
+   // AND persists the custody record; failure never falls back to browser-only trust.
+   const status=await s.client.functions.invoke('incidentdesk-secure-workflows',{body:{operation:'verify_evidence',evidence_id:item.id}});
+   if(status.error||status.data?.verified!==true)throw Error('Server verification or custody audit failed. No download was released.');
+   const res=await s.client.storage.from(C.evidenceBucket).download(item.storage_path);
+   const blob=await promiseResult(res);
+   if(!item.sha256||!await O.verify(blob,item.sha256))throw Error('Browser SHA-256 mismatch: evidence download blocked');
+   toast('Server and browser SHA-256 verified; custody audit recorded');
+   const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=item.original_name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1400);
+ }catch(err){toast('Download blocked: '+err.message)}
 }
 async function refreshLive(){
  if(!s.user||!s.client)return;
@@ -274,6 +273,51 @@ async function connected(user){
  s.user=user;s.mode='live';s.workspace=null;
  try{await refreshLive();subscribe();toast('Authenticated workspace connected')}
  catch(e){toast('Workspace loading failed: '+e.message)}
+}
+// Seed through a REAL signed-in account and ordinary RLS/Storage APIs.
+// This action is never run automatically and never inserts into another workspace.
+const fictionalCases=[
+ {title:'Fictional identity alert — unusual sign-in',description:'SYNTHETIC TEST RECORD: An administrator account was used from an unfamiliar location. Review fabricated sign-in evidence and MFA challenges.',severity:'critical',status:'new'},
+ {title:'Fictional cloud policy drift — storage',description:'SYNTHETIC TEST RECORD: An example object-store policy was changed to broad read access. No actual cloud resource is involved.',severity:'high',status:'triage'},
+ {title:'Fictional endpoint behavior — script execution',description:'SYNTHETIC TEST RECORD: A harmless scripted process matches a modeled detection rule. No malware or real host telemetry is included.',severity:'medium',status:'investigating'},
+ {title:'Fictional access review — stale account',description:'SYNTHETIC TEST RECORD: A non-existent former employee retains example role permissions. Used only to demonstrate incident closure.',severity:'low',status:'resolved'}
+];
+async function seedFictionalCases(){
+ requireAuth();
+ if(!s.workspace||!isAdmin())throw Error('An authenticated workspace admin is required');
+ if(!window.crypto?.randomUUID||!window.crypto?.subtle)throw Error('Secure HTTPS origin is required');
+ const userId=s.user.id,wid=s.workspace.id;
+ const existing=await promiseResult(await s.client.from('incidents').select('id,title').eq('workspace_id',wid).limit(100));
+ let firstId=existing.find(x=>x.title===fictionalCases[0].title)?.id;
+ let created=0;
+ for(const c of fictionalCases){
+  if(existing.some(x=>x.title===c.title))continue;
+  const caseId=crypto.randomUUID();
+  const next=await s.client.from('incidents').insert({...c,id:caseId,workspace_id:wid,created_by:userId,assigned_to:userId});
+  if(next.error)throw Error('Could not create fictional incident: '+next.error.message);
+  created++;
+  if(!firstId)firstId=caseId;
+ }
+ if(firstId){
+  const note='SYNTHETIC EXERCISE: Identity provider logs and timestamps are illustrative only. No real systems were accessed.';
+  const foundNotes=await promiseResult(await s.client.from('incident_comments').select('id').eq('incident_id',firstId).eq('body',note).limit(1));
+  if(!foundNotes.length)await promiseResult(await s.client.from('incident_comments').insert({incident_id:firstId,author_id:userId,body:note}));
+  const filename='fictional-signin-evidence.txt';
+  const foundEvidence=await promiseResult(await s.client.from('incident_evidence').select('id').eq('incident_id',firstId).eq('original_name',filename).limit(1));
+  if(!foundEvidence.length){
+   const file=new File(['INCIDENTDESK FICTIONAL TEST EVIDENCE\\nNo live incident, real personal data, secrets, or security telemetry.\\nEvent: 2026-10-18T16:00:00Z\\nScenario: modeled privileged login from TEST-NET-3 (203.0.113.5)\\n'],filename,{type:'text/plain'});
+   const path=wid+'/'+firstId+'/'+crypto.randomUUID()+'/'+filename;
+   const sha256=await O.hash(file);
+   const uploaded=await s.client.storage.from(C.evidenceBucket||'incidentdesk-evidence').upload(path,file,{contentType:'text/plain',upsert:false});
+   if(uploaded.error)throw Error('Sample evidence upload blocked: '+uploaded.error.message);
+   await promiseResult(await s.client.from('incident_evidence').insert({
+    incident_id:firstId,workspace_id:wid,uploaded_by:userId,original_name:filename,size_bytes:file.size,
+    storage_path:path,sha256,content_type:'text/plain',version:1
+   }));
+  }
+ }
+ await refreshLive();subscribe();
+ return created;
 }
 function disconnected(){if(s.channel&&s.client)s.client.removeChannel(s.channel);s.channel=null;s.user=null;s.workspace=null;s.workspaces=[];s.invites=[];s.metrics=null;s.pageIndex=0;s.role='demo';s.mode='demo';try{s.store=JSON.parse(sessionStorage.getItem('incidentdesk_demo_v1')||'null')||M.sample()}catch(e){s.store=M.sample()}mode();render()}
 
@@ -436,6 +480,14 @@ function bind(){
  q('#authButton').addEventListener('click',()=>{q('#authHint').textContent=s.client?'Use a magic link to sign in. Redirect must be allowlisted in Supabase.':'Backend not yet configured. You can explore the complete fictional demo; live authentication will work after Supabase is connected.';q('#authDialog').showModal()});
  q('#authForm').addEventListener('submit',async e=>{e.preventDefault();if(!s.client){q('#authHint').textContent='Live backend not provisioned yet. The demo remains available.';return}const email=new FormData(e.currentTarget).get('email');const redirectTo=location.origin+location.pathname;const {error}=await s.client.auth.signInWithOtp({email,options:{emailRedirectTo:redirectTo}});q('#authHint').textContent=error?'Sign-in failed: '+error.message:'Magic link sent. Check your inbox and return to this page.'});
  q('#signOut').addEventListener('click',async()=>{if(s.client){await s.client.auth.signOut();q('#authDialog').close();toast('Signed out; returned to fictional demo')}});
+ q('#seedFictionalCases').addEventListener('click',async e=>{
+ const button=e.currentTarget;
+ if(!window.confirm('Create up to four clearly fictional incidents, one analyst note, and a tiny synthetic evidence file in your active workspace?'))return;
+ button.disabled=true;const original=button.textContent;button.textContent='Loading fictional cases…';
+ try{const count=await seedFictionalCases();toast(count+' new fictional incidents loaded; note and sample evidence checked');page('incidents')}
+ catch(err){toast('Sample setup failed: '+err.message)}
+ finally{button.textContent=original;button.disabled=false}
+});
  q('#setupWorkspace').addEventListener('click',async()=>{if(!s.client||!s.user)return;const name=window.prompt('Workspace name (fictional data only):','My Security Response Team');if(!name)return;try{
   // INSERT ... RETURNING is rejected by workspace SELECT RLS until the bootstrap membership exists.
   // Insert without RETURNING, then query through normal member-scoped RLS after the trigger runs.
@@ -452,10 +504,12 @@ function bind(){
    const invitation=await promiseResult(await s.client.from('workspace_invitations').insert({
     workspace_id:s.workspace.id,email,role:data.role,created_by:s.user.id
    }).select('id').single());
-   let emailStatus='not sent; share the sign-in link manually';
+   let emailStatus='not sent — manually share the IncidentDesk page link';
    try{
     const result=await s.client.functions.invoke('incidentdesk-secure-workflows',{body:{operation:'send_invitation',invitation_id:invitation.id}});
-    if(!result.error&&result.data?.sent)emailStatus='accepted by email provider';
+    if(!result.error&&result.data?.sent===true)emailStatus='accepted by the email provider (delivery not independently confirmed)';
+    else if(result.data?.error)console.info('Optional invitation email unavailable:',result.data.error);
+    else if(result.error)console.info('Optional invitation email not configured:',result.error.message);
    }catch(e){console.warn('Optional invitation email unavailable:',e.message)}
 
    s.invites=await promiseResult(await s.client.from('workspace_invitations').select('id,email,role,expires_at').eq('workspace_id',s.workspace.id).is('accepted_at',null));
