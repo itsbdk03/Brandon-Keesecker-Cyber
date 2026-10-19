@@ -1,0 +1,33 @@
+name: IncidentDesk staging security gate
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: incidentdesk-staging-security
+  cancel-in-progress: false
+jobs:
+  stage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Require explicitly configured staging database secret
+        env:
+          STAGING_DATABASE_URL: ${{ secrets.INCIDENTDESK_STAGING_DATABASE_URL }}
+        run: |
+          if [ -z "$STAGING_DATABASE_URL" ]; then
+            echo 'Configure INCIDENTDESK_STAGING_DATABASE_URL as a GitHub Actions secret; staging tests were NOT run.' >&2
+            exit 1
+          fi
+      - name: Install PostgreSQL client
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq postgresql-client
+      - name: Verify staged schema and rollback-only security transactions
+        env:
+          STAGING_DATABASE_URL: ${{ secrets.INCIDENTDESK_STAGING_DATABASE_URL }}
+        run: |
+          set -euo pipefail
+          psql "$STAGING_DATABASE_URL" -X -v ON_ERROR_STOP=1 -f incidentdesk/tests/staging-schema.sql
+          psql "$STAGING_DATABASE_URL" -X -v ON_ERROR_STOP=1 -f incidentdesk/tests/rls-transactional.sql
+          psql "$STAGING_DATABASE_URL" -X -v ON_ERROR_STOP=1 -f incidentdesk/tests/rls-operations.sql
+          echo 'Staging schema and transaction-scoped RLS checks passed.'
