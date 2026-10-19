@@ -32,15 +32,22 @@ Deno.serve(async req=>{
   if(result.error||!result.data)return json({error:"Private evidence download not permitted"},403);
   if(result.data.size>5242880)return json({error:"Evidence exceeds verification limit"},413);
   const digest=hex(await crypto.subtle.digest("SHA-256",await result.data.arrayBuffer()));
-  const verified=digest===item.sha256;
-  await service.from("evidence_custody_events").insert({
+  const verified=digest===item.sha256 && result.data.size===item.size_bytes;
+  // A verification is complete only if its custody record is durably saved.
+  // A service-role insert failure is NOT a successful verification.
+  const custody=await service.from("evidence_custody_events").insert({
    workspace_id:item.workspace_id,incident_id:item.incident_id,evidence_id:item.id,
    actor_id:user.id,action:verified?"download_verified":"download_failed",sha256:digest,
-   description:verified?"Server independently downloaded and matched SHA-256":
-                        "Server independently downloaded the object; SHA-256 mismatch"
+   description:verified?"Server independently downloaded and matched SHA-256 and file size":
+                        "Server independently downloaded the object; hash or file size mismatch"
   });
-  return json({verified,sha256:digest,bytes:result.data.size,
-   note:"SHA-256 comparison performed inside authenticated Supabase Edge Function; no file bytes returned."});
+  if(custody.error){
+   console.error("Evidence verification audit write failed",custody.error.code||"unknown");
+   return json({verified:false,error:"Evidence audit registration failed; verification cannot be trusted"},503);
+  }
+  if(!verified)return json({verified:false,error:"Evidence integrity check failed"},409);
+  return json({verified:true,sha256:digest,bytes:result.data.size,
+   note:"Server SHA-256 and size matched; custody event recorded."});
  }
  if(input.operation==="send_invitation"){
   const invitation_id=String(input.invitation_id||"");
