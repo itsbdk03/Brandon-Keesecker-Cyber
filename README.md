@@ -1,202 +1,108 @@
-# Brandon Keesecker — Cybersecurity Portfolio
+# Brandon Keesecker | Cybersecurity Engineering & Public Sector Advisory
 
-![Automated verification](https://github.com/itsbdk03/Brandon-Keesecker-Cyber/actions/workflows/verify.yml/badge.svg)
-![Browser lab checks](https://github.com/itsbdk03/Brandon-Keesecker-Cyber/actions/workflows/browser-smoke.yml/badge.svg)
-![Accessibility and screenshots](https://github.com/itsbdk03/Brandon-Keesecker-Cyber/actions/workflows/accessibility-visual.yml/badge.svg)
+[![Portfolio verification](https://github.com/itsbdk03/Brandon-Keesecker-Cyber/actions/workflows/verify.yml/badge.svg)](https://github.com/itsbdk03/Brandon-Keesecker-Cyber/actions/workflows/verify.yml)
+[![Browser tests](https://github.com/itsbdk03/Brandon-Keesecker-Cyber/actions/workflows/browser-smoke.yml/badge.svg)](https://github.com/itsbdk03/Brandon-Keesecker-Cyber/actions/workflows/browser-smoke.yml)
+[![IncidentDesk verification](https://github.com/itsbdk03/Brandon-Keesecker-Cyber/actions/workflows/incidentdesk.yml/badge.svg)](https://github.com/itsbdk03/Brandon-Keesecker-Cyber/actions/workflows/incidentdesk.yml)
+[![Accessibility reviews](https://github.com/itsbdk03/Brandon-Keesecker-Cyber/actions/workflows/accessibility-visual.yml/badge.svg)](https://github.com/itsbdk03/Brandon-Keesecker-Cyber/actions/workflows/accessibility-visual.yml)
 
-**Eight interactive cybersecurity projects** · Seven local-first browser labs + Supabase-backed IncidentDesk · 89 original lab tests · Synthetic data used for public demonstrations.
+**Eight interactive cybersecurity projects · Eight reference architectures · Public-safe demonstrations · Source code and automated tests**
 
-An animated, responsive, self-contained professional cybersecurity website. It does not require an API key, build system, package installation, account, or paid service.
+[**View my live portfolio**](https://itsbdk03.github.io/Brandon-Keesecker-Cyber/) · [**Explore projects**](https://itsbdk03.github.io/Brandon-Keesecker-Cyber/#cyber-projects) · [**Explore reference architectures**](https://itsbdk03.github.io/Brandon-Keesecker-Cyber/architectures/) · [**LinkedIn**](https://www.linkedin.com/in/brandon-keesecker-i-ccsk-aws-ccp-24463b242/)
 
-![Cybersecurity projects](docs/images/portfolio-projects.webp)
+![Cybersecurity project gallery](docs/images/portfolio-projects.webp)
 
-## Source and professional profiles
+## Professional focus
 
-- GitHub: https://github.com/itsbdk03
-- LinkedIn: https://www.linkedin.com/in/brandon-keesecker-i-ccsk-aws-ccp-24463b242/
-- Public repository: https://github.com/itsbdk03/Brandon-Keesecker-Cyber
+I'm a public-sector cybersecurity consultant with work spanning **FedRAMP Low, Moderate, and High**, **DoD IL4, IL5, and IL6**, **CMMC Level 2**, and technical security documentation development. My advisory experience also includes consulting involving the **NIST AI Risk Management Framework (AI RMF)**, along with extensive knowledge of **Zero Trust Architecture** and NIST SP 800-207.
 
-## Open the website
+I work with requirements, control implementation narratives, risk analysis, scope and evidence quality, assessment readiness, and technical security architecture. My broader governance and assurance experience includes HITRUST, HIPAA, and SOC 2. My academic background includes a cybersecurity-focused master's degree from **West Virginia University**, and I hold the **Certificate of Cloud Security Knowledge (CCSK)**.
 
-Open `index.html` in any modern browser. To put it on the public internet, upload the file to a static host such as GitHub Pages, Cloudflare Pages, Netlify, or another static hosting service.
+This repository showcases my technical interests and engineering work alongside public-safe explanations of professional focus areas. It contains original portfolio exercises and **no customer deliverables or private engagement records**.
 
-## What's included
+## Interactive cybersecurity projects
 
-- Animated cyber hero with network particles, security graphics, responsive orbit effects, and scrolling animations.
-- Professional overview covering FedRAMP Low/Moderate/High, DoD IL4/IL5/IL6, CMMC, AI consulting with the NIST AI Risk Management Framework (AI RMF), extensive Zero Trust Architecture knowledge (NIST SP 800-207), security documentation development, and cloud security.
-- Interactive HITRUST, HIPAA, SOC 2, and cross-framework GRC explorer. Wording intentionally distinguishes additional GRC experience from deeper federal advisory work.
-- Filterable **Selected Work** cards about professional methods, described without client names or sensitive engagement details.
-- Dedicated **Projects** navigation tab showing all eight interactive applications: ControlTrace, SignalHunt, CloudGuard, RiskMatrix, ConfigLens, AttackPath, AssuranceFlow, and Supabase-backed IncidentDesk.
-- Dedicated **Architectures** section and [eight-tab interactive reference architecture library](architectures/index.html) spanning FedRAMP, DoD, CMMC, HITRUST, HIPAA, and SOC 2. The illustrated poster images are displayed once the corresponding original WebP assets are uploaded.
-- Dedicated **LinkedIn** tab and large social section, now connected directly to Brandon’s LinkedIn profile.
-- Experience and education timeline, including your WVU master's degree and a **planned** (not earned) doctorate in cybersecurity.
-- Certifications including CCSK, CompTIA A+, Google and Microsoft certifications.
-- Interactive terminal (type `help`, `skills`, `grc`, `doctorate`, `projects`, etc.).
-- Command palette with Ctrl+K / Cmd+K, dark/light mode, mobile navigation, accessible focus states, reduced-motion support.
+Each of these **eight projects** has working source files and a browser-accessible demonstration. The first seven operate locally in the browser with fictional datasets. IncidentDesk additionally includes an optional authenticated Supabase-backed experience; visitors can explore its fictional demo without creating an account.
 
-## LinkedIn profile — already connected
+| Live project | Area | What the demonstration does | Code |
+|---|---|---|---|
+| **[ControlTrace](https://itsbdk03.github.io/Brandon-Keesecker-Cyber/labs/index.html#controls)** | GRC / Control Evidence | Track synthetic NIST control implementation narratives, evidence links, owners, and remediation gaps. | [Source](labs/index.html) |
+| **[SignalHunt](https://itsbdk03.github.io/Brandon-Keesecker-Cyber/labs/index.html#hunt)** | Detection Engineering | Correlate fabricated authentication, process, and network events; inspect explainable alerts and export findings. | [Source](labs/index.html) |
+| **[CloudGuard](https://itsbdk03.github.io/Brandon-Keesecker-Cyber/labs/index.html#cloud)** | Cloud Defense Modeling | Simulate cloud safeguards and compare security posture and trust boundaries. | [Source](labs/index.html) |
+| **[RiskMatrix](https://itsbdk03.github.io/Brandon-Keesecker-Cyber/labs/index.html#risk)** | Risk Engineering | Prioritize synthetic security risks and explore treatment options in an interactive risk register. | [Source](labs/index.html) |
+| **[ConfigLens](https://itsbdk03.github.io/Brandon-Keesecker-Cyber/labs/index.html#config)** | AWS Configuration Analysis | Evaluate sample AWS JSON configurations, compare exposure, and export SARIF-compatible findings. | [Source](labs/index.html) |
+| **[AttackPath](https://itsbdk03.github.io/Brandon-Keesecker-Cyber/labs/index.html#path)** | Threat Modeling | Explore modeled attack routes, apply defensive safeguards, and export tabletop analysis. | [Source](labs/index.html) |
+| **[AssuranceFlow](https://itsbdk03.github.io/Brandon-Keesecker-Cyber/labs/assuranceflow.html)** | Security Documentation | Review synthetic SSP narratives, map evidence quality, triage gaps, and export workpapers. | [Source](labs/assuranceflow.html) |
+| **[IncidentDesk](https://itsbdk03.github.io/Brandon-Keesecker-Cyber/incidentdesk/index.html)** | Full-Stack Security Operations | Explore the fictional SOC demo or sign in to an isolated Supabase workspace with incidents, audit history, private evidence and playbooks. | [Source](incidentdesk/index.html) |
 
-The navigation tab, LinkedIn contact button, and terminal now point to Brandon’s public profile:
+### Featured: IncidentDesk — Supabase-backed SOC workbench
 
-https://www.linkedin.com/in/brandon-keesecker-i-ccsk-aws-ccp-24463b242/
+[**Launch IncidentDesk**](https://itsbdk03.github.io/Brandon-Keesecker-Cyber/incidentdesk/index.html) · [Technical architecture](incidentdesk/README.md) · [Security acceptance and test boundaries](incidentdesk/RELEASE-ACCEPTANCE.md)
 
-No further LinkedIn setup is needed. If you ever change your LinkedIn profile address, edit the `linkedinUrl` field in the `SITE_CONFIG` block inside `index.html`.
+- **Interface:** incident intake and status tracking, assignments, notes, incident history, response playbooks, analytics, and in-app notifications.
+- **Backend:** Supabase Auth, PostgreSQL with workspace-scoped row-level security, private object storage, Realtime, scheduled operations and JWT-protected Edge Functions.
+- **Evidence integrity:** recorded SHA-256 digests and server-side verification with custody-event audit writes; verification fails closed on integrity or audit registration errors.
+- **Verification:** portable tests and rollback-only SQL security suites for role-based access and simulated tenant separation. A separate staging environment supports authorization regression testing.
 
-## Interactive cybersecurity engineering labs
+IncidentDesk is a **portfolio-scale reference implementation**, not a certified SOC product. Database security tests do not substitute for complete independent multi-account, Storage API, recovery, or penetration testing; the current acceptance notes define what has been verified.
 
-The `labs/` folder now contains **six integrated workbenches plus a standalone AssuranceFlow documentation studio**, with full source code and documentation. Every project has its own live, direct-linkable URL path within the site:
+### Reference architecture gallery
 
-| Project | URL after publishing | What visitors can do |
-|---|---|---|
-| ControlTrace | `yourdomain/labs/index.html#controls` | Edit sample NIST controls, map evidence, track gaps, export CSV |
-| SignalHunt | `yourdomain/labs/index.html#hunt` | Run detection heuristics, import a sample CSV or JSON, export findings |
-| CloudGuard | `yourdomain/labs/index.html#cloud` | Toggle cloud defenses and see simulated risk posture and architecture change |
-| RiskMatrix | `yourdomain/labs/index.html#risk` | Add risks, adjust mitigation maturity, filter a 5×5 heat map, export CSV |
-| ConfigLens | `yourdomain/labs/index.html#config` | Inspect fictional AWS JSON, compare configurations, remediate findings, export SARIF |
-| AttackPath | `yourdomain/labs/index.html#path` | Test simulated attack routes, compare safeguards and download analysis |
-| AssuranceFlow | `yourdomain/labs/assuranceflow.html` | Inspect security narratives and evidence quality, triage documentation gaps, export reviewer workpapers |
+The [interactive architecture library](https://itsbdk03.github.io/Brandon-Keesecker-Cyber/architectures/) includes **all eight illustrated posters** and companion vector system diagrams. Each example describes boundary controls, identity, logging, segmentation, recovery, third-party service choices, and assessment considerations.
 
-- `labs/index.html` — six integrated workbenches, with responsive interactive UI
-- `labs/assuranceflow.html` — seventh standalone, browser-based control documentation workbench
-- `labs/labs.css` — lab styling and mobile layouts
-- `labs/labs.js` — documented code for the four original modules
-- `labs/enhancements.js` and `labs/enhancements.css` — additional analytics, investigations and downloadable briefs
-- `labs/configlens.js` — twelve explainable AWS JSON security checks, severity filtering, report and SARIF exports
-- `labs/methodology.html` — browser-readable case studies covering technical design and known limitations
-- `labs/samples/configlens-exposed.json` and `configlens-hardened.json` — documented fictional test inputs
-- `labs/samples/events-demo.csv` — synthetic sample log file to download and load into SignalHunt
-- `labs/README.md` — each project's data model, detection rules, assessment caveats, and references
+[FedRAMP Moderate](https://itsbdk03.github.io/Brandon-Keesecker-Cyber/architectures/#fedramp-moderate) · [FedRAMP High](https://itsbdk03.github.io/Brandon-Keesecker-Cyber/architectures/#fedramp-high) · [DoD IL4](https://itsbdk03.github.io/Brandon-Keesecker-Cyber/architectures/#dod-il4) · [DoD IL5](https://itsbdk03.github.io/Brandon-Keesecker-Cyber/architectures/#dod-il5) · [CMMC Level 2 Enclave](https://itsbdk03.github.io/Brandon-Keesecker-Cyber/architectures/#cmmc-l2) · [HITRUST CSF](https://itsbdk03.github.io/Brandon-Keesecker-Cyber/architectures/#hitrust) · [HIPAA Security Rule](https://itsbdk03.github.io/Brandon-Keesecker-Cyber/architectures/#hipaa) · [SOC 2](https://itsbdk03.github.io/Brandon-Keesecker-Cyber/architectures/#soc2)
 
-**Important when publishing:** upload the **entire website folder**, including the `labs` subfolder. Do **not** upload only `index.html`, or the project links will be broken.
+These diagrams represent **illustrative reference designs**, not deployed client environments or accredited FedRAMP, DoD, HITRUST, HIPAA, CMMC or SOC 2 systems. Product names are examples; eligibility and authorizations depend on the selected offering, scope and implementation evidence.
 
-The `SITE_CONFIG.projects` array inside your portfolio homepage lists all eight public projects using safe relative URLs, including `incidentdesk/index.html`. The existing LinkedIn tab still links to your real profile. IncidentDesk uses a separate Supabase backend for optional signed-in functionality; its fictional demonstration mode requires no account.
+## Engineering practices
 
-For further GitHub project links, add cards to `SITE_CONFIG.projects` with `title`, `category`, `icon`, `summary`, `url`, and `type` fields. Do not publish confidential client information, CUI, production artifacts, or credentials.
+| Practice | Public implementation |
+|---|---|
+| Explainable decisions | Transparent security rules, risk models, evidence scores and scenario assumptions |
+| Repeatable tests | Node.js unit tests, source syntax checks, automated browser exercises, and accessible UI reviews |
+| Reproducible investigations | Fictional inputs, downloadable workpapers, analytic exports and reviewer walkthroughs |
+| Secure-by-design boundaries | Browser-local handling for the seven labs; scoped RLS, private storage and audited functions for IncidentDesk |
+| Security hygiene | No private API credentials in frontend code; limited-scope public keys where required; automated repository secret-pattern checks |
+| Technical documentation | [Lab engineering notes](labs/methodology.html), [project demonstration guide](docs/DEMO-GUIDE.md), [architecture overview](docs/ARCHITECTURE.md), [security statement](SECURITY.md) |
 
-## Interview-ready guided walkthroughs
+The repository's GitHub Actions workflows perform code checks and browser exercises on relevant changes. Tests and implementation notes document their actual boundaries rather than presenting simulations as live infrastructure audits.
 
-See **[Project demonstration guide](docs/DEMO-GUIDE.md)** for practical, 1–3 minute reviewer exercises for each lab. Each walkthrough identifies what to click, what output to expect, what the result does **not** prove, and which engineering choices the reviewer can verify in the source code.
+## Technology and structure
 
-### Recent improvements to the existing labs
+- **Frontend:** HTML, responsive CSS, JavaScript and browser-native APIs.
+- **Security labs:** dependency-light Node.js-testable modules and synthetic JSON/CSV evidence.
+- **IncidentDesk:** JavaScript, Supabase Auth, PostgreSQL RLS, private Storage, Edge Functions and Realtime.
+- **Testing:** Node.js built-in test runner, GitHub Actions, Chromium/Playwright, and separate staging SQL authorization scripts.
 
-- **ConfigLens:** an evidence-first scope review surfaces unassessed fields and omitted configuration categories separately from passed rules. Capture a baseline and compare modified snapshots; missing evidence is **not** labeled remediated. Export a standalone remediation brief.
-- **SignalHunt:** the correlation engine now requires a single identity and source IP for the failure-to-success authentication chain, reducing cross-source false positives. Later process/network activity is clearly labeled contextual, not causal.
-- **Verification:** new regression tests cover uncertain data, remediation comparisons, invalid ports, temporal windows and cross-IP log sequences. CI also checks embedded JavaScript syntax, project routes and source files.
+```text
+/
+├── index.html               Professional portfolio
+├── architectures/           Eight framework tabs, vector diagrams, illustrated posters
+├── labs/                    Seven working browser-first security labs
+├── incidentdesk/            Full-stack fictional incident-response application
+├── docs/                    Architecture, methodology and demonstration records
+├── tools/                   Source validation and security hygiene checks
+└── .github/workflows/       Automated verification and controlled staging workflows
+```
 
-## Recommended before publishing
+### Local verification
 
-- Your public LinkedIn URL is already configured and can be tested after deployment.
-- Review the email address currently in the contact section and update it if necessary. It also appears in the copy-email handler and terminal.
-- Review the listed credentials and educational degree wording, especially the planned doctorate. This site intentionally does **not** claim you hold a doctorate.
-- Test all seven included live project links on your deployed domain. You can add GitHub repositories later if you wish.
-- Optionally add a downloadable résumé or headshot with your own approved images.
-- Review any professional information for permission to share before publication.
-
-## Technical notes
-
-The main portfolio is implemented using HTML, CSS, and vanilla JavaScript inside `index.html`; the seven interactive labs use static files in `labs/`. Text content is inserted safely (without accepting raw markup from project descriptions); project URLs are accepted only when they are valid HTTP or HTTPS URLs. All existing animations and interactions are local to the browser. No visitors' data is collected or sent to a server by the site itself.
-
-
-## Version 7: AttackPath defensive threat modeling
-
-- Sixth runnable lab: `labs/index.html#path`. A no-backend attack graph with three scenarios, seven defensive safeguards, live reachability traces, prioritized fixes, Markdown analysis reports and JSON exports.
-- `labs/attackpath-engine.js` is a dependency-free graph engine that runs in browsers and Node.js.
-- Run verification from the extracted folder: `node --test labs/tests/attackpath.test.cjs`. Automated test cases use fictional configurations.
-- GitHub Actions example: `.github/workflows/verify.yml`. Copy the entire folder to a repository to enable it.
-- For recruiter credibility, link to actual public source repositories and report test results accurately. Avoid presenting these sample exercises as live client engagements.
-
-## GitHub-ready edition (v8)
-
-- **ConfigLens security rules are now independently testable** through `labs/configlens-engine.js`. Its browser UI uses the same engine as the Node.js tests, rather than a duplicate implementation.
-- Portable Node.js regression tests now cover both ConfigLens and AttackPath.
-- `.github/workflows/verify.yml` checks source syntax, website references and unit tests for push and pull requests.
-- Professional architecture, publishing and responsible-use documents are in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md), [`docs/PUBLISHING.md`](docs/PUBLISHING.md), and [`SECURITY.md`](SECURITY.md).
-
-**Run locally (Node.js 20+):**
+Requires Node.js 20 or newer. No application secrets are required to run the local-first portfolio checks.
 
 ```bash
 npm run check:js
+npm run audit:security
 npm run verify
 ```
 
-**Publishing and hosting:** Source code is maintained in this repository. See [docs/PUBLISHING.md](docs/PUBLISHING.md) for optional GitHub Pages hosting. Neither client records nor credentials should be published.
+IncidentDesk production and staging service credentials belong exclusively in their designated secret stores; **service-role keys and database passwords are never frontend configuration**. The optional live environment is distinct from the static website. See [IncidentDesk's documentation](incidentdesk/README.md) for design details.
 
-## Public sharing note
+## Security, provenance and responsible use
 
-The examples are synthetic and educational, not live client work or production certification tooling. Review all professional and contact information before public sharing. Screenshots are optimized for repository viewing.
+This is a **personal, publicly shareable security engineering portfolio**. All embedded incident logs, example cloud accounts, evidence files, data flows, network scenarios and architectures are synthetic. None imply access to customer systems or formal assessment results.
 
-## AssuranceFlow — documentation engineering studio (lab 07)
+- Do not submit CUI, PHI, credentials, internal client records, or production data to these demonstrations.
+- A portfolio lab result is **not** proof of compliance, authorization, a comprehensive vulnerability assessment, or production readiness.
+- Security reports and responsible disclosure contact details are in [SECURITY.md](SECURITY.md).
+- Professional descriptions intentionally omit client names, confidential engagement architectures and unpublished findings.
 
-Visit [`labs/assuranceflow.html`](labs/assuranceflow.html) for a local-first demo of control documentation quality reviews. It supports synthetic NIST-style control implementation narratives, evidence traceability, prioritized gap lists, a narrowly scoped OSCAL SSP implementation-description importer, local JSON workpapers, and a partial OSCAL-oriented implementation export. It **does not** validate an OSCAL schema, baseline coverage, compliance, or authorization. The engine is in `labs/assuranceflow-engine.js` and is covered by 12 portable Node.js tests. Official reference: https://pages.nist.gov/OSCAL-Reference/models/v1.2.3/system-security-plan/json-reference/ .
-
-## Seven source-linked architecture case studies
-
-Every one of the **existing seven labs** now has an expandable **Engineering Lens** embedded directly in its workbench. It presents a four-stage input → analysis → interpretation → export pipeline, the specific design choices behind the model, known limitations, links to implementation files and tests, and a downloadable Markdown technical case study.
-
-The [Engineering Notes page](labs/methodology.html) has been refreshed from five to **all seven existing projects** and renders the same source-backed architecture pipelines and verification evidence. This is intentionally **not** a new eighth project—it's an improved explanation of existing code and security decisions.
-
-The shared [architecture dossier model](labs/engineering-model.js) and [visual renderer](labs/engineering-lens.js) have their own regression checks. The automated browser workflow opens each dossier, verifies its four steps, downloads its technical brief, and opens the complete Engineering Notes page in desktop and narrow touch layouts. All preloaded examples remain synthetic and all claims are scoped to the actual implementation.
-
-## Evidence Checks — interactive recruiter exercises
-
-Each of the **seven existing labs** now has a local **Evidence Check** section containing one focused, three-step security analysis exercise. A visitor follows the task, uses the existing workbench, and selects **Verify current result** to check a deterministic condition against the current browser state. Successful outcomes enable an optional, copyable Markdown evidence note; no completion is transmitted to a server and no certification is implied.
-
-Examples include source-matched detections in SignalHunt, verified remediation rather than disappearing JSON fields in ConfigLens, zero modeled reachable targets in AttackPath, and an improved RA-5 documentation record in AssuranceFlow. The checks are deliberately small and explain what constitutes a result and what further real-world evidence would be needed.
-
-The standalone [exercise engine](labs/exercise-model.js) and [browser adapter](labs/exercise-mode.js) remain part of the existing labs, not an additional project. Ten dedicated regression tests cover all seven completion criteria, including false-positive cases and missing state. The browser suite tests both failure and success states for ConfigLens plus successful AttackPath and AssuranceFlow scenarios. See the [Evidence Check documentation](docs/EVIDENCE-CHECKS.md) for task definitions and explicit trust boundaries.
-## Guided reviewer mode (all seven existing labs)
-
-A non-blocking, keyboard-accessible **Guided walkthrough** control is available inside both the six-tab lab hub and AssuranceFlow. Four curated steps per lab highlight the specific controls to inspect, the outcome to validate, and the scenario limitations. The tour supports Previous, Next, Finish, Escape to close, focus indicators, responsive layouts, and reduced-motion preferences. No browser data or client evidence is transmitted.
-
-The separate script and stylesheet are `labs/reviewer-tour.js` and `labs/reviewer-tour.css`. The site verifier checks their integration.
-
-### End-to-end browser verification
-
-A separate [Chromium browser smoke workflow](.github/workflows/browser-smoke.yml) now runs on lab code changes. It opens the existing static website through a temporary local HTTP server at desktop (1366 × 820) and phone-sized (390 × 844) viewports, and verifies the guided tours, all seven project routes, ConfigLens baseline/remediation comparisons, SignalHunt activity timeline, AssuranceFlow editing, and downloadable reports. The repeatable test runner is [`tools/browser-smoke.py`](tools/browser-smoke.py). Node.js unit tests remain independent and fast, while browser tests exercise real DOM interactions and downloads.
-
-The guided reviewer experience is educational. Real browser smoke tests provide functional confidence, not an accessibility certification, security audit, or production-availability guarantee.
-
-## Report Studio — Shared executive summaries (all seven projects)
-
-Every existing workbench offers an **Executive report** button. It creates a consistent, standalone, print-ready HTML report of the **current browser session**, with a synthetic-data notice, executive metrics, observed findings and evidence, recommended verification, methodological notes, and documented limitations. Open the downloaded HTML file and use **Print / Save as PDF** in your browser. This is not server-side PDF generation, official compliance reporting, or an audited customer deliverable.
-
-The reusable [report engine](labs/report-engine.js) escapes user-controlled strings before inserting them into its HTML output. Report state is supplied by the current project modules rather than illustrative screenshots. The [project report adapters](labs/report-studio.js) generate a distinct summary for each of the seven labs. See [Report Studio architecture and trust boundaries](docs/REPORT-STUDIO.md).
-
-Additional unit tests check report escaping, input validation, bounds, and output format. Real Chromium browser tests also download report files from all seven labs on desktop and phone-sized viewports and verify their core report content.
-
-## Accessible review and visual evidence
-
-A [third GitHub Actions workflow](.github/workflows/accessibility-visual.yml) runs axe-core WCAG-tagged automated accessibility checks and saves 18 screenshots—desktop (1440×900) and narrow touch-width (390×844) views of the homepage, all seven labs, and the engineering case studies. It verifies keyboard-first skip-navigation links, browser errors, and serious/critical accessibility rules. Results are available as a downloadable 30-day **visual-and-accessibility-evidence** artifact on each workflow run, containing the screenshots and a detailed machine-readable JSON report. See the [reproducible QA guide](docs/ACCESSIBILITY-VISUAL-QA.md).
-
-The initial audit uncovered and led to fixes for invalid ARIA states, heatmap semantics, keyboard-inaccessible horizontal scroll areas, and visual link distinguishability. This is automated quality assurance, **not a claim of full WCAG certification** or pixel-baseline visual regression coverage; assistive-technology/manual review is still recommended.
-
-## Interactive investigation views — two existing projects refined
-
-- **AttackPath:** Select any of the eight fictional assets directly in its SVG graph (pointer, Enter or Space) or from a native asset menu. The details panel explains target-route membership, incoming/outgoing transitions, modeled vulnerabilities, and applied safeguards. A Fit graph to screen toggle improves small-screen access without replacing the full graph. The standalone graph engine now exposes a non-mutating `inspectNode()` method with dedicated unit tests.
-- **SignalHunt:** The temporal investigation stages are now keyboard-navigable buttons with their own inspection panel. Selecting an observation shows its timestamp, detection context and validation questions. Left/right arrows navigate adjacent stages. Device and causal linkage is never inferred solely from a matched identity and time window.
-
-The same existing [browser smoke workflow](.github/workflows/browser-smoke.yml) tests graph asset selection, keyboard behavior, display fitting, and timeline drill-down at desktop and narrow touch-screen widths. See [interactive inspection design notes](docs/INTERACTIVE-INSPECTION.md). No eighth project, paid backend or client data is involved.
-
-## Unified Command Center — search your existing tools
-
-Both the six-project workbench and standalone AssuranceFlow now have the same **Explore projects** navigation command. Press **Ctrl+K / ⌘K** or tap the command button to search the **same seven existing labs**, switch workbenches, and access a guided tour, Evidence Check, architectural notes, printable executive report, or direct project link. Search is browser-local, uses a constrained known-project catalog, and requires no external search provider or paid service.
-
-The [command model](labs/command-model.js) provides testable query ranking and route validation, while the [accessible dialog](labs/command-menu.js) supports keyboard navigation and touch-friendly search. The existing browser smoke checks also exercise search, actions and cross-project navigation. See the [Command Center design notes](docs/COMMAND-CENTER.md). No eighth project was created.
-
-## Project 08: IncidentDesk — Supabase-backed incident response
-
-IncidentDesk is an eighth, separate full-stack portfolio project. Its fictional SOC dashboard supports case creation, severity and status updates, investigative notes, event history, evidence metadata and case brief exports. The application connects to the live [Supabase project](https://supabase.com/dashboard/project/oacafwldgglatzayqtro) using a **publishable key only**; six security-scoped tables, 14 database RLS policies, a private evidence Storage bucket and two Realtime publication tables are deployed. The live database starts empty, and the local demonstration remains fictional. Email redirect allowlisting, real sign-in and two-user authorization tests are **not yet verified**. See the [IncidentDesk implementation and setup](incidentdesk/README.md), [security schema](incidentdesk/schema.sql) and [dedicated verification workflow](.github/workflows/incidentdesk.yml).
-
-## IncidentDesk security-hardening release
-
-IncidentDesk (Project 08) now demonstrates database-enforced email invitations and workspace switching, admin-managed member roles, SHA-256-verified and version-linked evidence records, incident response deadlines with manual escalation, PostgreSQL GIN-backed full-text search with 25-case pages, and Realtime connection health with fallback refresh. A rollback-safe SQL test directly verified cross-tenant isolation and Viewer write denial against the live Supabase database using simulated authenticated identities. See the [security-hardening notes](incidentdesk/README.md), [SQL integration test](incidentdesk/tests/rls-transactional.sql), and [versioned database changes](incidentdesk/migrations/0003_security_scale.sql).
-
-**Security scope:** The backend is provisioned, but actual magic-link sign-in and separate real-user end-to-end Storage/API tests remain to be performed. SHA-256 from the browser is not independent forensic attestation, and overdue cases are shown for analyst escalation without external alert delivery.
-
-
-## NIST AI RMF, Zero Trust, and expanded project portfolio (October 2026)
-
-- The public website includes AI consulting work involving the NIST AI Risk Management Framework (AI RMF) and extensive knowledge of Zero Trust Architecture and NIST SP 800-207. These are described at the professional experience, expertise and selected-work levels without inventing client names, sensitive artifacts, delivered outcomes or deployment claims.
-- The Projects navigation link goes to eight live demonstration cards. Seven local-first browser labs and [IncidentDesk](incidentdesk/index.html) are clearly differentiated; the latter adds optional Supabase authenticated workflows and a free-to-explore fictional demo.
-- The [Architecture Library](architectures/index.html) offers eight individually accessible framework tabs, vector diagrams and controls/scope notes. Original generated illustrated posters require uploading their associated WebP image assets into [architectures/posters/](architectures/posters/) to appear.
-- Technical/project examples must not be described as certified, authorized or production-ready systems without a corresponding independent authorization or assessment.
+**[Open the portfolio →](https://itsbdk03.github.io/Brandon-Keesecker-Cyber/)**
