@@ -28,4 +28,5 @@ jobs:
           fi
           psql "$STAGING_DATABASE_URL" -v ON_ERROR_STOP=1 -f incidentdesk/tests/rls-transactional.sql
           psql "$STAGING_DATABASE_URL" -v ON_ERROR_STOP=1 -f incidentdesk/tests/operations-rls-transactional.sql
+          psql "$STAGING_DATABASE_URL" -v ON_ERROR_STOP=1 -f incidentdesk/tests/extended-rls-transactional.sql
           echo 'PASS: staged cross-workspace policy checks completed under SQL transaction rollback.'
