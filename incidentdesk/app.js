@@ -196,7 +196,7 @@ async function refreshLive(){
   s.invites=(pending||[]).map(x=>({...x,accept:true}));
  }catch(err){s.invites=[];console.warn('Pending invitation lookup failed:',err.message)}
  if(!s.workspace){
-  s.role='none';s.metrics=null;s.socMetrics=null;s.notifications=[];s.pageTotal=0;s.pageIndex=0;
+  s.role='none';s.metrics=null;s.socMetrics=null;s.socBreakdown=null;s.notifications=[];s.pageTotal=0;s.pageIndex=0;
   s.store={workspaces:[],members:[],incidents:[],comments:[],events:[],evidence:[]};
   mode();render();return;
  }
@@ -212,7 +212,7 @@ async function refreshLive(){
  ]);
  s.metrics=summary;
  try{s.socMetrics=await promiseResult(await client.rpc('incident_soc_metrics',{wid}));}catch(e){s.socMetrics=null;console.warn('SOC metrics unavailable:',e.message)}
- s.socBreakdown=s.socMetrics&&s.socMetrics.workload&&s.socMetrics.weekly?s.socMetrics:null;
+ try{s.socBreakdown=await promiseResult(await client.rpc('incident_soc_trends',{wid}));}catch(e){s.socBreakdown=null;console.warn('Workspace-wide trends unavailable:',e.message)}
  try{s.playbooks=await promiseResult(await client.from('response_playbooks').select('id,title,steps').limit(12));}catch(e){s.playbooks=[];console.warn('Playbooks unavailable:',e.message)}
  try{s.notifications=await promiseResult(await client.from('incident_notifications').select('*').eq('workspace_id',wid).order('created_at',{ascending:false}).limit(80));}catch(e){s.notifications=[];console.warn('Notifications unavailable:',e.message)}
  s.role=members.find(m=>m.user_id===s.user.id)?.role||'viewer';
@@ -352,8 +352,15 @@ function renderAnalytics(){
   ['UNASSIGNED',data.unassigned??0,'Cases awaiting ownership']
  ];
  for(const [title,count,detail] of cards){const card=el('div','kpi');card.append(el('span','kpi-label',title),el('strong','',String(count)),el('small','',detail));host.append(card)}
- const workload=s.mode==='live'?s.socBreakdown?.workload||{}:{};if(s.mode!=='live')for(const i of rows('incidents')){const owner=i.assigned_to?'Assigned':'Unassigned';workload[owner]=(workload[owner]||0)+1}graph(q('#socWorkload'),workload,{'Assigned':'#74e1cc','Unassigned':'#edc17c'});
- const byWeek=s.mode==='live'?s.socBreakdown?.weekly||{}:{};if(s.mode!=='live')for(const i of rows('incidents')){const when=Date.parse(i.created_at);if(!Number.isFinite(when))continue;const date=new Date(when);const label=date.getUTCFullYear()+'-W'+String(Math.ceil((date-Date.UTC(date.getUTCFullYear(),0,1))/604800000)).padStart(2,'0');byWeek[label]=(byWeek[label]||0)+1}graph(q('#socWeekly'),byWeek,{}); 
+ const workload={};
+ if(s.mode==='live'){for(const x of s.socBreakdown?.workload||[])workload[x.assignee==='Unassigned'?'Unassigned':x.assignee.slice(0,8)+'…']=Number(x.count)||0}
+ else for(const i of rows('incidents')){const owner=i.assigned_to?'Assigned':'Unassigned';workload[owner]=(workload[owner]||0)+1}
+ graph(q('#socWorkload'),workload,{'Assigned':'#74e1cc','Unassigned':'#edc17c'});
+ const byWeek={};
+ if(s.mode==='live'){for(const x of s.socBreakdown?.weekly||[])byWeek[x.period]=Number(x.count)||0}
+ else for(const i of rows('incidents')){const date=new Date(i.created_at);if(!Number.isFinite(+date))continue;const monday=new Date(Date.UTC(date.getUTCFullYear(),date.getUTCMonth(),date.getUTCDate()-((date.getUTCDay()+6)%7)));const label=monday.toISOString().slice(0,10);byWeek[label]=(byWeek[label]||0)+1}
+ graph(q('#socWeekly'),byWeek,{});
+
 }
 function renderNotificationCount(){
  const count=(s.notifications||[]).filter(n=>!n.seen_at).length;
