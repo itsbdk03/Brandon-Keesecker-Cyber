@@ -40,4 +40,26 @@ assert(home.includes(githubProfile),'GitHub profile link missing');
 const publicLinkedin='https://www.linkedin.com/in/brandon-keesecker-i-ccsk-aws-ccp-24463b242/';
 assert(home.includes(publicLinkedin),'LinkedIn profile URL missing');
 for(const f of ['labs/samples/configlens-exposed.json','labs/samples/configlens-hardened.json'])JSON.parse(fs.readFileSync(path.join(root,f),'utf8'));
-console.log(`Verified ${scripts.length} lab scripts, 8 project routes, LinkedIn and example data.`);
+
+// Employer-facing navigation and public architecture asset acceptance.
+const gallery=fs.readFileSync(path.join(root,'architectures/index.html'),'utf8');
+const slugs=['fedramp-moderate','fedramp-high','dod-il4','dod-il5','cmmc-l2','hitrust','hipaa','soc2'];
+for(const slug of slugs){
+  assert(gallery.includes('"id":"'+slug+'"'),'Missing architecture gallery data for '+slug);
+  const poster=path.join(root,'architectures/posters',slug+'.webp');
+  assert(fs.existsSync(poster),'Missing original illustrated poster: '+slug);
+  assert(fs.statSync(poster).size>80000,'Architecture poster unexpectedly small: '+slug);
+  assert(home.includes('architectures/index.html#'+slug),'Missing homepage architecture link '+slug);
+}
+for(const ref of [
+  'https://itsbdk03.github.io/Brandon-Keesecker-Cyber/',
+  'https://itsbdk03.github.io/Brandon-Keesecker-Cyber/docs/images/portfolio-projects.webp'
+])assert(home.includes(ref),'Portfolio SEO metadata missing '+ref);
+for(const title of ['ControlTrace','SignalHunt','CloudGuard','RiskMatrix','ConfigLens','AttackPath','AssuranceFlow','IncidentDesk'])
+  assert(home.includes("title:'"+title),'Missing public project record for '+title);
+assert(home.includes('View source ↗')&&home.includes('projectSourceFiles'),'Employer-facing source links not configured');
+assert(gallery.includes('id="posterMode"')&&gallery.includes('id="vectorMode"')&&gallery.includes('id="openPoster"'),'Architecture poster/vector controls missing');
+assert(gallery.includes('class="skip-link"')&&gallery.includes('aria-labelledby','tab-'),'Architecture navigation accessibility requirements missing');
+assert(exists('tools/architecture-browser.py'),'Architecture Playwright regression script missing');
+
+console.log(`Verified ${scripts.length} lab scripts, 8 project routes, 8 illustrated architecture posters, LinkedIn and example data.`);
