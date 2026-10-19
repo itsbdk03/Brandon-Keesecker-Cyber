@@ -13,10 +13,10 @@
 main{padding-bottom:76px}.hero{padding:64px 0 42px}.eyebrow{font:800 11px/1.5 ui-monospace,monospace;color:var(--accent);letter-spacing:.15em}.hero h1{font-weight:840;max-width:930px;line-height:1.06;letter-spacing:-.06em;font-size:clamp(37px,5vw,69px);margin:18px 0}.hero h1 span{color:var(--accent)}.hero p{max-width:800px;color:var(--muted);font-size:15px;margin:0}.stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}.pill{font-size:11px;font-weight:700;border:1px solid var(--line);background:var(--surface);border-radius:30px;padding:6px 11px;color:var(--muted)}
 .gallery{display:grid;grid-template-columns:260px minmax(0,1fr);gap:24px}.sidebar{border:1px solid var(--line);background:var(--surface);border-radius:18px;padding:20px;align-self:start;position:sticky;top:91px}.sidebar h2{font-size:13px;letter-spacing:.11em;text-transform:uppercase;margin:0 0 17px;color:var(--muted)}.tabs{display:flex;flex-direction:column;gap:6px}.tabs button{width:100%;border:1px solid transparent;background:transparent;text-align:left;padding:11px 12px;border-radius:9px;color:var(--muted);font-weight:700;font-size:13px;display:flex;gap:8px;align-items:center;justify-content:space-between}.tabs button:hover{background:#213449;color:var(--ink)}.tabs button[aria-selected=true]{background:rgba(104,233,211,.1);border-color:rgba(104,233,211,.45);color:var(--accent)}.category{font-size:10px;color:#7f98b0;font-weight:600}.aside-note{color:var(--muted);font-size:11px;border-top:1px solid var(--line);padding-top:17px;margin-top:22px}
 .content{min-width:0}.viewer{border:1px solid var(--line);background:var(--surface);border-radius:18px;overflow:hidden}.viewer-head{padding:24px 27px;display:flex;gap:18px;justify-content:space-between;align-items:start}.viewer-title h2{margin:0;font-size:clamp(23px,2.9vw,35px);letter-spacing:-.04em}.viewer-title p{margin:5px 0 0;color:var(--muted);font-size:13px;max-width:680px}.actions{display:flex;flex-wrap:wrap;gap:7px}.action{border:1px solid var(--line);background:#1b3047;color:var(--ink);border-radius:8px;font-size:11px;font-weight:750;padding:10px 12px}.action:hover{border-color:var(--accent)}.action.primary{background:var(--accent);color:#06221f;border-color:transparent}.notice{margin:0 27px 22px;padding:12px 15px;border:1px solid #3b4b63;border-radius:10px;background:#172238;color:#c7d7e8;font-size:12px}
-.diagram-scroll{overflow:auto;overscroll-behavior-x:contain;background:#eaf1fb;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}.diagram-scroll svg{display:block;min-width:1080px;width:100%;height:auto}.diagram-hint{padding:10px 25px;color:var(--muted);font-size:11px}
+[hidden]{display:none!important}.view-toolbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;padding:12px 27px 20px}.view-switch{display:flex;gap:6px;flex-wrap:wrap}.view-switch button{border:1px solid var(--line);border-radius:8px;background:#1b3047;color:var(--muted);font-size:12px;font-weight:750;padding:11px 14px}.view-switch button[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:#052a26}.view-switch button:disabled{opacity:.45;cursor:not-allowed}.poster-status{padding:0 27px 15px;color:var(--muted);font-size:11px}.poster-canvas img{display:block;width:100%;height:auto;min-width:960px;max-width:none}.diagram-scroll{overflow:auto;overscroll-behavior-x:contain;background:#eaf1fb;border-top:1px solid var(--line);border-bottom:1px solid var(--line)} .diagram-scroll svg{display:block;min-width:1080px;width:100%;height:auto}.preview-image{width:100%;aspect-ratio:4/3;object-fit:cover;display:block;border-radius:8px;border:1px solid var(--line);margin-bottom:13px;background:white}.diagram-hint{padding:10px 25px;color:var(--muted);font-size:11px}
 .details{display:grid;grid-template-columns:1.15fr .85fr;gap:16px;padding:18px 21px 25px}.info{border:1px solid var(--line);border-radius:12px;padding:18px 21px;background:#101a2a}.info h3{font-size:14px;margin:0 0 11px}.info ul{padding-left:20px;margin:0;color:var(--muted);font-size:12px}.info li+li{margin-top:7px}.info p{font-size:12px;color:var(--muted);margin:0}.source{margin-top:12px!important}.source a{color:var(--accent);text-decoration:underline;text-underline-offset:3px}.library-bottom{padding-top:40px}.library-bottom h2{font-size:23px;letter-spacing:-.04em;margin:0 0 16px}.card-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.preview{border:1px solid var(--line);border-radius:13px;background:var(--surface);padding:19px;min-height:150px;text-align:left;color:var(--ink)}.preview:hover{border-color:var(--accent);transform:translateY(-2px)}.preview small{display:block;color:var(--accent);text-transform:uppercase;letter-spacing:.13em;font-size:10px}.preview strong{display:block;margin-top:13px;font-size:17px}.preview span{display:block;font-size:11px;color:var(--muted);margin-top:5px}footer{border-top:1px solid var(--line);color:var(--muted);padding:22px 0;font-size:11px}.footer-inner{display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap}
 @media(max-width:1090px){.gallery{grid-template-columns:1fr}.sidebar{position:static}.tabs{flex-direction:row;overflow-x:auto;padding-bottom:3px}.tabs button{flex:0 0 auto;width:auto;white-space:nowrap;min-height:45px}.tabs .category{display:none}.sidebar h2{margin-bottom:10px}.aside-note{display:none}.card-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:620px){.wrap{width:calc(100% - 26px)}.toplinks{gap:12px}.toplinks a:not(:first-child){display:none}.hero{padding:36px 0 26px}.hero p{font-size:13px}.viewer-head{padding:17px;flex-direction:column}.notice{margin:0 16px 14px}.details{grid-template-columns:1fr;padding:13px}.card-grid{grid-template-columns:1fr 1fr}.preview{padding:12px;min-height:122px}.preview strong{font-size:14px}.actions{width:100%}.action{flex:1}.stats{gap:5px}.pill{font-size:10px}}
+@media(max-width:620px){.wrap{width:calc(100% - 26px)}.toplinks{gap:12px}.toplinks a:not(:first-child){display:none}.hero{padding:36px 0 26px}.hero p{font-size:13px}.viewer-head{padding:17px;flex-direction:column}.notice{margin:0 16px 14px}.details{grid-template-columns:1fr;padding:13px}.card-grid{grid-template-columns:1fr 1fr}.preview{padding:12px;min-height:122px}.preview strong{font-size:14px}.actions{width:100%}.action{flex:1}.view-toolbar{padding:10px 16px 15px}.poster-status{padding:0 16px 12px}.view-switch{width:100%}.view-switch button{flex:1;font-size:11px;padding:10px}.stats{gap:5px}.pill{font-size:10px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.preview:hover{transform:none}}
 </style>
 </head>
@@ -28,7 +28,10 @@ main{padding-bottom:76px}.hero{padding:64px 0 42px}.eyebrow{font:800 11px/1.5 ui
 <section class="content" id="architecturePanel" role="tabpanel" aria-live="polite" tabindex="-1">
 <div class="viewer"><div class="viewer-head"><div class="viewer-title"><div class="eyebrow" id="frameworkType"></div><h2 id="frameworkTitle"></h2><p id="frameworkDescription"></p></div><div class="actions"><button class="action" id="shareView" type="button">Copy link</button><button class="action primary" id="downloadSvg" type="button">Download SVG ↓</button></div></div>
 <div class="notice" id="frameworkNotice"></div>
-<div class="diagram-scroll" id="diagramViewport"><div id="architectureGraphic"></div></div><div class="diagram-hint">← Swipe horizontally to inspect the detailed diagram on smaller screens. SVG exports remain vector sharp. →</div>
+<div class="view-toolbar"><div class="view-switch" role="group" aria-label="Choose architecture diagram format"><button type="button" id="posterMode" aria-pressed="false">Illustrated poster</button><button type="button" id="vectorMode" aria-pressed="true">Interactive diagram</button></div><a class="action" id="downloadPoster" download hidden>Download poster ↓</a></div>
+<div class="poster-status" id="posterStatus" role="status">Checking for the original illustrated architecture…</div>
+<div class="diagram-scroll" id="diagramViewport"><div id="architectureGraphic"></div><div id="posterContainer" class="poster-canvas" hidden><img id="posterImage" alt="" decoding="async"></div></div>
+<div class="diagram-hint" id="diagramHint">← Swipe to inspect the detailed diagram on smaller screens. →</div>
 <div class="details"><div class="info"><h3>Control and implementation priorities</h3><ul id="controlList"></ul></div><div class="info"><h3>Scope, compliance and references</h3><p id="scopeNote"></p><p class="source" id="sourceLink"></p></div></div></div>
 </section></div>
 <section class="library-bottom"><div class="eyebrow">BROWSE ALL EIGHT</div><h2>Every architecture, one library.</h2><div class="card-grid" id="architectureCards"></div></section>
@@ -79,6 +82,50 @@ svg+=txt(37,837,"Architecture deliberately highlights control areas; certificati
 svg+='</svg>';return svg;
 }
 let current="fedramp-moderate";
+let preferredView="poster";
+let posterReady=false;
+let posterAttempt=0;
+function showView(){
+ const illustrated=preferredView==="poster"&&posterReady;
+ $("#posterContainer").hidden=!illustrated;
+ $("#architectureGraphic").hidden=illustrated;
+ $("#posterMode").setAttribute("aria-pressed",String(illustrated));
+ $("#vectorMode").setAttribute("aria-pressed",String(!illustrated));
+ $("#downloadPoster").hidden=!illustrated;
+ $("#diagramHint").textContent=illustrated
+  ?"← Swipe to inspect the original illustrated poster on a small screen. Illustrations are conceptual and may contain inaccurate text; consult the detailed controls and official guidance below. →"
+  :"← Swipe to inspect the reference diagram on a small screen. SVG exports remain vector sharp. →";
+}
+function requestPoster(model){
+ const attempt=++posterAttempt;
+ const path="posters/"+encodeURIComponent(model.id)+".webp";
+ posterReady=false;
+ $("#posterMode").disabled=true;
+ $("#posterStatus").textContent="Checking for the original illustrated architecture…";
+ showView();
+ const img=new Image();
+ img.onload=()=>{
+  if(attempt!==posterAttempt)return;
+  posterReady=true;
+  $("#posterMode").disabled=false;
+  $("#posterImage").src=path;
+  $("#posterImage").alt=model.name+" — detailed illustrated portfolio sample architecture";
+  $("#downloadPoster").href=path;
+  $("#downloadPoster").download=model.id+"-illustrated-poster.webp";
+  $("#posterStatus").textContent="Illustrated poster from the original design series. Fictional sample only; vendor eligibility and compliance must be independently verified.";
+  showView();
+ };
+ img.onerror=()=>{
+  if(attempt!==posterAttempt)return;
+  posterReady=false;
+  $("#posterMode").disabled=true;
+  $("#posterStatus").textContent="Original poster upload pending. The fully functional interactive architecture is displayed instead.";
+  showView();
+ };
+ img.src=path;
+}
+$("#posterMode").addEventListener("click",()=>{preferredView="poster";showView()});
+$("#vectorMode").addEventListener("click",()=>{preferredView="vector";showView()});
 const models=new Map(DATA.map(x=>[x.id,x]));
 function select(id,focus=false){
 const model=models.get(id)||DATA[0];current=model.id;
@@ -90,6 +137,7 @@ $("#scopeNote").textContent=model.caveat;
 $("#controlList").replaceChildren(...model.goals.map(goal=>{const li=document.createElement("li");li.textContent=goal;return li;}));
 $("#sourceLink").replaceChildren();const a=document.createElement("a");a.href=model.source.url;a.target="_blank";a.rel="noopener noreferrer";a.textContent="Official / authoritative reference ↗ "+model.source.label;$("#sourceLink").append(a);
 $("#architectureGraphic").innerHTML=diagram(model);
+requestPoster(model);
 document.querySelectorAll('[role="tab"]').forEach(b=>{const active=b.dataset.id===current;b.setAttribute("aria-selected",String(active));b.tabIndex=active?0:-1;});
 const viewport=$("#diagramViewport");viewport.scrollLeft=0;
 if(location.hash.slice(1)!==model.id)history.replaceState(null,"","#"+model.id);
@@ -99,7 +147,9 @@ DATA.forEach((model)=>{
 const button=document.createElement("button");button.type="button";button.id="tab-"+model.id;button.dataset.id=model.id;button.setAttribute("role","tab");button.setAttribute("aria-controls","architecturePanel");button.setAttribute("aria-selected","false");button.tabIndex=-1;
 const name=document.createElement("span");name.textContent=model.name;const category=document.createElement("span");category.className="category";category.textContent=model.category;button.append(name,category);
 button.addEventListener("click",()=>select(model.id));$("#architectureTabs").append(button);
-const card=document.createElement("button");card.className="preview";card.type="button";const small=document.createElement("small");small.textContent=model.category+" / "+model.impact;const strong=document.createElement("strong");strong.textContent=model.name;const more=document.createElement("span");more.textContent="Explore reference architecture →";card.append(small,strong,more);card.addEventListener("click",()=>{select(model.id);window.scrollTo({top:0,behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"instant":"smooth"});});$("#architectureCards").append(card);
+const card=document.createElement("button");card.className="preview";card.type="button";
+const thumb=document.createElement("img");thumb.className="preview-image";thumb.alt="";thumb.loading="lazy";thumb.decoding="async";thumb.src="posters/"+encodeURIComponent(model.id)+".webp";thumb.addEventListener("error",()=>thumb.remove());
+const small=document.createElement("small");small.textContent=model.category+" / "+model.impact;const strong=document.createElement("strong");strong.textContent=model.name;const more=document.createElement("span");more.textContent="Explore reference architecture →";card.append(thumb,small,strong,more);card.addEventListener("click",()=>{select(model.id);window.scrollTo({top:0,behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"instant":"smooth"});});$("#architectureCards").append(card);
 });
 $("#architectureTabs").addEventListener("keydown",event=>{
 if(!["ArrowDown","ArrowUp","ArrowLeft","ArrowRight","Home","End"].includes(event.key))return;
