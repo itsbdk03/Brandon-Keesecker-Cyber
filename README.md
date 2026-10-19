@@ -4,7 +4,7 @@
 ![Browser lab checks](https://github.com/itsbdk03/Brandon-Keesecker-Cyber/actions/workflows/browser-smoke.yml/badge.svg)
 ![Accessibility and screenshots](https://github.com/itsbdk03/Brandon-Keesecker-Cyber/actions/workflows/accessibility-visual.yml/badge.svg)
 
-**Seven local-first interactive cybersecurity labs** · 89 automated tests · Synthetic data · No API keys or cloud credentials required.
+**Eight interactive cybersecurity projects** · Seven local-first browser labs + Supabase-backed IncidentDesk · 89 original lab tests · Synthetic data used for public demonstrations.
 
 An animated, responsive, self-contained professional cybersecurity website. It does not require an API key, build system, package installation, account, or paid service.
 
@@ -23,10 +23,11 @@ Open `index.html` in any modern browser. To put it on the public internet, uploa
 ## What's included
 
 - Animated cyber hero with network particles, security graphics, responsive orbit effects, and scrolling animations.
-- Professional overview covering FedRAMP Low/Moderate/High, DoD IL4/IL5/IL6, security documentation development, CMMC, and cloud security.
+- Professional overview covering FedRAMP Low/Moderate/High, DoD IL4/IL5/IL6, CMMC, AI consulting with the NIST AI Risk Management Framework (AI RMF), extensive Zero Trust Architecture knowledge (NIST SP 800-207), security documentation development, and cloud security.
 - Interactive HITRUST, HIPAA, SOC 2, and cross-framework GRC explorer. Wording intentionally distinguishes additional GRC experience from deeper federal advisory work.
 - Filterable **Selected Work** cards about professional methods, described without client names or sensitive engagement details.
-- Dedicated **Cyber Projects** tab with seven working, interactive projects: ControlTrace, SignalHunt, CloudGuard, RiskMatrix, ConfigLens, AttackPath, and AssuranceFlow.
+- Dedicated **Projects** navigation tab showing all eight interactive applications: ControlTrace, SignalHunt, CloudGuard, RiskMatrix, ConfigLens, AttackPath, AssuranceFlow, and Supabase-backed IncidentDesk.
+- Dedicated **Architectures** section and [eight-tab interactive reference architecture library](architectures/index.html) spanning FedRAMP, DoD, CMMC, HITRUST, HIPAA, and SOC 2. The illustrated poster images are displayed once the corresponding original WebP assets are uploaded.
 - Dedicated **LinkedIn** tab and large social section, now connected directly to Brandon’s LinkedIn profile.
 - Experience and education timeline, including your WVU master's degree and a **planned** (not earned) doctorate in cybersecurity.
 - Certifications including CCSK, CompTIA A+, Google and Microsoft certifications.
@@ -68,7 +69,7 @@ The `labs/` folder now contains **six integrated workbenches plus a standalone A
 
 **Important when publishing:** upload the **entire website folder**, including the `labs` subfolder. Do **not** upload only `index.html`, or the project links will be broken.
 
-The `SITE_CONFIG.projects` array inside your portfolio homepage already points to each project using safe relative URLs. The existing LinkedIn tab still links to your real profile.
+The `SITE_CONFIG.projects` array inside your portfolio homepage lists all eight public projects using safe relative URLs, including `incidentdesk/index.html`. The existing LinkedIn tab still links to your real profile. IncidentDesk uses a separate Supabase backend for optional signed-in functionality; its fictional demonstration mode requires no account.
 
 For further GitHub project links, add cards to `SITE_CONFIG.projects` with `title`, `category`, `icon`, `summary`, `url`, and `type` fields. Do not publish confidential client information, CUI, production artifacts, or credentials.
 
@@ -191,3 +192,11 @@ IncidentDesk is an eighth, separate full-stack portfolio project. Its fictional 
 IncidentDesk (Project 08) now demonstrates database-enforced email invitations and workspace switching, admin-managed member roles, SHA-256-verified and version-linked evidence records, incident response deadlines with manual escalation, PostgreSQL GIN-backed full-text search with 25-case pages, and Realtime connection health with fallback refresh. A rollback-safe SQL test directly verified cross-tenant isolation and Viewer write denial against the live Supabase database using simulated authenticated identities. See the [security-hardening notes](incidentdesk/README.md), [SQL integration test](incidentdesk/tests/rls-transactional.sql), and [versioned database changes](incidentdesk/migrations/0003_security_scale.sql).
 
 **Security scope:** The backend is provisioned, but actual magic-link sign-in and separate real-user end-to-end Storage/API tests remain to be performed. SHA-256 from the browser is not independent forensic attestation, and overdue cases are shown for analyst escalation without external alert delivery.
+
+
+## NIST AI RMF, Zero Trust, and expanded project portfolio (October 2026)
+
+- The public website includes AI consulting work involving the NIST AI Risk Management Framework (AI RMF) and extensive knowledge of Zero Trust Architecture and NIST SP 800-207. These are described at the professional experience, expertise and selected-work levels without inventing client names, sensitive artifacts, delivered outcomes or deployment claims.
+- The Projects navigation link goes to eight live demonstration cards. Seven local-first browser labs and [IncidentDesk](incidentdesk/index.html) are clearly differentiated; the latter adds optional Supabase authenticated workflows and a free-to-explore fictional demo.
+- The [Architecture Library](architectures/index.html) offers eight individually accessible framework tabs, vector diagrams and controls/scope notes. Original generated illustrated posters require uploading their associated WebP image assets into [architectures/posters/](architectures/posters/) to appear.
+- Technical/project examples must not be described as certified, authorized or production-ready systems without a corresponding independent authorization or assessment.
