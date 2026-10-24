@@ -129,7 +129,7 @@ const stage=a=>a.manualStatus||a.status||'Applied';
 const isActive=a=>!['Rejected','Withdrawn','Offer'].includes(stage(a));
 const API='https://okarjtdmthfhfwvnjblr.supabase.co/functions/v1/application-pulse-private?state=1';
 let cloudReady=false,cloudTimer=null,cloudPassword='';
-const cloudFetch=(method,payload)=>fetch(API,{method,mode:'cors',cache:'no-store',credentials:'omit',headers:{'Authorization':'Basic '+btoa('application-pulse:'+cloudPassword),...(payload===undefined?{}:{'Content-Type':'application/json'})},body:payload});
+const cloudFetch=(method,payload)=>fetch(API,{method,mode:'cors',cache:'no-store',credentials:'omit',headers:{'X-Pulse-Credential':btoa(cloudPassword),...(payload===undefined?{}:{'Content-Type':'application/json'})},body:payload});
 const persist=()=>{if(!cloudReady)return;clearTimeout(cloudTimer);const payload=JSON.stringify(state.apps);cloudTimer=setTimeout(async()=>{try{const r=await cloudFetch('PUT',payload);if(!r.ok)throw Error('Save unsuccessful ('+r.status+')');}catch(error){notify('Unable to save online — export a JSON backup and try again.')}},650)};
 const copyApps=()=>JSON.parse(JSON.stringify(seed));
 function loadApps(){try{const val=JSON.parse(storage.getItem(STORE));if(Array.isArray(val))return val.filter(a=>a&&typeof a.company==='string'&&typeof a.role==='string').map(a=>({...a,events:Array.isArray(a.events)?a.events:[]}));}catch(_){}return copyApps();}
